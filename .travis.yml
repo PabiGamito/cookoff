@@ -1,24 +1,23 @@
 language: dart
-os:
-  - linux
-sudo: false
+
 addons:
   apt:
     sources:
+      # If we don't specify this, the libstdc++6 we get is the wrong version.
       - ubuntu-toolchain-r-test
     packages:
       - libstdc++6
       - fonts-droid
+
 before_script:
-  # clone flutter to fluttertools because our app directory is also called flutter
-  # only install if the directory was not cached
-  - git clone https://github.com/flutter/flutter.git fluttertools -b stable
-  - ./fluttertools/bin/flutter doctor
+  - git clone https://github.com/flutter/flutter.git -b stable
+  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+  - flutter doctor
+
 script:
-- cd flutter
-- ../fluttertools/bin/flutter test
+  - cd app
+  - flutter test
+
 cache:
   directories:
-  # Cache the flutter install to avoid long install process
-  - fluttertools
-  - $HOME/.pub-cache
+    - $HOME/.pub-cache
