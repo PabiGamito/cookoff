@@ -18,6 +18,10 @@ script:
   - cd app
   - flutter test
 
+branches:
+  only:
+    - master
+
 cache:
   directories:
     - $HOME/.pub-cache
