@@ -1,22 +1,19 @@
 language: dart
 os:
-- linux
+  - linux
 sudo: false
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - libstdc++6
-    - fonts-droid
+      - libstdc++6
+      - fonts-droid
 before_script:
-# clone flutter to fluttertools because our app directory is also called flutter
-# only install if the directory was not cached
--
-  if [ ! -d fluttertools ] ; then
-    git clone https://github.com/flutter/flutter.git fluttertools -b stable
-  fi
-- ./fluttertools/bin/flutter doctor
+  # clone flutter to fluttertools because our app directory is also called flutter
+  # only install if the directory was not cached
+  - git clone https://github.com/flutter/flutter.git fluttertools -b stable
+  - ./fluttertools/bin/flutter doctor
 script:
 - cd flutter
 - ../fluttertools/bin/flutter test
