@@ -14,7 +14,7 @@ before_script:
 # only install if the directory was not cached
 -
   if [ ! -d fluttertools ] ; then
-  git clone https://github.com/flutter/flutter.git fluttertools -b stable
+    git clone https://github.com/flutter/flutter.git fluttertools -b stable
   fi
 - ./fluttertools/bin/flutter doctor
 script:
