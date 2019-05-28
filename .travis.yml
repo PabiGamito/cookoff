@@ -21,6 +21,7 @@ script:
 matrix:
   include:
   - name: Android Build
+    if: branch = release
     language: android
     jdk: openjdk8
     android:
@@ -38,6 +39,7 @@ matrix:
 branches:
   only:
     - master
+    - release
 
 cache:
   directories:
