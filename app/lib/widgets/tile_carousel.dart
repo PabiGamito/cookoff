@@ -24,7 +24,8 @@ class TileCarousel extends StatelessWidget {
               height: MediaQuery.of(context).size.width * 0.40,
               child: ListView(
                   padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.05),
+                      left: MediaQuery.of(context).size.width * 0.05,
+                      right: MediaQuery.of(context).size.width * 0.05),
                   // This next line does the trick.
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
