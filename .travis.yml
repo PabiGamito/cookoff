@@ -1,46 +1,53 @@
-language: dart
+stages:
+  - name: test
+    if: type = pull_request AND branch = master
+  - name: deploy
+    if: type = push AND branch = release
 
-addons:
-  apt:
-    sources:
-      # If we don't specify this, the libstdc++6 we get is the wrong version.
-      - ubuntu-toolchain-r-test
-    packages:
-      - libstdc++6
-      - fonts-droid
-
-before_script:
-  - git clone https://github.com/flutter/flutter.git -b stable
-  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-  - flutter doctor
-
-script:
-  - cd app
-  - flutter test
-
-matrix:
+jobs:
   include:
-  - name: Android Build
-    if: branch = release
-    language: android
-    jdk: openjdk8
-    android:
-      components:
-        - build-tools-28.0.3
-        - android-28
-    before_script:
-      - git clone https://github.com/flutter/flutter.git -b stable
-      - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-    script:
-      - flutter packages get
-      - flutter test
-      - flutter build apk
+    # Test phase, runs on master
+    - stage: test
+      name: flutter
+      language: dart
+      addons:
+        apt:
+          sources:
+            # If we don't specify this, the libstdc++6 we get is the wrong version.
+            - ubuntu-toolchain-r-test
+      packages:
+        - libstdc++6
+        - fonts-droid
+      before_script:
+        - git clone https://github.com/flutter/flutter.git -b stable
+        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+        - flutter doctor
+      script:
+        - cd app
+        - flutter test
 
-branches:
-  only:
-    - master
-    - release
-
-cache:
-  directories:
-    - $HOME/.pub-cache
+    # Deploy phase for android APK
+    - stage: deploy
+      name: android
+      language: android
+      jdk: openjdk8
+      android:
+        components:
+          - build-tools-28.0.3
+          - android-28
+      addons:
+        apt:
+          sources:
+            # If we don't specify this, the libstdc++6 we get is the wrong version.
+            - ubuntu-toolchain-r-test
+      packages:
+        - libstdc++6
+        - fonts-droid
+      before_script:
+        - git clone https://github.com/flutter/flutter.git -b stable
+        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+        - flutter doctor
+      script:
+        - cd app
+        - flutter packages get
+        - flutter build apk
