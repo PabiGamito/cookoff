@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home/home.dart';
+import 'package:cookoff/screens/home.dart';
 
 void main() => runApp(MyApp());
 
