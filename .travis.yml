@@ -44,14 +44,10 @@ jobs:
         - libstdc++6
         - fonts-droid
       before_script:
-        - openssl aes-256-cbc -K $encrypted_82a987adac02_key -iv $encrypted_82a987adac02_iv -in secrets.tar.enc -out secrets.tar -d
-        - tar xvf secrets.tar
         - git clone https://github.com/flutter/flutter.git -b stable
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
         - flutter doctor
-        - gem install bundler && cd android && bundle install && cd ..
       script:
         - cd app
         - flutter packages get
         - flutter build apk
-        - cd android && bundle exec fastlane alpha
