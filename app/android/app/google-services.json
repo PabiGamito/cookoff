@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "839181180751",
+    "firebase_url": "https://pomegranate-catfish.firebaseio.com",
+    "project_id": "pomegranate-catfish",
+    "storage_bucket": "pomegranate-catfish.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839181180751:android:da7e2d66db1903f3",
+        "android_client_info": {
+          "package_name": "me.cookoff.cookoff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839181180751-o690ng4s9hjqttoajaipql0l3m39eg5f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDF0LD5UrMxp4XrnTYnOcSUue_CIdQMEVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839181180751-o690ng4s9hjqttoajaipql0l3m39eg5f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
