@@ -17,9 +17,7 @@ class ChallengesSection extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Center(
-              child: NoChallenges(),
-            ),
+            child: NoChallenges(),
           ),
         ],
       );
