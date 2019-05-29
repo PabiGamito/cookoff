@@ -13,6 +13,7 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
               child: new Container(
