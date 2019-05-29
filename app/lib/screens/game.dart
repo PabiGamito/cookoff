@@ -1,3 +1,5 @@
+import 'package:cookoff/widgets/profile_icon.dart';
+import 'package:cookoff/widgets/profile_list.dart';
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +14,15 @@ class Game extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const iconScale = 0.45;
+    const iconScale = 0.2;
     var iconDistanceScale = 0.05;
     var initial;
+    var iconList = [
+      ProfileIcon(50, "assets/faces/betty.jpg"),
+      ProfileIcon(50, "assets/faces/jughead.png"),
+    ];
     var distance;
+    print(MediaQuery.of(context).size.width * 0.135);
     return GestureDetector(
         onPanStart: (DragStartDetails details) {
           initial = details.globalPosition.dx;
@@ -46,15 +53,17 @@ class Game extends StatelessWidget {
                     },
                     child: Container(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.04),
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.05),
+                        top: MediaQuery.of(context).size.height * 0.04,
+                        bottom: MediaQuery.of(context).size.height * 0.02,
+                      ),
+                      margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
                       child: Text(
                         "\u{2190}",
                         style: TextStyle(
-                            fontSize: 60,
-                            fontFamily: "Montserrat",
-                            color: Colors.white),
+                          fontSize: 60,
+                          fontFamily: "Montserrat",
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -67,32 +76,36 @@ class Game extends StatelessWidget {
                       child: Text(
                         "${ingredientName[0].toUpperCase()}${ingredientName.substring(1)}",
                         style: TextStyle(
-                          fontSize: 45,
+                          fontSize: MediaQuery.of(context).size.height * 0.06,
                           fontFamily: "Montserrat",
                           color: Colors.white,
+                          letterSpacing: 2,
                         ),
                       ),
                     ),
                   ),
                   // Ingredient Icon
                   Container(
-                    width: MediaQuery.of(context).size.width * iconScale,
-                    height: MediaQuery.of(context).size.width * iconScale,
+                    width: MediaQuery.of(context).size.height * iconScale,
+                    height: MediaQuery.of(context).size.height * iconScale,
                     margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height *
-                            iconDistanceScale),
+                        bottom: MediaQuery.of(context).size.height * iconDistanceScale),
                     child: Image.asset(_iconPath),
                   ),
                   // Start button
                   GestureDetector(
                     child: Center(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.005,
+                          bottom: MediaQuery.of(context).size.height * 0.005,
+                          left: MediaQuery.of(context).size.height * 0.01,
+                          right: MediaQuery.of(context).size.height * 0.01,
+                        ),
                         margin: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).size.height *
-                                iconDistanceScale),
+                            bottom: MediaQuery.of(context).size.height * iconDistanceScale),
                         decoration: BoxDecoration(
-                          color: Color(_bgColor.value - 0x00141414  ),
+                          color: Color(_bgColor.value - 0x15404040),
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
                         child: Row(
@@ -105,8 +118,8 @@ class Game extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                   left: 30,
                                 ),
-                                height: 50,
-                                width: 50,
+                                height: MediaQuery.of(context).size.width * 0.135,
+                                width: MediaQuery.of(context).size.width * 0.135,
                                 child: Transform.rotate(
                                   angle: 1.2,
                                   child: Image.asset("assets/icons/rocket.png"),
@@ -121,12 +134,25 @@ class Game extends StatelessWidget {
                                 child: Text(
                                   "START",
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: "Montserrat",
-                                      color: Colors.white),
+                                    fontSize: 20,
+                                    fontFamily: "Montserrat",
+                                    color: Colors.white,
+                                    letterSpacing: 2,
+                                  ),
                                 ),
                               ),
                             ]),
+                      ),
+                    ),
+                  ),
+                  // Friends list display
+                  Center(
+                    child: Container(
+                      transform: Matrix4.translationValues(
+                          (iconList.length / 2).roundToDouble() * -50.0, 0, 0),
+                      child: ProfileList(
+                        iconList,
+                        iconOffset: -10,
                       ),
                     ),
                   ),
@@ -139,8 +165,7 @@ class Game extends StatelessWidget {
                     decoration: new BoxDecoration(
                       color: Color(0xFFF5F5F5),
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.elliptical(50, 30),
-                          topRight: Radius.elliptical(50, 30)),
+                          topLeft: Radius.elliptical(50, 30), topRight: Radius.elliptical(50, 30)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,8 +173,12 @@ class Game extends StatelessWidget {
                         SectionTitle(
                           'Some inspiration...',
                           Color(_bgColor.value + 0x00112211),
-                          fontSize: 22,
+                          fontSize: MediaQuery.of(context).size.height * 0.03,
                         ),
+                        Container(
+                          padding:
+                              EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.02),
+                        )
                       ],
                     ),
                   )
