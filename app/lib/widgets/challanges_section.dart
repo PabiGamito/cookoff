@@ -1,4 +1,3 @@
-import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,11 +7,29 @@ class ChallengesSection extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left: 30, right: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionTitle('My challanges', Color(0xFF8057E2)),
-                CircleAddButton(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'My challenges',
+                      style: TextStyle(fontSize: 25, fontFamily: 'Montserrat'),
+                      textAlign: TextAlign.left,
+                    ),
+                    CircleAddButton(),
+                  ],
+                ),
+                Container(
+                    margin: EdgeInsets.only(top: 10),
+                    width: 45,
+                    height: 6,
+                    decoration: new BoxDecoration(
+                      color: Color(0xFF8057E2),
+                      borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.width * 0.03),
+                    ))
               ],
             ),
           ),
