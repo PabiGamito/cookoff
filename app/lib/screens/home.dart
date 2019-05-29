@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+
 import 'package:cookoff/widgets/featured_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:cookoff/widgets/tile_carousel.dart';
-import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

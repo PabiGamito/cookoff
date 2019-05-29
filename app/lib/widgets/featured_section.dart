@@ -1,6 +1,7 @@
+import 'package:flutter/widgets.dart';
+
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:cookoff/widgets/tile_carousel.dart';
-import 'package:flutter/widgets.dart';
 
 class FeaturedSection extends StatelessWidget {
   final String _title;
