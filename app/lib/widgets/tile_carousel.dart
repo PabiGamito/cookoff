@@ -35,7 +35,7 @@ class Tile extends StatelessWidget {
       onTap: () {
         // Some sort of event trigger
         Navigator.push(
-            context,
+          context,
           MaterialPageRoute(builder: (context) => Game(_iconPath, _bgColor)),
         );
       },
@@ -47,10 +47,11 @@ class Tile extends StatelessWidget {
           decoration: BoxDecoration(
             color: _bgColor,
             borderRadius:
-            BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+                BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
           ),
           child: Container(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.055),
+              padding:
+                  EdgeInsets.all(MediaQuery.of(context).size.width * 0.055),
               child: Image.asset(_iconPath)),
         ),
       ),
