@@ -38,8 +38,9 @@ jobs:
       addons:
         artifacts:
           s3_region: eu-west-1
+          working_dir: app/build/app/outputs/apk/release
           paths:
-            - app/build/app/outputs/apk/release/app-release.apk
+            - app-release.apk
           target_paths:
             - /
         apt:
