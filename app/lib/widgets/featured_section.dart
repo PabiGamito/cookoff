@@ -1,7 +1,6 @@
-import 'package:flutter/widgets.dart';
-
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:cookoff/widgets/tile_carousel.dart';
+import 'package:flutter/widgets.dart';
 
 class FeaturedSection extends StatelessWidget {
   final String _title;
@@ -16,10 +15,7 @@ class FeaturedSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(
-                top: 40,
-                left: MediaQuery.of(context).size.width * 0.05 + 10,
-                right: MediaQuery.of(context).size.width * 0.05),
+            padding: EdgeInsets.only(left: 30, right: 30),
             child: SectionTitle(_title, _titleUnderlineColor),
           ),
           TileCarousel(),
