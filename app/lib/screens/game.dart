@@ -5,7 +5,13 @@ import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:cookoff/widgets/tile_carousel.dart';
 
-class Page2 extends StatelessWidget {
+class Game extends StatelessWidget {
+  final String _iconPath;
+  final Color _bgColor;
+
+  Game(String iconPath, Color bgColor)
+      : _iconPath = iconPath,
+        _bgColor = bgColor;
   @override
   Widget build(BuildContext context) {
     const double sectionOverlayHeight = 100;
@@ -28,13 +34,14 @@ class Page2 extends StatelessWidget {
           }
         },
         child: Container(
-            color: Color(0xF034C577),
+            color: _bgColor,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
                     padding: EdgeInsets.only(top: 25, bottom: 25),
-                    child: HomeHeader('Jessica', 3, 'assets/veronica.png'),
+                    child:
+                        Text("\u{2190}", style: TextStyle(fontSize: 100, fontFamily: "Montserrat"),),
                   ),
                   Container(
                     padding: EdgeInsets.only(bottom: sectionOverlayHeight),
@@ -45,11 +52,11 @@ class Page2 extends StatelessWidget {
                           topRight: Radius.elliptical(50, 30)),
                     ),
                     child:
-                    FeaturedSection('Start cooking...', Color(0xFFA3FFB6)),
+                        FeaturedSection('Start cooking...', Color(0xFFA3FFB6)),
                   ),
                   Container(
                     transform:
-                    Matrix4.translationValues(0, -sectionOverlayHeight, 0),
+                        Matrix4.translationValues(0, -sectionOverlayHeight, 0),
                     padding: EdgeInsets.all(20),
                     decoration: new BoxDecoration(
                       color: Color(0xFFF5F5F5),

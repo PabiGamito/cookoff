@@ -1,3 +1,5 @@
+import 'package:cookoff/screens/game.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TileCarousel extends StatelessWidget {
@@ -29,19 +31,28 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: new Container(
-        width: MediaQuery.of(context).size.width * 0.25,
-        height: MediaQuery.of(context).size.width * 0.25,
-        margin: const EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          color: _bgColor,
-          borderRadius:
-              BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+    return GestureDetector(
+      onTap: () {
+        // Some sort of event trigger
+        Navigator.push(
+            context,
+          MaterialPageRoute(builder: (context) => Game(_iconPath, _bgColor)),
+        );
+      },
+      child: Center(
+        child: new Container(
+          width: MediaQuery.of(context).size.width * 0.25,
+          height: MediaQuery.of(context).size.width * 0.25,
+          margin: const EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            color: _bgColor,
+            borderRadius:
+            BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+          ),
+          child: Container(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.055),
+              child: Image.asset(_iconPath)),
         ),
-        child: Container(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.055),
-            child: Image.asset(_iconPath)),
       ),
     );
   }
