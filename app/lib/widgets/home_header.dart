@@ -1,3 +1,4 @@
+import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -15,45 +16,77 @@ class HomeHeader extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              child: new Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                height: MediaQuery.of(context).size.width * 0.25,
-                margin: const EdgeInsets.all(10.0),
-                decoration: new BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 5),
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/Elena.jpg'))),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'HELLO',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontFamily: 'Montserrat',
-                    color: Color(0xFFFFFFFF),
-                    letterSpacing: 2.0,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                Text(
-                  _name,
-                  style: TextStyle(
-                    fontSize: 42,
-                    fontFamily: 'Montserrat',
-                    color: Color(0xFF333333),
-                    height: 0.8,
-                  ),
-                  textAlign: TextAlign.left,
-                )
+            Stack(
+              children: [
+                Positioned(child: ProfileIcon(108, _profileImagePath)),
+                Positioned(
+                    top: 3,
+                    right: 8,
+                    child: NotificationBubble(_notificationCount))
               ],
             ),
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              child: HelloMessage(_name),
+            ),
           ],
+        ),
+      );
+}
+
+class HelloMessage extends StatelessWidget {
+  final String _name;
+
+  HelloMessage(String name) : _name = name;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'HELLO',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: 'Montserrat',
+              color: Color(0xFFFFFFFF),
+              letterSpacing: 2.0,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          Text(
+            _name,
+            style: TextStyle(
+              fontSize: 42,
+              fontFamily: 'Montserrat',
+              color: Color(0xFF333333),
+              height: 0.8,
+            ),
+            textAlign: TextAlign.left,
+          )
+        ],
+      );
+}
+
+class NotificationBubble extends StatelessWidget {
+  final int _notificationCount;
+
+  NotificationBubble(int notificationCount)
+      : _notificationCount = notificationCount;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Color(0xFFE5505E),
+          borderRadius: BorderRadius.circular(40),
+        ),
+        child: Center(
+          child: Text(
+            _notificationCount.toString(),
+            style: TextStyle(
+                color: Colors.white, fontSize: 18, fontFamily: 'Montserrat'),
+          ),
         ),
       );
 }
