@@ -21,7 +21,10 @@ class HomeScreen extends StatelessWidget {
                   topLeft: Radius.circular(38), topRight: Radius.circular(38)),
             ),
             child: Column(children: [
-              FeaturedSection('Start cooking...', Color(0xFF8EE5B6)),
+              Container(
+                padding: EdgeInsets.only(bottom: 20),
+                child: FeaturedSection('Start cooking...', Color(0xFF8EE5B6)),
+              ),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.only(top: 40),
