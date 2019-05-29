@@ -39,3 +39,8 @@ Temporary Items
 
 ### IntelliJ Idea ###
 .idea
+
+### Secrets for Travis ###
+app/android/app/upload.keystore
+app/android/key.properties
+secrets.tar
