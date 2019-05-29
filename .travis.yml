@@ -57,6 +57,7 @@ jobs:
       script:
         # decrypt secrets file
         - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
+        - tar xvf secrets.tar
         - cd app
         - flutter packages get
         - flutter build apk --release
