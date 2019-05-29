@@ -1,3 +1,6 @@
+import 'package:cookoff/widgets/featured_section.dart';
+import 'package:cookoff/widgets/home_header.dart';
+import 'package:cookoff/widgets/section_title.dart';
 import 'package:cookoff/widgets/tile_carousel.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    const double sectionOverlayHeight = 100;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -47,12 +51,46 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-            children: [TileCarousel("Trending", Color(0xFF8EE5B6))])
-      ),
+      body: Container(
+          color: Color(0xFFFFC544),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Container(
+              padding: EdgeInsets.only(top: 25, bottom: 25),
+              child: HomeHeader('Veronica', 3, 'assets/veronica.png'),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: sectionOverlayHeight),
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.elliptical(50, 30),
+                    topRight: Radius.elliptical(50, 30)),
+              ),
+              child: FeaturedSection('Start cooking...', Color(0xFF8EE5B6)),
+            ),
+//            Expanded(
+            Container(
+              transform: Matrix4.translationValues(0, -sectionOverlayHeight, 0),
+              padding: EdgeInsets.all(20),
+              decoration: new BoxDecoration(
+                color: Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.elliptical(50, 30),
+                    topRight: Radius.elliptical(50, 30)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SectionTitle('My challanges', Color(0xFF8057E2)),
+                  TileCarousel(),
+                ],
+              ),
+            ),
+//            ),
+          ])),
     );
   }
 }
