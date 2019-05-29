@@ -12,17 +12,19 @@ class HomeHeader extends StatelessWidget {
         _profileImagePath = profileImagePath;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) =>
+      Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Stack(
               children: [
                 Positioned(child: ProfileIcon(108, _profileImagePath)),
-                Positioned(
-                    top: 3,
-                    right: 8,
-                    child: NotificationBubble(_notificationCount))
+                if (_notificationCount > 0)
+                  Positioned(
+                      top: 3,
+                      right: 8,
+                      child: NotificationBadge(_notificationCount))
               ],
             ),
             Container(
@@ -40,7 +42,8 @@ class HelloMessage extends StatelessWidget {
   HelloMessage(String name) : _name = name;
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
@@ -67,14 +70,15 @@ class HelloMessage extends StatelessWidget {
       );
 }
 
-class NotificationBubble extends StatelessWidget {
+class NotificationBadge extends StatelessWidget {
   final int _notificationCount;
 
-  NotificationBubble(int notificationCount)
+  NotificationBadge(int notificationCount)
       : _notificationCount = notificationCount;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) =>
+      Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
