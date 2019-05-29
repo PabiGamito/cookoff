@@ -3,10 +3,12 @@ import 'package:flutter/widgets.dart';
 class SectionTitle extends StatelessWidget {
   final String _title;
   final Color _color;
+  final double _fontSize;
 
-  const SectionTitle(String title, Color color)
+  const SectionTitle(String title, Color color, {double fontSize = 25})
       : _title = title,
-        _color = color;
+        _color = color,
+        _fontSize = fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class SectionTitle extends StatelessWidget {
         children: [
           Text(
             _title,
-            style: TextStyle(fontSize: 25, fontFamily: 'Montserrat'),
+            style: TextStyle(fontSize: _fontSize, fontFamily: 'Montserrat'),
             textAlign: TextAlign.left,
           ),
           Container(

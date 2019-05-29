@@ -12,20 +12,21 @@ class TileCarousel extends StatelessWidget {
               right: MediaQuery.of(context).size.width * 0.05),
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            Tile("assets/cheese.png", Color(0xFF7C54EA)),
-            Tile("assets/orange.png", Color(0xFFD0EB5C)),
-            Tile("assets/cauliflower.png", Color(0xFF65D2EB)),
-            Tile("assets/cheese.png", Color(0xFF7C54EA)),
-            Tile("assets/orange.png", Color(0xFFD0EB5C)),
-            Tile("assets/cauliflower.png", Color(0xFF65D2EB)),
+            Tile("cheese", "assets/cheese.png", Color(0xFF7C54EA)),
+            Tile("orange", "assets/orange.png", Color(0xFFD0EB5C)),
+            Tile("cauliflower", "assets/cauliflower.png", Color(0xFF65D2EB)),
+            Tile("cheese", "assets/cheese.png", Color(0xFF7C54EA)),
+            Tile("orange", "assets/orange.png", Color(0xFFD0EB5C)),
+            Tile("cauliflower", "assets/cauliflower.png", Color(0xFF65D2EB)),
           ]));
 }
 
 class Tile extends StatelessWidget {
   final String _iconPath;
   final Color _bgColor;
+  final String ingredientName;
 
-  Tile(String iconPath, Color bgColor)
+  Tile(this.ingredientName, String iconPath, Color bgColor)
       : _iconPath = iconPath,
         _bgColor = bgColor;
 
@@ -36,7 +37,7 @@ class Tile extends StatelessWidget {
         // Some sort of event trigger
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Game(_iconPath, _bgColor)),
+          MaterialPageRoute(builder: (context) => Scaffold(body: Game(ingredientName, _iconPath, _bgColor)),),
         );
       },
       child: Center(
