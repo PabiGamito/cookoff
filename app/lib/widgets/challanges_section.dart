@@ -39,12 +39,13 @@ class CircleAddButton extends StatelessWidget {
           color: Color(0xFF8057E2),
           borderRadius: BorderRadius.circular(40),
         ),
-        child: Container(
-            child: Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 25.0,
-        )),
+        child: Center(
+          child: Text(
+            '+',
+            style: TextStyle(
+                color: Colors.white, fontSize: 30, fontFamily: 'Montserrat'),
+          ),
+        ),
       );
 }
 
