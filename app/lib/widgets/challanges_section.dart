@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 class ChallengesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left: 30, right: 30),
@@ -17,9 +16,10 @@ class ChallengesSection extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(top: 50),
-            child: NoChallenges(),
+          Expanded(
+            child: Center(
+              child: NoChallenges(),
+            ),
           ),
         ],
       );
@@ -52,34 +52,33 @@ class CircleAddButton extends StatelessWidget {
 
 class NoChallenges extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: 100,
-              height: 100,
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  image: new AssetImage(
-                    'assets/apple.png',
-                  ),
-                  fit: BoxFit.cover,
+  Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 100,
+            height: 100,
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage(
+                  'assets/apple.png',
                 ),
+                fit: BoxFit.cover,
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 25),
-              child: Text(
-                'NO CURRENT\nCHALLENGES',
-                style: TextStyle(
-                    fontSize: 21,
-                    fontFamily: 'Montserrat',
-                    color: Color(0xFFC1C1C1),
-                    letterSpacing: 2.0),
-                textAlign: TextAlign.left,
-              ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 25),
+            child: Text(
+              'NO CURRENT\nCHALLENGES',
+              style: TextStyle(
+                  fontSize: 21,
+                  fontFamily: 'Montserrat',
+                  color: Color(0xFFC1C1C1),
+                  letterSpacing: 2.0),
+              textAlign: TextAlign.left,
             ),
-          ],
-        ),
+          ),
+        ],
       );
 }
