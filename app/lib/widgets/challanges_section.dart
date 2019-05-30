@@ -140,7 +140,7 @@ class ChallengeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         height: 100,
-        margin: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
         decoration: BoxDecoration(
           color: Color(0xFF7C54EA),
           borderRadius:
