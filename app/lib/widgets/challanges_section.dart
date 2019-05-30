@@ -42,20 +42,22 @@ class ChallengesSection extends StatelessWidget {
               ],
             ),
           ),
-          StreamBuilder<Iterable<Challenge>>(
-            stream: _challengeProvider.challengesStream('elena'),
-            builder: (BuildContext context,
-                AsyncSnapshot<Iterable<Challenge>> snapshots) {
-              if (snapshots.hasData) {
-                if (snapshots.data.length == 0) {
-                  return NoChallenges();
-                } else {
-                  return Expanded(child: ChallengesList(snapshots.data));
+          Expanded(
+            child: StreamBuilder<Iterable<Challenge>>(
+              stream: _challengeProvider.challengesStream('elena'),
+              builder: (BuildContext context,
+                  AsyncSnapshot<Iterable<Challenge>> snapshots) {
+                if (snapshots.hasData) {
+                  if (snapshots.data.length == 0) {
+                    return NoChallenges();
+                  } else {
+                    return ChallengesList(snapshots.data);
+                  }
                 }
-              }
 
-              return NoChallenges();
-            },
+                return NoChallenges();
+              },
+            ),
           ),
         ],
       );
@@ -185,8 +187,14 @@ class _TimeLeftWidgetState extends State<TimeLeftWidget>
 
   _TimeLeftWidgetState(this._endTimestamp);
 
+  Duration timeLeft() {
+    return _endTimestamp.difference(DateTime.now());
+  }
+
   @override
   Widget build(BuildContext context) => Row(
-        children: <Widget>[],
+        children: <Widget>[
+          if (timeLeft().inHours > 0) Text(timeLeft().inHours.toString()),
+        ],
       );
 }
