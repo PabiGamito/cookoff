@@ -45,20 +45,23 @@ class ChallengesSection extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: StreamBuilder<Iterable<Challenge>>(
-              stream: _challengeProvider.challengesStream('elena'),
-              builder: (BuildContext context,
-                  AsyncSnapshot<Iterable<Challenge>> snapshots) {
-                if (snapshots.hasData) {
-                  if (snapshots.data.length == 0) {
-                    return NoChallenges();
-                  } else {
-                    return ChallengesList(snapshots.data);
+            child: Container(
+              padding: EdgeInsets.only(left: 30, right: 30),
+              child: StreamBuilder<Iterable<Challenge>>(
+                stream: _challengeProvider.challengesStream('elena'),
+                builder: (BuildContext context,
+                    AsyncSnapshot<Iterable<Challenge>> snapshots) {
+                  if (snapshots.hasData) {
+                    if (snapshots.data.length == 0) {
+                      return NoChallenges();
+                    } else {
+                      return ChallengesList(snapshots.data);
+                    }
                   }
-                }
 
-                return NoChallenges();
-              },
+                  return NoChallenges();
+                },
+              ),
             ),
           ),
         ],
