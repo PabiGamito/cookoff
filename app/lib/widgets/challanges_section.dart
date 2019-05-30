@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
@@ -181,50 +183,71 @@ class TimeLeftWidget extends StatefulWidget {
   State<StatefulWidget> createState() => _TimeLeftWidgetState(_end);
 }
 
-class _TimeLeftWidgetState extends State<TimeLeftWidget>
-    with TickerProviderStateMixin {
+class _TimeLeftWidgetState extends State<TimeLeftWidget> {
   final DateTime _end;
+  String _timeValue;
+  String _timeValueUnit;
+  String _timeValueAlt;
+  String _timeValueAltUnit;
 
   _TimeLeftWidgetState(this._end);
 
-  Duration timeLeft() {
-    return _end.difference(DateTime.now());
+  @override
+  void initState() {
+    super.initState();
+
+    updateTimeText();
+
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        updateTimeText();
+      });
+    });
+  }
+
+  void updateTimeText() {
+    _timeValue = timeText()[0][0];
+    _timeValueUnit = timeText()[1][0];
+    _timeValueAlt = timeText()[0][1];
+    _timeValueAltUnit = timeText()[1][1];
   }
 
   List<List<String>> timeText() {
+    var _timeLeft = _end.difference(DateTime.now());
+
     int valueCnt = 0;
 
     var values = List<String>();
     var units = List<String>();
 
-    if (timeLeft().inDays > 0) {
+    if (_timeLeft.inDays > 0) {
       units.add('d');
-      values.add(timeLeft().inDays.toString());
+      values.add(_timeLeft.inDays.toString());
       valueCnt++;
     }
 
-    if (timeLeft().inHours > 0) {
+    if (_timeLeft.inHours > 0) {
       units.add('h');
-      var hours = timeLeft().inHours - timeLeft().inDays * 24;
+      var hours = _timeLeft.inHours - _timeLeft.inDays * 24;
       values.add(hours.toString());
       valueCnt++;
     }
 
-    if (valueCnt < 2 && timeLeft().inMinutes > 0) {
+    if (valueCnt < 2 && _timeLeft.inMinutes > 0) {
       units.add('m');
-      var minutes = timeLeft().inMinutes -
-          timeLeft().inHours * 60 -
-          timeLeft().inDays * 24 * 60;
+      var minutes = _timeLeft.inMinutes -
+          _timeLeft.inHours * 60 -
+          _timeLeft.inDays * 24 * 60;
       values.add(minutes.toString());
       valueCnt++;
     }
 
-    if (valueCnt < 2 && timeLeft().inSeconds > 0) {
+    if (valueCnt < 2 && _timeLeft.inSeconds > 0) {
       units.add('s');
-      var seconds = timeLeft().inSeconds -
-          timeLeft().inMinutes * 60 -
-          timeLeft().inHours * 60 * 60 -
-          timeLeft().inDays * 24 * 60 * 60;
+      var seconds = _timeLeft.inSeconds -
+          _timeLeft.inMinutes * 60 -
+          _timeLeft.inHours * 60 * 60 -
+          _timeLeft.inDays * 24 * 60 * 60;
       values.add(seconds.toString());
       valueCnt++;
     }
@@ -242,22 +265,22 @@ class _TimeLeftWidgetState extends State<TimeLeftWidget>
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Text(
-            timeText()[0][0],
+            _timeValue ?? '',
             style: TextStyle(
                 color: Colors.white, fontSize: 24, fontFamily: 'Montserrat'),
           ),
           Text(
-            timeText()[1][0] + " ",
+            (_timeValueUnit ?? '') + " ",
             style: TextStyle(
                 color: Colors.white, fontSize: 16, fontFamily: 'Montserrat'),
           ),
           Text(
-            timeText()[0][1],
+            _timeValueAlt ?? '',
             style: TextStyle(
                 color: Colors.white, fontSize: 24, fontFamily: 'Montserrat'),
           ),
           Text(
-            timeText()[1][1],
+            _timeValueAltUnit ?? '',
             style: TextStyle(
                 color: Colors.white, fontSize: 16, fontFamily: 'Montserrat'),
           ),
