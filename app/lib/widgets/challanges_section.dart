@@ -128,8 +128,8 @@ class ChallengesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(
         padding: EdgeInsets.only(
-          top: 25,
-          bottom: 25,
+          top: 15,
+          bottom: 15,
           left: 0,
           right: 0,
         ),
@@ -145,6 +145,7 @@ class ChallengeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        margin: EdgeInsets.only(top: 10, bottom: 10),
         height: 100,
         decoration: BoxDecoration(
           color: Color(0xFF7C54EA),
