@@ -1,4 +1,8 @@
 import 'package:cookoff/blocs/friends_bloc.dart';
+import 'package:cookoff/models/challenge.dart';
+import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/widgets/challanges_section.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:cookoff/widgets/section_title.dart';
@@ -9,14 +13,17 @@ class Game extends StatefulWidget {
   final String ingredientName;
   final String _iconPath;
   final Color _bgColor;
+  final Challenge _challenge;
 
-  Game(this.ingredientName, String iconPath, Color bgColor)
-      : _iconPath = iconPath,
+  Game(this.ingredientName, String iconPath, Color bgColor,
+      {Challenge challenge})
+      : _challenge = challenge,
+        _iconPath = iconPath,
         _bgColor = bgColor;
 
   @override
   State<StatefulWidget> createState() =>
-      _GameState(ingredientName, _iconPath, _bgColor);
+      _GameState(ingredientName, _iconPath, _bgColor, _challenge);
 }
 
 class _GameState extends State<Game> {
@@ -26,28 +33,37 @@ class _GameState extends State<Game> {
   final Color _bgColor;
   final double _smallProfileScale = 0.13;
   final double _largeProfileScale = 0.155;
+
+  Challenge _challenge;
   double _inspirationCardHeight = 0.0;
   double _dragPos = 0.0;
   bool _displayPlayers = true;
   bool _displayFriends = false;
   bool _scrollableFriends = false;
-  bool _gameStarted = false;
+  bool _gameStarted;
+  Duration _duration = Duration(days: 1, hours: 1);
+  String _owner = "elena";
+  TimeLeftWidget _timeLeftWidget;
 
-  _GameState(String ingredientName, String iconPath, Color bgColor)
-      : _ingredientName = ingredientName,
+  _GameState(String ingredientName, String iconPath, Color bgColor,
+      [Challenge challenge])
+      : _challenge = challenge,
+        _ingredientName = ingredientName,
         _iconPath = iconPath,
-        _bgColor = bgColor;
+        _bgColor = bgColor {
+    _gameStarted = _challenge != null;
+    _timeLeftWidget =
+        _challenge != null ? TimeLeftWidget(_challenge.end) : null;
+  }
 
   @override
   Widget build(BuildContext context) {
+    ChallengeProvider challengeProvider =
+        InjectorWidget.of(context).injector.challengeProvider;
     var mediaSize = MediaQuery.of(context).size;
     const iconScale = 0.2;
     var iconDistanceScale = 0.05;
     // TODO: List of Profile Icons should be fetched
-    var iconList = [
-      ProfileIcon("assets/faces/betty.jpg", size: mediaSize.width * 0.13),
-      ProfileIcon("assets/faces/jughead.png", size: mediaSize.width * 0.13),
-    ];
     var unjoinedFriends = <ProfileIcon>[
       ProfileIcon("assets/faces/archie.jpg",
           size: mediaSize.width * 0.155, profileName: "Archie Candoro"),
@@ -121,6 +137,21 @@ class _GameState extends State<Game> {
                     ),
                     // Start button
                     GestureDetector(
+                      onTap: () {
+                        if (!_gameStarted) {
+                          setState(() {
+                            _challenge = Challenge(
+                                owner: _owner,
+                                participants: List.of(ticked)..add(_owner),
+                                ingredient: _ingredientName,
+                                complete: false,
+                                end: DateTime.now().add(_duration));
+                            challengeProvider.addChallenge(_challenge);
+                            _gameStarted = true;
+                            _timeLeftWidget = TimeLeftWidget(_challenge.end);
+                          });
+                        }
+                      },
                       child: Center(
                         child: Container(
                           padding: EdgeInsets.only(
@@ -135,40 +166,57 @@ class _GameState extends State<Game> {
                             color: Color(0x65000000),
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                // Rocket Icon
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    left: 30,
-                                  ),
-                                  height: mediaSize.width * 0.135,
-                                  width: mediaSize.width * 0.135,
-                                  child: Transform.rotate(
-                                    angle: 1.2,
-                                    child:
-                                        Image.asset("assets/icons/rocket.png"),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    left: 10,
-                                    right: 30,
-                                  ),
-                                  child: Text(
-                                    "START",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: "Montserrat",
-                                      color: Colors.white,
-                                      letterSpacing: 2,
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            Visibility(
+                              visible: !_gameStarted,
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    // Rocket Icon
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                        left: 30,
+                                      ),
+                                      height: mediaSize.width * 0.135,
+                                      width: mediaSize.width * 0.135,
+                                      child: Transform.rotate(
+                                        angle: 1.2,
+                                        child: Image.asset(
+                                            "assets/icons/rocket.png"),
+                                      ),
                                     ),
-                                  ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                        left: 10,
+                                        right: 30,
+                                      ),
+                                      child: Text(
+                                        "START",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Montserrat",
+                                          color: Colors.white,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                            Visibility(
+                              visible: _gameStarted,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  top: mediaSize.height * 0.01,
+                                  bottom: mediaSize.height * 0.01,
+                                  left: mediaSize.width * 0.03,
+                                  right: mediaSize.width * 0.03,
                                 ),
-                              ]),
+                                child: _timeLeftWidget,
+                              ),
+                            )
+                          ]),
                         ),
                       ),
                     ),
