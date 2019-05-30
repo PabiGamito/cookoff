@@ -17,7 +17,6 @@ class ProfileIcon extends StatelessWidget {
         child: new Container(
           width: size,
           height: size,
-          margin: const EdgeInsets.all(10.0),
           decoration: new BoxDecoration(
               border: Border.all(color: Colors.white, width: _borderWidth),
               shape: BoxShape.circle,

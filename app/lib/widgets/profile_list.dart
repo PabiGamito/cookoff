@@ -26,6 +26,7 @@ class ProfileList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: _iconSize,
+      width: _iconSize + _iconOffset * (_profiles.length - 1),
       child: Stack(children: [
         for (int i = 0; i < _profiles.length; i++)
           Positioned(left: _iconOffset * i, child: _profiles[i]),
