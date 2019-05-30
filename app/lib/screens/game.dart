@@ -22,6 +22,8 @@ class Game extends StatelessWidget {
       ProfileIcon(50, "assets/faces/betty.jpg"),
       ProfileIcon(50, "assets/faces/jughead.png"),
     ];
+    var inspirationCardHeight = 0.0;
+    var dragPos;
     return Container(
         color: _bgColor,
         child: Column(
@@ -139,30 +141,42 @@ class Game extends StatelessWidget {
                 ),
               ),
               // Inspiration tab
-              Container(
-                padding: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
+              GestureDetector(
+                onPanStart: (DragStartDetails details) {
+                  dragPos = details.globalPosition.dy;
+                },
+                onPanUpdate: (DragUpdateDetails details) {
+                  var change = details.globalPosition.dy - dragPos;
+                  if (inspirationCardHeight - change >= 0) inspirationCardHeight -= change;
+                  dragPos = details.globalPosition.dy;
+//                  print(inspirationCardHeight);
+                },
+                child: Container(
+                  height: inspirationCardHeight + mediaSize.height * 0.13,
+                  padding: EdgeInsets.only(
+                    top: 30,
+                    left: 20,
+                  ),
+                  decoration: new BoxDecoration(
+                    color: Color(0xFFF5F5F5),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.elliptical(50, 30), topRight: Radius.elliptical(50, 30)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SectionTitle(
+                        'Some inspiration...',
+                        Color(_bgColor.value + 0x00112211),
+                        fontSize: mediaSize.height * 0.03,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
+                      )
+                    ],
+                  ),
                 ),
-                decoration: new BoxDecoration(
-                  color: Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.elliptical(50, 30), topRight: Radius.elliptical(50, 30)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SectionTitle(
-                      'Some inspiration...',
-                      Color(_bgColor.value + 0x00112211),
-                      fontSize: mediaSize.height * 0.03,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
-                    )
-                  ],
-                ),
-              )
+              ),
             ]));
   }
 }
