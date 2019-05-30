@@ -136,14 +136,24 @@ class ChallengeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      height: 100,
-      margin: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: Color(0xFF7C54EA),
-        borderRadius:
-            BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
-      ),
-      child: Row(
+        height: 100,
+        margin: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Color(0xFF7C54EA),
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+        ),
+        child: ChallengeInnerContent(_challenge),
+      );
+}
+
+class ChallengeInnerContent extends StatelessWidget {
+  final Challenge _challenge;
+
+  ChallengeInnerContent(Challenge challenge) : _challenge = challenge;
+
+  @override
+  Widget build(BuildContext context) => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,7 +190,7 @@ class ChallengeItem extends StatelessWidget {
             ),
           ),
         ],
-      ));
+      );
 }
 
 class TimeLeftWidget extends StatefulWidget {
