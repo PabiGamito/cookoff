@@ -62,7 +62,6 @@ class _GameState extends State<Game> {
           size: mediaSize.width * 0.155, profileName: "Jughead Jones"),
     ];
 
-    print(mediaSize.height * 0.1);
     return BlocBuilder(
         bloc: _friendsBloc,
         builder: (BuildContext context, Set<String> ticked) {
@@ -192,7 +191,6 @@ class _GameState extends State<Game> {
                                 .toList(),
                             iconOffset: -10,
                             onTap: () {
-                              print("tapped");
                               setState(() {
                                 _displayFriends = true;
                               });
