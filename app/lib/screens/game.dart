@@ -24,11 +24,14 @@ class _GameState extends State<Game> {
   final String _ingredientName;
   final String _iconPath;
   final Color _bgColor;
+  final double _smallProfileScale = 0.13;
+  final double _largeProfileScale = 0.155;
   double _inspirationCardHeight = 0.0;
   double _dragPos = 0.0;
   bool _displayPlayers = true;
   bool _displayFriends = false;
   bool _scrollableFriends = false;
+  bool _gameStarted = false;
 
   _GameState(String ingredientName, String iconPath, Color bgColor)
       : _ingredientName = ingredientName,
@@ -46,10 +49,17 @@ class _GameState extends State<Game> {
       ProfileIcon("assets/faces/jughead.png", size: mediaSize.width * 0.13),
     ];
     var unjoinedFriends = <ProfileIcon>[
+      ProfileIcon("assets/faces/archie.jpg",
+          size: mediaSize.width * 0.155, profileName: "Archie Candoro"),
+      ProfileIcon("assets/faces/cheryl.jpg",
+          size: mediaSize.width * 0.155, profileName: "Cheryl Sinatra"),
       ProfileIcon(
-          "assets/faces/archie.jpg", size: mediaSize.width * 0.155, profileName: "Archie Candoro"),
-      ProfileIcon(
-          "assets/faces/cheryl.jpg", size: mediaSize.width * 0.155, profileName:  "Cheryl Sinatra")
+        "assets/faces/betty.jpg",
+        size: mediaSize.width * 0.155,
+        profileName: "Betty White",
+      ),
+      ProfileIcon("assets/faces/jughead.png",
+          size: mediaSize.width * 0.155, profileName: "Jughead Jones"),
     ];
 
     print(mediaSize.height * 0.1);
@@ -126,7 +136,7 @@ class _GameState extends State<Game> {
                           margin: EdgeInsets.only(
                               bottom: mediaSize.height * iconDistanceScale),
                           decoration: BoxDecoration(
-                            color: Color(_bgColor.value - 0x15505050),
+                            color: Color(0x65000000),
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                           child: Row(
@@ -171,10 +181,15 @@ class _GameState extends State<Game> {
                       child: Visibility(
                         visible: _displayPlayers,
                         child: Container(
-                          width: (iconList.length + 1) * iconList[0].size,
-                          height: iconList[0].size * 1.4,
+                          width: (ticked.length + 1) *
+                              mediaSize.width *
+                              _smallProfileScale *
+                              1.2,
+                          height: mediaSize.width * _smallProfileScale * 1.4,
                           child: ProfileList(
-                            iconList,
+                            unjoinedFriends
+                                .where((f) => ticked.contains(f.name))
+                                .toList(),
                             iconOffset: -10,
                             onTap: () {
                               print("tapped");
@@ -299,7 +314,7 @@ class _GameState extends State<Game> {
                                 ),
                                 child: SectionTitle(
                                   'Friends',
-                                  Color(_bgColor.value + 0x00112211),
+                                  Color(0x00112211),
                                   fontSize: mediaSize.height * 0.03,
                                 ),
                               ),
@@ -387,6 +402,8 @@ class _GameState extends State<Game> {
                                     });
                                   },
                                   child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: mediaSize.height * 0.03),
                                     width: mediaSize.width * 0.8,
                                     height: mediaSize.height * 0.08,
                                     decoration: new BoxDecoration(

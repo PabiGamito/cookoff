@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ProfileIcon extends StatelessWidget {
-  final String _imgPath;
+  final String imgPath;
   final double size;
   final double _borderWidth;
   final name;
 
-  ProfileIcon(String imgPath, {this.size = 50, double borderWidth = 5, String profileName})
+  ProfileIcon(this.imgPath,
+      {this.size = 50, double borderWidth = 5, String profileName})
       : name = profileName ?? imgPath,
-        _imgPath = imgPath,
         _borderWidth = borderWidth;
 
   @override
@@ -22,7 +22,7 @@ class ProfileIcon extends StatelessWidget {
               border: Border.all(color: Colors.white, width: _borderWidth),
               shape: BoxShape.circle,
               image: new DecorationImage(
-                  fit: BoxFit.cover, image: AssetImage(_imgPath))),
+                  fit: BoxFit.cover, image: AssetImage(imgPath))),
         ),
       );
 }

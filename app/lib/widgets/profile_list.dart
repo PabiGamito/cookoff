@@ -8,29 +8,38 @@ class ProfileList extends StatelessWidget {
   final double _iconOffset;
   final double overallOffset;
   final Function _onTap;
+  final double _iconSize;
 
-  ProfileList(List<ProfileIcon> profiles, {Function onTap, bool hasMoreIcon = true, double iconOffset = 0})
+  ProfileList(List<ProfileIcon> profiles,
+      {Function onTap,
+      bool hasMoreIcon = true,
+      double iconOffset = 0,
+      double iconSize = 50})
       : _onTap = onTap,
         _profiles = profiles,
-        _iconOffset = iconOffset + profiles[0].size,
+        _iconOffset = iconOffset + iconSize,
         _hasMoreIcon = hasMoreIcon,
-        overallOffset = profiles.length * profiles[0].size / 2;
+        _iconSize = profiles.length != 0 ? profiles[0].size : iconSize,
+        overallOffset = profiles.length * iconSize / 2;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _profiles[0].size ,
+      height: _iconSize,
       child: Stack(children: [
-      for (int i = 0; i < _profiles.length; i++)
-        Positioned(left: _iconOffset * i, child: _profiles[i]),
-      if (_hasMoreIcon)
-        Positioned(
-          left: _iconOffset * _profiles.length,
-          child: GestureDetector(
-            onTap: _onTap,
-            child: AddProfileIcon(_profiles[0].size),
+        for (int i = 0; i < _profiles.length; i++)
+          Positioned(left: _iconOffset * i, child: _profiles[i]),
+        if (_hasMoreIcon)
+          Positioned(
+            left: _iconOffset * _profiles.length,
+            child: Center(
+              child: GestureDetector(
+                onTap: _onTap,
+                child: AddProfileIcon(_iconSize),
+              ),
+            ),
           ),
-        ),
-    ]),);
+      ]),
+    );
   }
 }
