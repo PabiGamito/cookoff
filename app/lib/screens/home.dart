@@ -4,16 +4,10 @@ import 'package:cookoff/widgets/featured_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Set status bar color on android to match header
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: Color(0xFFFFC544),
-    ));
-
     // Challenge provider for challenge section
     ChallengeProvider challengeProvider =
         InjectorWidget.of(context).injector.challengeProvider;
