@@ -154,8 +154,8 @@ class _GameState extends State<Game> {
                 child: Visibility(
                   visible: _displayPlayers,
                   child: Container(
-                    transform: Matrix4.translationValues(
-                        (iconList.length / 2).roundToDouble() * -50.0, 0, 0),
+                    width: (iconList.length + 1) * iconList[0].size,
+                    height: iconList[0].size * 1.4,
                     child: ProfileList(
                       iconList,
                       iconOffset: -10,
@@ -169,46 +169,49 @@ class _GameState extends State<Game> {
               )
             ]),
         // Inspiration tab
-        Container(
-          transform: Matrix4.translationValues(
-              0, mediaSize.height * 0.89 - _inspirationCardHeight, 0),
-          child: GestureDetector(
-            onPanStart: (DragStartDetails details) {
-              _dragPos = details.globalPosition.dy;
-            },
-            onPanUpdate: (DragUpdateDetails details) {
-              var change = details.globalPosition.dy - _dragPos;
-              if (_inspirationCardHeight - change >= 0 &&
-                  _inspirationCardHeight - change < mediaSize.height * 0.76)
-                setState(() {
-                  _inspirationCardHeight -= change;
-                });
-              _dragPos = details.globalPosition.dy;
-            },
-            child: Container(
-              height: _inspirationCardHeight + mediaSize.height * 0.13,
-              padding: EdgeInsets.only(
-                top: 30,
-                left: 20,
-              ),
-              decoration: new BoxDecoration(
-                color: Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.elliptical(50, 30),
-                    topRight: Radius.elliptical(50, 30)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SectionTitle(
-                    'Some inspiration...',
-                    Color(_bgColor.value + 0x00112211),
-                    fontSize: mediaSize.height * 0.03,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
-                  )
-                ],
+        Visibility(
+          visible: true,
+          child: Container(
+            transform: Matrix4.translationValues(
+                0, mediaSize.height * 0.89 - _inspirationCardHeight, 0),
+            child: GestureDetector(
+              onPanStart: (DragStartDetails details) {
+                _dragPos = details.globalPosition.dy;
+              },
+              onPanUpdate: (DragUpdateDetails details) {
+                var change = details.globalPosition.dy - _dragPos;
+                if (_inspirationCardHeight - change >= 0 &&
+                    _inspirationCardHeight - change < mediaSize.height * 0.76)
+                  setState(() {
+                    _inspirationCardHeight -= change;
+                  });
+                _dragPos = details.globalPosition.dy;
+              },
+              child: Container(
+                height: _inspirationCardHeight + mediaSize.height * 0.13,
+                padding: EdgeInsets.only(
+                  top: 30,
+                  left: 20,
+                ),
+                decoration: new BoxDecoration(
+                  color: Color(0xFFF5F5F5),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.elliptical(50, 30),
+                      topRight: Radius.elliptical(50, 30)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SectionTitle(
+                      'Some inspiration...',
+                      Color(_bgColor.value + 0x00112211),
+                      fontSize: mediaSize.height * 0.03,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
