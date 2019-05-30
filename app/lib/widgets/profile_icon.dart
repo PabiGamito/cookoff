@@ -16,7 +16,8 @@ class ProfileIcon extends StatelessWidget {
           decoration: new BoxDecoration(
               border: Border.all(color: Colors.white, width: 5),
               shape: BoxShape.circle,
-              image: new DecorationImage(fit: BoxFit.cover, image: AssetImage(_imgPath))),
+              image: new DecorationImage(
+                  fit: BoxFit.cover, image: AssetImage(_imgPath))),
         ),
       );
 }

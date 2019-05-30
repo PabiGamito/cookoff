@@ -8,7 +8,8 @@ class ProfileList extends StatelessWidget {
   final double _iconOffset;
   final double overallOffset;
 
-  ProfileList(List<ProfileIcon> profiles, {bool hasMoreIcon = true, double iconOffset = 0})
+  ProfileList(List<ProfileIcon> profiles,
+      {bool hasMoreIcon = true, double iconOffset = 0})
       : _profiles = profiles,
         _iconOffset = iconOffset + profiles[0].size,
         _hasMoreIcon = hasMoreIcon,
@@ -18,10 +19,13 @@ class ProfileList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       for (int i = 0; i < _profiles.length; i++)
-        Container(transform: Matrix4.translationValues(_iconOffset * i, 0, 0), child: _profiles[i]),
+        Container(
+            transform: Matrix4.translationValues(_iconOffset * i, 0, 0),
+            child: _profiles[i]),
       if (_hasMoreIcon)
         Container(
-          transform: Matrix4.translationValues(_iconOffset * _profiles.length, 0, 0),
+          transform:
+              Matrix4.translationValues(_iconOffset * _profiles.length, 0, 0),
           child: AddProfileIcon(_profiles[0].size),
         ),
     ]);

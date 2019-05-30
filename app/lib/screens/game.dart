@@ -13,7 +13,8 @@ class Game extends StatefulWidget {
         _bgColor = bgColor;
 
   @override
-  State<StatefulWidget> createState() => _GameState(ingredientName, _iconPath, _bgColor);
+  State<StatefulWidget> createState() =>
+      _GameState(ingredientName, _iconPath, _bgColor);
 }
 
 class _GameState extends State<Game> {
@@ -73,8 +74,9 @@ class _GameState extends State<Game> {
               // Ingredient Name
               Center(
                 child: Container(
-                  padding:
-                      EdgeInsets.only(top: mediaSize.height * 0.0, bottom: mediaSize.height * 0.0),
+                  padding: EdgeInsets.only(
+                      top: mediaSize.height * 0.0,
+                      bottom: mediaSize.height * 0.0),
                   child: Text(
                     "${_ingredientName[0].toUpperCase()}${_ingredientName.substring(1)}",
                     style: TextStyle(
@@ -90,7 +92,8 @@ class _GameState extends State<Game> {
               Container(
                 width: mediaSize.height * iconScale,
                 height: mediaSize.height * iconScale,
-                margin: EdgeInsets.only(bottom: mediaSize.height * iconDistanceScale),
+                margin: EdgeInsets.only(
+                    bottom: mediaSize.height * iconDistanceScale),
                 child: Image.asset(_iconPath),
               ),
               // Start button
@@ -103,7 +106,8 @@ class _GameState extends State<Game> {
                       left: mediaSize.width * 0.06,
                       right: mediaSize.width * 0.06,
                     ),
-                    margin: EdgeInsets.only(bottom: mediaSize.height * iconDistanceScale),
+                    margin: EdgeInsets.only(
+                        bottom: mediaSize.height * iconDistanceScale),
                     decoration: BoxDecoration(
                       color: Color(_bgColor.value - 0x15505050),
                       borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -165,7 +169,8 @@ class _GameState extends State<Game> {
                 },
                 onPanUpdate: (DragUpdateDetails details) {
                   var change = details.globalPosition.dy - _dragPos;
-                  if (_inspirationCardHeight - change >= 0 && _inspirationCardHeight - change < 210)
+                  if (_inspirationCardHeight - change >= 0 &&
+                      _inspirationCardHeight - change < 210)
                     setState(() {
                       _inspirationCardHeight -= change;
                       _displayPlayers = _inspirationCardHeight < 140;
@@ -181,7 +186,8 @@ class _GameState extends State<Game> {
                   decoration: new BoxDecoration(
                     color: Color(0xFFF5F5F5),
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.elliptical(50, 30), topRight: Radius.elliptical(50, 30)),
+                        topLeft: Radius.elliptical(50, 30),
+                        topRight: Radius.elliptical(50, 30)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +198,8 @@ class _GameState extends State<Game> {
                         fontSize: mediaSize.height * 0.03,
                       ),
                       Container(
-                        padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
+                        padding:
+                            EdgeInsets.only(bottom: mediaSize.height * 0.02),
                       )
                     ],
                   ),

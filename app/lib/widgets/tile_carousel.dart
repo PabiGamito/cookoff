@@ -37,7 +37,10 @@ class Tile extends StatelessWidget {
         // Some sort of event trigger
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Scaffold(body: Game(ingredientName, _iconPath, _bgColor)),),
+          MaterialPageRoute(
+            builder: (context) =>
+                Scaffold(body: Game(ingredientName, _iconPath, _bgColor)),
+          ),
         );
       },
       child: Center(

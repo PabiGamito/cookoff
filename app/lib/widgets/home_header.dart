@@ -12,8 +12,7 @@ class HomeHeader extends StatelessWidget {
         _profileImagePath = profileImagePath;
 
   @override
-  Widget build(BuildContext context) =>
-      Container(
+  Widget build(BuildContext context) => Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -42,8 +41,7 @@ class HelloMessage extends StatelessWidget {
   HelloMessage(String name) : _name = name;
 
   @override
-  Widget build(BuildContext context) =>
-      Column(
+  Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
@@ -77,8 +75,7 @@ class NotificationBadge extends StatelessWidget {
       : _notificationCount = notificationCount;
 
   @override
-  Widget build(BuildContext context) =>
-      Container(
+  Widget build(BuildContext context) => Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
