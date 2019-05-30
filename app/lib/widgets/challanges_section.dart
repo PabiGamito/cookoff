@@ -198,6 +198,7 @@ class _TimeLeftWidgetState extends State<TimeLeftWidget> {
   String _timeValueUnit;
   String _timeValueAlt;
   String _timeValueAltUnit;
+  Timer _updateTimer;
 
   _TimeLeftWidgetState(this._end);
 
@@ -207,11 +208,18 @@ class _TimeLeftWidgetState extends State<TimeLeftWidget> {
 
     updateTimeText();
 
-    Timer.periodic(Duration(seconds: 1), (Timer t) {
+    _updateTimer = Timer.periodic(Duration(seconds: 1), (Timer t) {
       setState(() {
         updateTimeText();
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _updateTimer.cancel();
   }
 
   void updateTimeText() {
