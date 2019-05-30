@@ -1,23 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import 'participant.dart';
+
+part 'challenge.g.dart';
+
+@JsonSerializable()
 class Challenge {
   final String id;
   final String owner;
-  final List<Map<String, dynamic>> participants;
+  final List<Participant> participants;
   final String ingredient;
   final bool complete;
-  final Timestamp endTime;
+  final DateTime end;
 
   Challenge(this.id, this.owner, this.participants, this.ingredient,
-      this.complete, this.endTime);
+      this.complete, this.end);
 
-  Challenge addParticipant(String participant) {
-    return Challenge(
-        id,
-        owner,
-        participants..add({"name": participant, "finished": false}),
-        ingredient,
-        complete,
-        endTime);
+  factory Challenge.fromJson(Map<String, dynamic> json) =>
+      _$ChallengeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChallengeToJson(this);
+
+  Challenge addParticipant(String name) {
+    return Challenge(id, owner, participants..add(Participant(name)),
+        ingredient, complete, end);
   }
 }

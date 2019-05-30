@@ -13,29 +13,15 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
   Stream<Iterable<Challenge>> challengesStream(String user) {
     return _firestore
         .collection(collection)
-        .where("owner", isEqualTo: user)
+        .where('owner', isEqualTo: user)
         .snapshots()
-        .map((qs) =>
-        qs.documents.map((ds) =>
-            Challenge(
-                ds.documentID,
-                ds.data["owner"],
-                ds.data["participants"],
-                ds.data["ingredient"],
-                ds.data["complete"],
-                ds.data["endtime"]
-            )));
+        .map((snapshot) =>
+            snapshot.documents.map((json) => Challenge.fromJson(json.data)));
   }
 
   @override
   Future addChallenge(Challenge challenge) async {
-    await _firestore.collection(collection).add({
-      "participants": challenge.participants,
-      "complete": challenge.complete,
-      "endtime": challenge.endTime,
-      "ingredient": challenge.ingredient,
-      "owner": challenge.owner
-    });
+    await _firestore.collection(collection).add(challenge.toJson());
   }
 
   @override
@@ -44,15 +30,10 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
   }
 
   @override
-  Future updateChallenge(Challenge curr, Challenge next) async {
-    await _firestore.collection(collection).document(curr.id).updateData({
-      "participants": next.participants,
-      "complete": next.complete,
-      "endtime": next.endTime,
-      "ingredient": next.ingredient,
-      "owner": next.owner
-    });
+  Future updateChallenge(Challenge challenge) async {
+    await _firestore
+        .collection(collection)
+        .document(challenge.id)
+        .updateData(challenge.toJson());
   }
-
-
 }
