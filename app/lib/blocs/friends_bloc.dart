@@ -1,19 +1,19 @@
 import 'package:bloc/bloc.dart';
 
-import 'friends_event.dart';
-
-class FriendsBloc extends Bloc<FriendsEvent, Set<String>> {
+class FriendsBloc extends Bloc<String, Set<String>> {
   @override
   Set<String> get initialState => const {};
 
   @override
-  Stream<Set<String>> mapEventToState(FriendsEvent event) async* {
-    if (event is FriendTicked) {
-      yield currentState..add(event.friend);
+  Stream<Set<String>> mapEventToState(String event) async* {
+    var nextState = Set.from(currentState);
+
+    if (currentState.contains(event)) {
+      nextState.remove(event);
+    } else {
+      nextState.add(event);
     }
 
-    if (event is FriendUnticked) {
-      yield currentState..remove(event.friend);
-    }
+    yield Set.from(nextState);
   }
 }
