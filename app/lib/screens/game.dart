@@ -100,9 +100,6 @@ class _GameState extends State<Game> {
                     // Ingredient Name
                     Center(
                       child: Container(
-                        padding: EdgeInsets.only(
-                            top: mediaSize.height * 0.0,
-                            bottom: mediaSize.height * 0.0),
                         child: Text(
                           "${_ingredientName[0].toUpperCase()}${_ingredientName.substring(1)}",
                           style: TextStyle(
