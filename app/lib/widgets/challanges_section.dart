@@ -1,5 +1,7 @@
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/widgets/profile_icon.dart';
+import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -128,10 +130,6 @@ class ChallengeItem extends StatelessWidget {
 
   ChallengeItem(Challenge challenge) : _challenge = challenge;
 
-  String timeLeft(DateTime timeStamp) {
-    return "5h:24m";
-  }
-
   @override
   Widget build(BuildContext context) => Container(
       height: 100,
@@ -149,9 +147,46 @@ class ChallengeItem extends StatelessWidget {
           Row(
             children: [
               Text(_challenge.ingredient),
-              Text(timeLeft(_challenge.end))
+              TimeLeftWidget(_challenge.end),
             ],
+          ),
+          ProfileList(
+            [
+              ProfileIcon(
+                'assets/faces/veronica.png',
+                size: 50,
+                borderWidth: 4,
+              ),
+              ProfileIcon(
+                'assets/faces/veronica.png',
+                size: 50,
+                borderWidth: 4,
+              ),
+            ],
+            iconOffset: -10,
+            hasMoreIcon: false,
           ),
         ],
       ));
+}
+
+class TimeLeftWidget extends StatefulWidget {
+  final DateTime _endTimestamp;
+
+  TimeLeftWidget(DateTime endTimestamp) : _endTimestamp = endTimestamp;
+
+  @override
+  State<StatefulWidget> createState() => _TimeLeftWidgetState(_endTimestamp);
+}
+
+class _TimeLeftWidgetState extends State<TimeLeftWidget>
+    with TickerProviderStateMixin {
+  final DateTime _endTimestamp;
+
+  _TimeLeftWidgetState(this._endTimestamp);
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: <Widget>[],
+      );
 }

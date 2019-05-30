@@ -18,7 +18,12 @@ class HomeHeader extends StatelessWidget {
           children: <Widget>[
             Stack(
               children: [
-                Positioned(child: ProfileIcon(108, _profileImagePath)),
+                Positioned(
+                    child: ProfileIcon(
+                  _profileImagePath,
+                  size: 108,
+                  borderWidth: 5,
+                )),
                 if (_notificationCount > 0)
                   Positioned(
                       top: 3,

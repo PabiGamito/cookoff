@@ -37,8 +37,8 @@ class _GameState extends State<Game> {
     var iconDistanceScale = 0.05;
     // TODO: List of Profile Icons should be fetched
     var iconList = [
-      ProfileIcon(mediaSize.width * 0.13, "assets/faces/betty.jpg"),
-      ProfileIcon(mediaSize.width * 0.13, "assets/faces/jughead.png"),
+      ProfileIcon("assets/faces/betty.jpg", size: mediaSize.width * 0.13),
+      ProfileIcon("assets/faces/jughead.png", size: mediaSize.width * 0.13),
     ];
     return Container(
         color: _bgColor,
