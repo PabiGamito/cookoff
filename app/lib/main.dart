@@ -1,7 +1,13 @@
 import 'package:cookoff/screens/home.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(App());
+import 'injector.dart';
+
+void main() {
+  final injector = InjectorWidget(child: App(), injector: Injector());
+  runApp(injector);
+}
 
 class App extends StatelessWidget {
   @override

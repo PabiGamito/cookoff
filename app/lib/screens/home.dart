@@ -1,6 +1,8 @@
+import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/featured_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,10 +14,17 @@ class HomeScreen extends StatelessWidget {
       statusBarColor: Color(0xFFFFC544),
     ));
 
+    // Challenge provider for challenge section
+    ChallengeProvider challengeProvider =
+        InjectorWidget
+            .of(context)
+            .injector
+            .challengeProvider;
+
     return Container(
         color: Color(0xFFFFC544),
         child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Container(
             padding: EdgeInsets.only(top: 55, bottom: 35),
             child: HomeHeader('Elena', 3, 'assets/Elena.jpg'),
@@ -44,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                         topRight: Radius.circular(38),
                       ),
                     ),
-                    child: ChallengesSection(),
+                    child: ChallengesSection(challengeProvider),
                   ),
                 ),
               ]),
