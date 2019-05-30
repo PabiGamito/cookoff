@@ -242,6 +242,13 @@ class _TimeLeftWidgetState extends State<TimeLeftWidget> {
   List<List<String>> timeText() {
     var _timeLeft = _end.difference(DateTime.now());
 
+    if (_timeLeft.inSeconds < 0) {
+      return [
+        ['0', '0'],
+        ['m', 's']
+      ];
+    }
+
     int valueCnt = 0;
 
     var values = List<String>();
