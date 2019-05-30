@@ -127,6 +127,12 @@ class ChallengesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
+        padding: EdgeInsets.only(
+          top: 25,
+          bottom: 25,
+          left: 0,
+          right: 0,
+        ),
         children:
             _challenges.map((challenge) => ChallengeItem(challenge)).toList(),
       );
@@ -140,7 +146,6 @@ class ChallengeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         height: 100,
-        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
         decoration: BoxDecoration(
           color: Color(0xFF7C54EA),
           borderRadius:
@@ -178,12 +183,12 @@ class ChallengeInnerContent extends StatelessWidget {
               [
                 ProfileIcon(
                   'assets/faces/veronica.png',
-                  size: 50,
+                  size: 45,
                   borderWidth: 4,
                 ),
                 ProfileIcon(
                   'assets/faces/veronica.png',
-                  size: 50,
+                  size: 45,
                   borderWidth: 4,
                 ),
               ],

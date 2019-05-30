@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
       color: Color(0xFFFFC544),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
-          padding: EdgeInsets.only(top: 55, bottom: 35),
+          padding: EdgeInsets.only(top: 65, bottom: 25),
           child: HomeHeader('Elena', 3, 'assets/faces/Elena.jpg'),
         ),
         Expanded(
@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
             ),
             child: Column(children: [
               Container(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.only(bottom: 15),
                 child: FeaturedSection('Start cooking...', Color(0xFF8EE5B6)),
               ),
               Expanded(

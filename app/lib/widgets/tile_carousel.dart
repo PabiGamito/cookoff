@@ -5,11 +5,16 @@ import 'package:flutter/widgets.dart';
 class TileCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
-      height: MediaQuery.of(context).size.width * 0.40,
+      margin: EdgeInsets.only(
+        top: 25,
+        bottom: 25,
+      ),
+      height: 100,
       child: ListView(
           padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.05,
-              right: MediaQuery.of(context).size.width * 0.05),
+            left: 20,
+            right: 20,
+          ),
           scrollDirection: Axis.horizontal,
           children: <Widget>[
             Tile("cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
@@ -47,9 +52,9 @@ class Tile extends StatelessWidget {
       },
       child: Center(
         child: new Container(
-          width: MediaQuery.of(context).size.width * 0.25,
-          height: MediaQuery.of(context).size.width * 0.25,
-          margin: const EdgeInsets.all(10.0),
+          width: 100,
+          height: 100,
+          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
           decoration: BoxDecoration(
             color: _bgColor,
             borderRadius:
