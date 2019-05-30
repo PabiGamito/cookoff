@@ -12,12 +12,14 @@ class TileCarousel extends StatelessWidget {
               right: MediaQuery.of(context).size.width * 0.05),
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            Tile("cheese", "assets/cheese.png", Color(0xFF7C54EA)),
-            Tile("orange", "assets/orange.png", Color(0xFFD0EB5C)),
-            Tile("cauliflower", "assets/cauliflower.png", Color(0xFF65D2EB)),
-            Tile("cheese", "assets/cheese.png", Color(0xFF7C54EA)),
-            Tile("orange", "assets/orange.png", Color(0xFFD0EB5C)),
-            Tile("cauliflower", "assets/cauliflower.png", Color(0xFF65D2EB)),
+            Tile("cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
+            Tile("orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
+            Tile("cauliflower", "assets/ingredients/cauliflower.png",
+                Color(0xFF65D2EB)),
+            Tile("cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
+            Tile("orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
+            Tile("cauliflower", "assets/ingredients/cauliflower.png",
+                Color(0xFF65D2EB)),
           ]));
 }
 

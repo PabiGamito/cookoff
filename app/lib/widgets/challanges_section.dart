@@ -95,7 +95,7 @@ class NoChallenges extends StatelessWidget {
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 image: new AssetImage(
-                  'assets/apple.png',
+                  'assets/icons/apple.png',
                 ),
                 fit: BoxFit.cover,
               ),
@@ -150,7 +150,8 @@ class ChallengeItem extends StatelessWidget {
         children: <Widget>[
           Row(
             children: [
-              Text(_challenge.ingredient),
+              Image.asset(
+                  'assets/ingredients/' + _challenge.ingredient + '.png'),
               TimeLeftWidget(_challenge.end),
             ],
           ),
