@@ -4,7 +4,7 @@ import 'participant.dart';
 
 part 'challenge.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(anyMap: true)
 class Challenge {
   final String id;
   final String owner;

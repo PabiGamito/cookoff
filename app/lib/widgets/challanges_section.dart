@@ -173,28 +173,94 @@ class ChallengeItem extends StatelessWidget {
 }
 
 class TimeLeftWidget extends StatefulWidget {
-  final DateTime _endTimestamp;
+  final DateTime _end;
 
-  TimeLeftWidget(DateTime endTimestamp) : _endTimestamp = endTimestamp;
+  TimeLeftWidget(DateTime end) : _end = end;
 
   @override
-  State<StatefulWidget> createState() => _TimeLeftWidgetState(_endTimestamp);
+  State<StatefulWidget> createState() => _TimeLeftWidgetState(_end);
 }
 
 class _TimeLeftWidgetState extends State<TimeLeftWidget>
     with TickerProviderStateMixin {
-  final DateTime _endTimestamp;
+  final DateTime _end;
 
-  _TimeLeftWidgetState(this._endTimestamp);
+  _TimeLeftWidgetState(this._end);
 
   Duration timeLeft() {
-    return _endTimestamp.difference(DateTime.now());
+    return _end.difference(DateTime.now());
+  }
+
+  List<List<String>> timeText() {
+    int valueCnt = 0;
+
+    var values = List<String>();
+    var units = List<String>();
+
+    if (timeLeft().inDays > 0) {
+      units.add('d');
+      values.add(timeLeft().inDays.toString());
+      valueCnt++;
+    }
+
+    if (timeLeft().inHours > 0) {
+      units.add('h');
+      var hours = timeLeft().inHours - timeLeft().inDays * 24;
+      values.add(hours.toString());
+      valueCnt++;
+    }
+
+    if (valueCnt < 2 && timeLeft().inMinutes > 0) {
+      units.add('m');
+      var minutes = timeLeft().inMinutes -
+          timeLeft().inHours * 60 -
+          timeLeft().inDays * 24 * 60;
+      values.add(minutes.toString());
+      valueCnt++;
+    }
+
+    if (valueCnt < 2 && timeLeft().inSeconds > 0) {
+      units.add('s');
+      var seconds = timeLeft().inSeconds -
+          timeLeft().inMinutes * 60 -
+          timeLeft().inHours * 60 * 60 -
+          timeLeft().inDays * 24 * 60 * 60;
+      values.add(seconds.toString());
+      valueCnt++;
+    }
+
+    var res = List<List<String>>();
+
+    res.add(values);
+    res.add(units);
+
+    return res;
   }
 
   @override
   Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          if (timeLeft().inHours > 0) Text(timeLeft().inHours.toString()),
+          Text(
+            timeText()[0][0],
+            style: TextStyle(
+                color: Colors.white, fontSize: 24, fontFamily: 'Montserrat'),
+          ),
+          Text(
+            timeText()[1][0] + " ",
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontFamily: 'Montserrat'),
+          ),
+          Text(
+            timeText()[0][1],
+            style: TextStyle(
+                color: Colors.white, fontSize: 24, fontFamily: 'Montserrat'),
+          ),
+          Text(
+            timeText()[1][1],
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontFamily: 'Montserrat'),
+          ),
         ],
       );
 }

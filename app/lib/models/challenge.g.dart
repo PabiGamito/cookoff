@@ -6,14 +6,16 @@ part of 'challenge.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Challenge _$ChallengeFromJson(Map<String, dynamic> json) {
+Challenge _$ChallengeFromJson(Map json) {
   return Challenge(
       json['id'] as String,
       json['owner'] as String,
       (json['participants'] as List)
           ?.map((e) => e == null
               ? null
-              : Participant.fromJson(e as Map<String, dynamic>))
+              : Participant.fromJson((e as Map)?.map(
+                  (k, e) => MapEntry(k as String, e),
+                )))
           ?.toList(),
       json['ingredient'] as String,
       json['complete'] as bool,

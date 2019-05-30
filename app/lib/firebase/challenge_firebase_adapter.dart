@@ -16,7 +16,13 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
         .where('owner', isEqualTo: user)
         .snapshots()
         .map((snapshot) =>
-            snapshot.documents.map((json) => Challenge.fromJson(json.data)));
+            snapshot.documents.map(
+                    (json)
+                    {
+                      var t = Challenge.fromJson(json.data);
+                      return t;
+                    }
+            ));
   }
 
   @override
