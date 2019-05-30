@@ -145,8 +145,8 @@ class ChallengeItem extends StatelessWidget {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Row(
             children: [
@@ -155,24 +155,29 @@ class ChallengeItem extends StatelessWidget {
                 child: Image.asset(
                     'assets/ingredients/' + _challenge.ingredient + '.png'),
               ),
-              TimeLeftWidget(_challenge.end),
+              Container(
+                child: TimeLeftWidget(_challenge.end),
+              ),
             ],
           ),
-          ProfileList(
-            [
-              ProfileIcon(
-                'assets/faces/veronica.png',
-                size: 50,
-                borderWidth: 4,
-              ),
-              ProfileIcon(
-                'assets/faces/veronica.png',
-                size: 50,
-                borderWidth: 4,
-              ),
-            ],
-            iconOffset: -10,
-            hasMoreIcon: false,
+          Container(
+            padding: EdgeInsets.only(right: 25),
+            child: ProfileList(
+              [
+                ProfileIcon(
+                  'assets/faces/veronica.png',
+                  size: 50,
+                  borderWidth: 4,
+                ),
+                ProfileIcon(
+                  'assets/faces/veronica.png',
+                  size: 50,
+                  borderWidth: 4,
+                ),
+              ],
+              iconOffset: -10,
+              hasMoreIcon: false,
+            ),
           ),
         ],
       ));
