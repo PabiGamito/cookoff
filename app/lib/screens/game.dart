@@ -10,20 +10,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Game extends StatefulWidget {
-  final String ingredientName;
+  final String _ingredientName;
   final String _iconPath;
   final Color _bgColor;
   final Challenge _challenge;
 
-  Game(this.ingredientName, String iconPath, Color bgColor,
+  Game(String ingredientName, String iconPath, Color bgColor,
       {Challenge challenge})
       : _challenge = challenge,
-        _iconPath = iconPath,
+        _ingredientName =
+            challenge == null ? ingredientName : challenge.ingredient,
+        _iconPath = challenge == null
+            ? iconPath
+            : "assets/ingredients/${challenge.ingredient}.png",
         _bgColor = bgColor;
 
   @override
   State<StatefulWidget> createState() =>
-      _GameState(ingredientName, _iconPath, _bgColor, _challenge);
+      _GameState(_ingredientName, _iconPath, _bgColor, _challenge);
 }
 
 class _GameState extends State<Game> {
@@ -225,16 +229,23 @@ class _GameState extends State<Game> {
                       child: Visibility(
                         visible: _displayPlayers,
                         child: Container(
-                          width: (ticked.length + 1) *
-                              mediaSize.width *
-                              _smallProfileScale *
-                              1.2,
+                          width:
+                              ((_gameStarted ? _challenge.participants : ticked)
+                                          .length +
+                                      1) *
+                                  mediaSize.width *
+                                  _smallProfileScale *
+                                  1.2,
                           height: mediaSize.width * _smallProfileScale * 1.4,
                           child: ProfileList(
-                            unjoinedFriends
-                                .where((f) => ticked.contains(f.name))
-                                .toList(),
+                            unjoinedFriends.where((f) {
+                              var list = _gameStarted
+                                  ? _challenge.participants
+                                  : ticked;
+                              return list.contains(f.name);
+                            }).toList(),
                             iconOffset: -10,
+                            hasMoreIcon: !_gameStarted,
                             onTap: () {
                               setState(() {
                                 _displayFriends = true;

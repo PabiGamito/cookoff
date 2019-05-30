@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
@@ -140,19 +141,37 @@ class ChallengesList extends StatelessWidget {
 
 class ChallengeItem extends StatelessWidget {
   final Challenge _challenge;
+  final Color bgColor = Color(0xFF7C54EA);
 
   ChallengeItem(Challenge challenge) : _challenge = challenge;
 
   @override
-  Widget build(BuildContext context) => Container(
+
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Scaffold(
+                      body: Game(
+                    "cheese",
+                    "assets/ingredients/cheese.png",
+                    bgColor,
+                    challenge: _challenge,
+                  )),
+            ),
+          );
+        },
+        child: Container(
         margin: EdgeInsets.only(top: 10, bottom: 10),
         height: 100,
         decoration: BoxDecoration(
           color: Color(0xFF7C54EA),
           borderRadius:
               BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+          ),
+          child: ChallengeInnerContent(_challenge),
         ),
-        child: ChallengeInnerContent(_challenge),
       );
 }
 

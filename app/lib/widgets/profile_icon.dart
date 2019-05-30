@@ -40,7 +40,6 @@ class AddProfileIcon extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      margin: const EdgeInsets.all(10.0),
       decoration: new BoxDecoration(
         border: Border.all(color: Colors.white, width: 5),
         shape: BoxShape.circle,
