@@ -3,13 +3,30 @@ import 'package:cookoff/widgets/profile_list.dart';
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
-class Game extends StatelessWidget {
+class Game extends StatefulWidget {
   final String ingredientName;
   final String _iconPath;
   final Color _bgColor;
 
   Game(this.ingredientName, String iconPath, Color bgColor)
       : _iconPath = iconPath,
+        _bgColor = bgColor;
+
+  @override
+  State<StatefulWidget> createState() => _GameState(ingredientName, _iconPath, _bgColor);
+}
+
+class _GameState extends State<Game> {
+  final String _ingredientName;
+  final String _iconPath;
+  final Color _bgColor;
+  double _inspirationCardHeight = 0.0;
+  double _dragPos = 0.0;
+  bool _displayPlayers = true;
+
+  _GameState(String ingredientName, String iconPath, Color bgColor)
+      : _ingredientName = ingredientName,
+        _iconPath = iconPath,
         _bgColor = bgColor;
 
   @override
@@ -22,8 +39,6 @@ class Game extends StatelessWidget {
       ProfileIcon(50, "assets/faces/betty.jpg"),
       ProfileIcon(50, "assets/faces/jughead.png"),
     ];
-    var inspirationCardHeight = 0.0;
-    var dragPos;
     return Container(
         color: _bgColor,
         child: Column(
@@ -61,7 +76,7 @@ class Game extends StatelessWidget {
                   padding:
                       EdgeInsets.only(top: mediaSize.height * 0.0, bottom: mediaSize.height * 0.0),
                   child: Text(
-                    "${ingredientName[0].toUpperCase()}${ingredientName.substring(1)}",
+                    "${_ingredientName[0].toUpperCase()}${_ingredientName.substring(1)}",
                     style: TextStyle(
                       fontSize: mediaSize.height * 0.06,
                       fontFamily: "Montserrat",
@@ -131,28 +146,34 @@ class Game extends StatelessWidget {
               ),
               // Friends list display
               Center(
-                child: Container(
-                  transform: Matrix4.translationValues(
-                      (iconList.length / 2).roundToDouble() * -50.0, 0, 0),
-                  child: ProfileList(
-                    iconList,
-                    iconOffset: -10,
+                child: Visibility(
+                  visible: _displayPlayers,
+                  child: Container(
+                    transform: Matrix4.translationValues(
+                        (iconList.length / 2).roundToDouble() * -50.0, 0, 0),
+                    child: ProfileList(
+                      iconList,
+                      iconOffset: -10,
+                    ),
                   ),
                 ),
               ),
               // Inspiration tab
               GestureDetector(
                 onPanStart: (DragStartDetails details) {
-                  dragPos = details.globalPosition.dy;
+                  _dragPos = details.globalPosition.dy;
                 },
                 onPanUpdate: (DragUpdateDetails details) {
-                  var change = details.globalPosition.dy - dragPos;
-                  if (inspirationCardHeight - change >= 0) inspirationCardHeight -= change;
-                  dragPos = details.globalPosition.dy;
-//                  print(inspirationCardHeight);
+                  var change = details.globalPosition.dy - _dragPos;
+                  if (_inspirationCardHeight - change >= 0 && _inspirationCardHeight - change < 210)
+                    setState(() {
+                      _inspirationCardHeight -= change;
+                      _displayPlayers = _inspirationCardHeight < 140;
+                    });
+                  _dragPos = details.globalPosition.dy;
                 },
                 child: Container(
-                  height: inspirationCardHeight + mediaSize.height * 0.13,
+                  height: _inspirationCardHeight + mediaSize.height * 0.13,
                   padding: EdgeInsets.only(
                     top: 30,
                     left: 20,
