@@ -1,3 +1,4 @@
+import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -39,17 +40,22 @@ class ChallengesSection extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: NoChallenges(),
+          StreamBuilder<Iterable<Challenge>>(
+            stream: _challengeProvider.challengesStream('elena'),
+            builder: (BuildContext context,
+                AsyncSnapshot<Iterable<Challenge>> snapshots) {
+              if (snapshots.hasData) {
+                if (snapshots.data.length == 0) {
+                  return NoChallenges();
+                } else {
+                  return Expanded(child: ChallengesList(snapshots.data));
+                }
+              }
+
+              return NoChallenges();
+            },
           ),
         ],
-      );
-}
-
-class ChallengesList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => ListView(
-        children: <Widget>[],
       );
 }
 
@@ -103,4 +109,49 @@ class NoChallenges extends StatelessWidget {
           ),
         ],
       );
+}
+
+class ChallengesList extends StatelessWidget {
+  final Iterable<Challenge> _challenges;
+
+  ChallengesList(Iterable<Challenge> challenges) : _challenges = challenges;
+
+  @override
+  Widget build(BuildContext context) => ListView(
+        children:
+            _challenges.map((challenge) => ChallengeItem(challenge)).toList(),
+      );
+}
+
+class ChallengeItem extends StatelessWidget {
+  final Challenge _challenge;
+
+  ChallengeItem(Challenge challenge) : _challenge = challenge;
+
+  String timeLeft(DateTime timeStamp) {
+    return "5h:24m";
+  }
+
+  @override
+  Widget build(BuildContext context) => Container(
+      height: 100,
+      margin: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Color(0xFF7C54EA),
+        borderRadius:
+            BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Row(
+            children: [
+              Text(_challenge.ingredient),
+              Text(timeLeft(_challenge.end))
+            ],
+          ),
+        ],
+      ));
 }
