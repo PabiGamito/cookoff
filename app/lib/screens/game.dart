@@ -228,29 +228,24 @@ class _GameState extends State<Game> {
                     Center(
                       child: Visibility(
                         visible: _displayPlayers,
-                        child: Container(
-                          width:
-                              ((_gameStarted ? _challenge.participants : ticked)
-                                          .length +
-                                      1) *
-                                  mediaSize.width *
-                                  _smallProfileScale *
-                                  1.2,
-                          height: mediaSize.width * _smallProfileScale * 1.4,
-                          child: ProfileList(
-                            unjoinedFriends.where((f) {
-                              var list = _gameStarted
-                                  ? _challenge.participants
-                                  : ticked;
-                              return list.contains(f.name);
-                            }).toList(),
-                            iconOffset: -10,
-                            hasMoreIcon: !_gameStarted,
-                            onTap: () {
-                              setState(() {
-                                _displayFriends = true;
-                              });
-                            },
+                        child: Center(
+                          child: Container(
+                            height: mediaSize.width * _smallProfileScale * 1.4,
+                            child: ProfileList(
+                              unjoinedFriends.where((f) {
+                                var list = _gameStarted
+                                    ? _challenge.participants
+                                    : ticked;
+                                return list.contains(f.name);
+                              }).toList(),
+                              iconOffset: -10,
+                              hasMoreIcon: !_gameStarted,
+                              onTap: () {
+                                setState(() {
+                                  _displayFriends = true;
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
