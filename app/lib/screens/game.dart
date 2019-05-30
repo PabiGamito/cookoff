@@ -41,8 +41,9 @@ class _GameState extends State<Game> {
       ProfileIcon("assets/faces/jughead.png", size: mediaSize.width * 0.13),
     ];
     return Container(
-        color: _bgColor,
-        child: Column(
+      color: _bgColor,
+      child: Stack(children: <Widget>[
+        Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,49 +163,57 @@ class _GameState extends State<Game> {
                   ),
                 ),
               ),
-              // Inspiration tab
-              GestureDetector(
-                onPanStart: (DragStartDetails details) {
-                  _dragPos = details.globalPosition.dy;
-                },
-                onPanUpdate: (DragUpdateDetails details) {
-                  var change = details.globalPosition.dy - _dragPos;
-                  if (_inspirationCardHeight - change >= 0 &&
-                      _inspirationCardHeight - change < 210)
-                    setState(() {
-                      _inspirationCardHeight -= change;
-                      _displayPlayers = _inspirationCardHeight < 140;
-                    });
-                  _dragPos = details.globalPosition.dy;
-                },
-                child: Container(
-                  height: _inspirationCardHeight + mediaSize.height * 0.13,
-                  padding: EdgeInsets.only(
-                    top: 30,
-                    left: 20,
-                  ),
-                  decoration: new BoxDecoration(
-                    color: Color(0xFFF5F5F5),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.elliptical(50, 30),
-                        topRight: Radius.elliptical(50, 30)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SectionTitle(
-                        'Some inspiration...',
-                        Color(_bgColor.value + 0x00112211),
-                        fontSize: mediaSize.height * 0.03,
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.only(bottom: mediaSize.height * 0.02),
-                      )
-                    ],
-                  ),
-                ),
+              // Inspiration card offset
+              Container(
+                height: mediaSize.height * 0.1,
+              )
+            ]),
+        // Inspiration tab
+        Container(
+          transform: Matrix4.translationValues(
+              0, mediaSize.height * 0.89 - _inspirationCardHeight, 0),
+          child: GestureDetector(
+            onPanStart: (DragStartDetails details) {
+              _dragPos = details.globalPosition.dy;
+            },
+            onPanUpdate: (DragUpdateDetails details) {
+              var change = details.globalPosition.dy - _dragPos;
+              if (_inspirationCardHeight - change >= 0 &&
+                  _inspirationCardHeight - change < mediaSize.height * 0.76)
+                setState(() {
+                  _inspirationCardHeight -= change;
+                });
+              _dragPos = details.globalPosition.dy;
+            },
+            child: Container(
+              height: _inspirationCardHeight + mediaSize.height * 0.13,
+              padding: EdgeInsets.only(
+                top: 30,
+                left: 20,
               ),
-            ]));
+              decoration: new BoxDecoration(
+                color: Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.elliptical(50, 30),
+                    topRight: Radius.elliptical(50, 30)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SectionTitle(
+                    'Some inspiration...',
+                    Color(_bgColor.value + 0x00112211),
+                    fontSize: mediaSize.height * 0.03,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ]),
+    );
   }
 }
