@@ -8,25 +8,29 @@ part of 'challenge.dart';
 
 Challenge _$ChallengeFromJson(Map json) {
   return Challenge(
-      json['id'] as String,
-      json['owner'] as String,
-      (json['participants'] as List)
-          ?.map((e) => e == null
-              ? null
-              : Participant.fromJson((e as Map)?.map(
-                  (k, e) => MapEntry(k as String, e),
-                )))
-          ?.toList(),
-      json['ingredient'] as String,
-      json['complete'] as bool,
-      json['end'] == null ? null : DateTime.parse(json['end'] as String));
+      id: json['id'] as String,
+      owner: json['owner'] as String,
+      participants:
+          (json['participants'] as List)?.map((e) => e as String)?.toList(),
+      ingredient: json['ingredient'] as String,
+      complete: json['complete'] as bool,
+      end: json['end'] == null ? null : DateTime.parse(json['end'] as String));
 }
 
-Map<String, dynamic> _$ChallengeToJson(Challenge instance) => <String, dynamic>{
-      'id': instance.id,
-      'owner': instance.owner,
-      'participants': instance.participants,
-      'ingredient': instance.ingredient,
-      'complete': instance.complete,
-      'end': instance.end?.toIso8601String()
-    };
+Map<String, dynamic> _$ChallengeToJson(Challenge instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  val['owner'] = instance.owner;
+  val['participants'] = instance.participants;
+  val['ingredient'] = instance.ingredient;
+  val['complete'] = instance.complete;
+  val['end'] = instance.end?.toIso8601String();
+  return val;
+}

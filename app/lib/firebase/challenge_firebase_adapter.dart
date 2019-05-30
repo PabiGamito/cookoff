@@ -10,30 +10,28 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
   ChallengeFirebaseAdapter(Firestore firestore) : _firestore = firestore;
 
   @override
-  Stream<Iterable<Challenge>> challengesStream(String user) {
-    return _firestore
-        .collection(collection)
-        .where('owner', isEqualTo: user)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.documents.map((json) => Challenge.fromJson(json.data)));
-  }
+  Stream<Iterable<Challenge>> challengesStream(String user) => _firestore
+      .collection(collection)
+      .where('participants', arrayContains: user)
+      .where('owner', isEqualTo: user)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.documents.map((json) => Challenge.fromJson(json.data)));
 
   @override
   Future addChallenge(Challenge challenge) async {
-    await _firestore.collection(collection).add(challenge.toJson());
+    var reference =
+        await _firestore.collection(collection).add(challenge.toJson());
+    challenge.id = reference.documentID;
   }
 
   @override
-  Future deleteChallenge(Challenge challenge) async {
-    await _firestore.collection(collection).document(challenge.id).delete();
-  }
+  Future deleteChallenge(Challenge challenge) async =>
+      await _firestore.collection(collection).document(challenge.id).delete();
 
   @override
-  Future updateChallenge(Challenge challenge) async {
-    await _firestore
-        .collection(collection)
-        .document(challenge.id)
-        .updateData(challenge.toJson());
-  }
+  Future updateChallenge(Challenge challenge) async => await _firestore
+      .collection(collection)
+      .document(challenge.id)
+      .updateData(challenge.toJson());
 }
