@@ -5,9 +5,11 @@ class ProfileIcon extends StatelessWidget {
   final String _imgPath;
   final double size;
   final double _borderWidth;
+  final name;
 
-  ProfileIcon(String imgPath, {this.size = 50, double borderWidth = 5})
-      : _imgPath = imgPath,
+  ProfileIcon(String imgPath, {this.size = 50, double borderWidth = 5, String profileName})
+      : name = profileName ?? imgPath,
+        _imgPath = imgPath,
         _borderWidth = borderWidth;
 
   @override

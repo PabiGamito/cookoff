@@ -24,6 +24,8 @@ class _GameState extends State<Game> {
   double _inspirationCardHeight = 0.0;
   double _dragPos = 0.0;
   bool _displayPlayers = true;
+  bool _displayFriends = false;
+  bool _scrollableFriends = false;
 
   _GameState(String ingredientName, String iconPath, Color bgColor)
       : _ingredientName = ingredientName,
@@ -40,6 +42,14 @@ class _GameState extends State<Game> {
       ProfileIcon("assets/faces/betty.jpg", size: mediaSize.width * 0.13),
       ProfileIcon("assets/faces/jughead.png", size: mediaSize.width * 0.13),
     ];
+    var unjoinedFriends = <ProfileIcon>[
+      ProfileIcon(
+          "assets/faces/archie.jpg", size: mediaSize.width * 0.155, profileName: "Archie Candoro"),
+      ProfileIcon(
+          "assets/faces/cheryl.jpg", size: mediaSize.width * 0.155, profileName:  "Cheryl Sinatra")
+    ];
+
+    print(mediaSize.height * 0.1);
     return Container(
       color: _bgColor,
       child: Stack(children: <Widget>[
@@ -159,6 +169,12 @@ class _GameState extends State<Game> {
                     child: ProfileList(
                       iconList,
                       iconOffset: -10,
+                      onTap: () {
+                        print("tapped");
+                        setState(() {
+                          _displayFriends = true;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -170,7 +186,7 @@ class _GameState extends State<Game> {
             ]),
         // Inspiration tab
         Visibility(
-          visible: true,
+          visible: !_displayFriends,
           child: Container(
             transform: Matrix4.translationValues(
                 0, mediaSize.height * 0.89 - _inspirationCardHeight, 0),
@@ -191,7 +207,7 @@ class _GameState extends State<Game> {
                 height: _inspirationCardHeight + mediaSize.height * 0.13,
                 padding: EdgeInsets.only(
                   top: 30,
-                  left: 20,
+                  left: mediaSize.width * 0.07,
                 ),
                 decoration: new BoxDecoration(
                   color: Color(0xFFF5F5F5),
@@ -211,6 +227,151 @@ class _GameState extends State<Game> {
                       padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
                     )
                   ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Friends tab
+        Visibility(
+          visible: _displayFriends,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _displayFriends = false;
+                _inspirationCardHeight = 0;
+              });
+            },
+            child: Container(
+              height: mediaSize.height,
+              width: mediaSize.width,
+              color: Color(0x66000000),
+              child: Container(
+                transform: Matrix4.translationValues(
+                    0, mediaSize.height * 0.45 - _inspirationCardHeight, 0),
+                child: GestureDetector(
+                  onPanStart: (DragStartDetails details) {
+                    _dragPos = details.globalPosition.dy;
+                  },
+                  onPanUpdate: (DragUpdateDetails details) {
+                    var change = details.globalPosition.dy - _dragPos;
+                    if (_inspirationCardHeight - change >= 0 &&
+                        _inspirationCardHeight - change <
+                            mediaSize.height * 0.185)
+                      setState(() {
+                        _inspirationCardHeight -= change;
+                      });
+                    _dragPos = details.globalPosition.dy;
+                  },
+                  child: Container(
+                    height: _inspirationCardHeight + mediaSize.height * 0.13,
+                    padding: EdgeInsets.only(
+                      top: 30,
+                    ),
+                    decoration: new BoxDecoration(
+                      color: Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.elliptical(50, 30),
+                          topRight: Radius.elliptical(50, 30)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: mediaSize.width * 0.07,
+                          ),
+                          child: SectionTitle(
+                            'Friends',
+                            Color(_bgColor.value + 0x00112211),
+                            fontSize: mediaSize.height * 0.03,
+                          ),
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.only(bottom: mediaSize.height * 0.02),
+                        ),
+                        // Friends
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: mediaSize.width * 0.03,
+                          ),
+                          height:
+                              mediaSize.height * 0.27 + _inspirationCardHeight,
+                          child: ListView(
+                              padding: EdgeInsets.only(top: 0),
+                              physics: NeverScrollableScrollPhysics(),
+                              children: [
+                                for (int i = 0; i < unjoinedFriends.length; i++)
+                                  Container(
+                                    height: mediaSize.height * 0.1,
+                                    margin: EdgeInsets.only(
+                                      bottom: 10,
+                                    ),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          child: unjoinedFriends[i],
+                                        ),
+                                        Container(
+                                          width: mediaSize.width * 0.55,
+                                          child: Text(
+                                            unjoinedFriends[i].name,
+                                            style: TextStyle(
+                                              fontSize: mediaSize.width * 0.05,
+                                              fontFamily: "Montserrat",
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: mediaSize.width * 0.15,
+                                          height: mediaSize.width * 0.15,
+                                          decoration: new BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.lightBlueAccent,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "\u{2713}",
+                                              style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontSize:
+                                                    mediaSize.width * 0.09,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ]),
+                        ),
+                        Center(
+                          child: Container(
+                            width: mediaSize.width * 0.8,
+                            height: mediaSize.height * 0.08,
+                            decoration: new BoxDecoration(
+                                color: Colors.lightBlueAccent,
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(mediaSize.width * 0.03))),
+                            child: Center(
+                              child: Text(
+                                "\u{2713} Select",
+                                style: TextStyle(
+                                  fontSize: mediaSize.width * 0.07,
+                                  fontFamily: "Montserrat",
+                                  letterSpacing: 2,
+                                  wordSpacing: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
