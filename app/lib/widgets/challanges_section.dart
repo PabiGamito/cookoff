@@ -150,8 +150,11 @@ class ChallengeItem extends StatelessWidget {
         children: <Widget>[
           Row(
             children: [
-              Image.asset(
-                  'assets/ingredients/' + _challenge.ingredient + '.png'),
+              Container(
+                padding: EdgeInsets.all(25),
+                child: Image.asset(
+                    'assets/ingredients/' + _challenge.ingredient + '.png'),
+              ),
               TimeLeftWidget(_challenge.end),
             ],
           ),
