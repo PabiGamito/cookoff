@@ -1,6 +1,8 @@
 stages:
   - name: test
     if: type = pull_request AND branch = master
+  - name: tag
+    if: type = push AND branch = master AND tag IS blank
   - name: deploy
     if: type = push AND branch = master
 
@@ -28,7 +30,7 @@ jobs:
         - flutter test
 
     # Tag commit with version
-    - stage: deploy
+    - stage: tag
       name: tag
       language: minimal
       before_script:
@@ -37,7 +39,6 @@ jobs:
       script:
         - git tag $TRAVIS_TAG
         - git push origin $TRAVIS_BRANCH --tags
-      if: tag IS blank
 
     # Build and deploy APK for Android
     - stage: deploy
