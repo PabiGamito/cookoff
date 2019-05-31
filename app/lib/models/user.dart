@@ -11,11 +11,16 @@ class User {
 
   User(this.email, this.profilePictureUrl, this.name, this.userId);
 
-  static User fromJson(Map<String, dynamic> json) {
-    return _$UserFromJson(json);
-  }
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return _$UserToJson(this);
-  }
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+}
+
+class NullUser extends User {
+  NullUser() : super(null, null, null, null);
+
+  factory NullUser.fromJson(Map<String, dynamic> json) =>
+      throw UnimplementedError();
+
+  Map<String, dynamic> toJson() => throw UnimplementedError();
 }

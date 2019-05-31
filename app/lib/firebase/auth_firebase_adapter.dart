@@ -8,8 +8,6 @@ import 'package:rxdart/rxdart.dart';
 class AuthFirebaseAdapter implements AuthProvider {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final Firestore _firestore = Firestore.instance;
-  static const String firestoreCollection = "users";
 
   // firebase user
   Observable<FirebaseUser> user;
@@ -18,13 +16,9 @@ class AuthFirebaseAdapter implements AuthProvider {
 
   AuthFirebaseAdapter() {
     user = Observable(_firebaseAuth.onAuthStateChanged);
-    profile = user.switchMap((user) {
+    profile = user.map((user) {
       if (user != null) {
-        _firestore
-            .collection(firestoreCollection)
-            .document(user.uid)
-            .snapshots()
-            .map((snapshot) => User.fromJson(snapshot.data));
+        return User(user.email, user.photoUrl, user.displayName, user.uid);
       } else {
         return null;
       }
@@ -33,21 +27,12 @@ class AuthFirebaseAdapter implements AuthProvider {
 
   @override
   Future signIn() async {
+    print("Sign in");
     GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     AuthCredential credential = GoogleAuthProvider.getCredential(
         idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-    FirebaseUser user = await _firebaseAuth.signInWithCredential(credential);
-    updateUser(user);
-  }
-
-  Future updateUser(FirebaseUser fireUser) async {
-    User data = User(
-        fireUser.email, fireUser.photoUrl, fireUser.displayName, fireUser.uid);
-    await _firestore
-        .collection(firestoreCollection)
-        .document(fireUser.uid)
-        .updateData(data.toJson());
+    await _firebaseAuth.signInWithCredential(credential);
   }
 
   @override
