@@ -1,5 +1,7 @@
+import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/blocs/friends_bloc.dart';
 import 'package:cookoff/models/challenge.dart';
+import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/card_helper.dart';
@@ -46,7 +48,6 @@ class _GameScreenState extends State<GameScreen> {
   bool _gameStarted;
   Duration _gameDuration;
 
-  String _owner = "elena";
   Countdown _timeLeftWidget;
 
   _GameScreenState(String ingredientName, Color bgColor, [Challenge challenge])
@@ -143,25 +144,27 @@ class _GameScreenState extends State<GameScreen> {
                           )),
 
                       // Start button
-                      GameStartButton(
-                        onGameStart: () {
-                          setState(() {
-                            _challenge = Challenge(
-                                owner: _owner,
-                                participants: List.of(ticked)..add(_owner),
-                                ingredient: _ingredientName,
-                                complete: false,
-                                end: DateTime.now()
-                                    .add(_gameDuration ?? Duration(days: 1)));
-                            challengeProvider.addChallenge(_challenge);
-                            _gameStarted = true;
-                            _timeLeftWidget = Countdown(_challenge.end);
-                          });
-                        },
-                        gameStarted: _gameStarted,
-                        countdownWidget: _timeLeftWidget,
-                      ),
-
+                      BlocBuilder(
+                          bloc: AuthBloc.instance,
+                          builder: (BuildContext context, User owner) =>
+                              GameStartButton(
+                                onGameStart: () {
+                                  setState(() {
+                                    _challenge = Challenge(
+                                        owner: owner.userId,
+                                        participants: List.of(ticked)
+                                          ..add(owner.userId),
+                                        ingredient: _ingredientName,
+                                        complete: false,
+                                        end: DateTime.now().add(_gameDuration ?? Duration(days: 1)));
+                                    challengeProvider.addChallenge(_challenge);
+                                    _gameStarted = true;
+                                    _timeLeftWidget = Countdown(_challenge.end);
+                                  });
+                                },
+                                gameStarted: _gameStarted,
+                                countdownWidget: _timeLeftWidget,
+                              )),
                       // Friends list display
                       Center(
                         child: Visibility(

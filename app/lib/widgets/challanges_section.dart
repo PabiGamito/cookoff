@@ -1,4 +1,6 @@
+import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/models/challenge.dart';
+import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
@@ -7,6 +9,7 @@ import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'countdown.dart';
 
@@ -60,21 +63,25 @@ class ChallengesSection extends StatelessWidget {
               padding: EdgeInsets.only(
                   left: Scalar(context).scale(30),
                   right: Scalar(context).scale(30)),
-              child: StreamBuilder<Iterable<Challenge>>(
-                stream: _challengeProvider.challengesStream('elena'),
-                builder: (BuildContext context,
-                    AsyncSnapshot<Iterable<Challenge>> snapshots) {
-                  if (snapshots.hasData) {
-                    if (snapshots.data.length == 0) {
-                      return NoChallenges();
-                    } else {
-                      return ChallengesList(snapshots.data);
-                    }
-                  }
+              child: BlocBuilder(
+                  bloc: AuthBloc.instance,
+                  builder: (BuildContext context, User user) =>
+                      StreamBuilder<Iterable<Challenge>>(
+                        stream:
+                            _challengeProvider.challengesStream(user.userId),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Iterable<Challenge>> snapshots) {
+                          if (snapshots.hasData) {
+                            if (snapshots.data.length == 0) {
+                              return NoChallenges();
+                            } else {
+                              return ChallengesList(snapshots.data);
+                            }
+                          }
 
-                  return NoChallenges();
-                },
-              ),
+                          return NoChallenges();
+                        },
+                      )),
             ),
           ),
         ],
