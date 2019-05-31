@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
           padding: EdgeInsets.only(top: 65, bottom: 25),
-          child: HomeHeader('Elena', 3, 'assets/faces/Elena.jpg'),
+          child: HomeHeader('Sally', 3, 'assets/faces/Elena.jpg'),
         ),
         Expanded(
           child: Container(
