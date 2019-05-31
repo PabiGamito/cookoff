@@ -34,11 +34,18 @@ jobs:
       name: tag
       language: minimal
       before_script:
+        # Calculate tag from previous
         - export LAST_TRAVIS_TAG=$(git describe --abbrev=0 --tags)
         - export TRAVIS_TAG=$((LAST_TRAVIS_TAG + 1))
+        # Decrypt secrets file
+        - openssl aes-256-cbc -K $encrypted_5b4681e315cb_key -iv $encrypted_5b4681e315cb_iv -in secrets.tar.enc -out secrets.tar -d
+        - tar xvf secrets.tar
+        # Set up SSH key for GitHub
+        - ssh-add github_deploy_key
       script:
+        # Push tag to remote
         - git tag $TRAVIS_TAG
-        - git push origin $TRAVIS_BRANCH --tags
+        - git push git@github.com:${TRAVIS_REPO_SLUG}.git $TRAVIS_BRANCH --tags
 
     # Build and deploy APK for Android
     - stage: deploy
@@ -71,7 +78,7 @@ jobs:
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
         - flutter doctor
         # Decrypt secrets file
-        - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
+        - openssl aes-256-cbc -K $encrypted_5b4681e315cb_key -iv $encrypted_5b4681e315cb_iv -in secrets.tar.enc -out secrets.tar -d
         - tar xvf secrets.tar
       script:
         # Package app for Android using tag
