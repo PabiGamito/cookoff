@@ -2,7 +2,7 @@ import 'package:cookoff/blocs/friends_bloc.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/widgets/card_helper.dart';
-import 'package:cookoff/widgets/challanges_section.dart';
+import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/friends_selection.dart';
 import 'package:cookoff/widgets/game_screen_ui.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
@@ -49,7 +49,7 @@ class _GameScreenState extends State<GameScreen> {
   bool _gameStarted;
   Duration _duration = Duration(days: 1, hours: 1);
   String _owner = "elena";
-  TimeLeftWidget _timeLeftWidget;
+  Countdown _timeLeftWidget;
 
   _GameScreenState(String ingredientName, String iconPath, Color bgColor,
       [Challenge challenge])
@@ -58,8 +58,7 @@ class _GameScreenState extends State<GameScreen> {
         _iconPath = iconPath,
         _bgColor = bgColor {
     _gameStarted = _challenge != null;
-    _timeLeftWidget =
-        _challenge != null ? TimeLeftWidget(_challenge.end) : null;
+    _timeLeftWidget = _challenge != null ? Countdown(_challenge.end) : null;
   }
 
   void _popScreen() {
@@ -135,7 +134,7 @@ class _GameScreenState extends State<GameScreen> {
                                 end: DateTime.now().add(_duration));
                             challengeProvider.addChallenge(_challenge);
                             _gameStarted = true;
-                            _timeLeftWidget = TimeLeftWidget(_challenge.end);
+                            _timeLeftWidget = Countdown(_challenge.end);
                           });
                         },
                         gameStarted: _gameStarted,
