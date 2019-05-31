@@ -18,7 +18,16 @@ class FeaturedSection extends StatelessWidget {
             padding: EdgeInsets.only(left: 30, right: 30),
             child: SectionTitle(_title, _titleUnderlineColor),
           ),
-          TileCarousel(),
+          TileCarousel(tiles: <Tile>[
+            Tile("cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
+            Tile("orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
+            Tile("cauliflower", "assets/ingredients/cauliflower.png",
+                Color(0xFF65D2EB)),
+            Tile("cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
+            Tile("orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
+            Tile("cauliflower", "assets/ingredients/cauliflower.png",
+                Color(0xFF65D2EB)),
+          ]),
         ],
       );
 }

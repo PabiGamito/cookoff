@@ -1,7 +1,6 @@
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/featured_section.dart';
-import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,39 +12,28 @@ class HomeScreen extends StatelessWidget {
         InjectorWidget.of(context).injector.challengeProvider;
 
     return Container(
-      color: Color(0xFFFFC544),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      padding: EdgeInsets.only(top: 40),
+      decoration: new BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(38), topRight: Radius.circular(38)),
+      ),
+      child: Column(children: [
         Container(
-          padding: EdgeInsets.only(top: 65, bottom: 25),
-          child: HomeHeader('Sally', 3, 'assets/faces/Elena.jpg'),
+          padding: EdgeInsets.only(bottom: 15),
+          child: FeaturedSection('Start cooking...', Color(0xFF8EE5B6)),
         ),
         Expanded(
           child: Container(
             padding: EdgeInsets.only(top: 40),
             decoration: new BoxDecoration(
-              color: Colors.white,
+              color: Color(0xFFF5F5F5),
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(38), topRight: Radius.circular(38)),
+                topLeft: Radius.circular(38),
+                topRight: Radius.circular(38),
+              ),
             ),
-            child: Column(children: [
-              Container(
-                padding: EdgeInsets.only(bottom: 15),
-                child: FeaturedSection('Start cooking...', Color(0xFF8EE5B6)),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(top: 40),
-                  decoration: new BoxDecoration(
-                    color: Color(0xFFF5F5F5),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(38),
-                      topRight: Radius.circular(38),
-                    ),
-                  ),
-                  child: ChallengesSection(challengeProvider),
-                ),
-              ),
-            ]),
+            child: ChallengesSection(challengeProvider),
           ),
         ),
       ]),

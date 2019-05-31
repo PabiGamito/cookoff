@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/screens/game.dart';
+import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
@@ -30,18 +31,22 @@ class ChallengesSection extends StatelessWidget {
                       style: TextStyle(fontSize: 25, fontFamily: 'Montserrat'),
                       textAlign: TextAlign.left,
                     ),
-                    CircleAddButton(),
+                    CircleAddButton(
+                      onTap: () =>
+                          FragmentNavigator.navigateTo(context, 'ingredients'),
+                    ),
                   ],
                 ),
                 Container(
-                    margin: EdgeInsets.only(top: 10),
-                    width: 45,
-                    height: 6,
-                    decoration: new BoxDecoration(
-                      color: Color(0xFF8057E2),
-                      borderRadius: BorderRadius.circular(
-                          MediaQuery.of(context).size.width * 0.03),
-                    ))
+                  margin: EdgeInsets.only(top: 10),
+                  width: 45,
+                  height: 6,
+                  decoration: new BoxDecoration(
+                    color: Color(0xFF8057E2),
+                    borderRadius: BorderRadius.circular(
+                        MediaQuery.of(context).size.width * 0.03),
+                  ),
+                )
               ],
             ),
           ),
@@ -70,19 +75,26 @@ class ChallengesSection extends StatelessWidget {
 }
 
 class CircleAddButton extends StatelessWidget {
+  final GestureTapCallback _onTap;
+
+  CircleAddButton({GestureTapCallback onTap}) : _onTap = onTap;
+
   @override
-  Widget build(BuildContext context) => Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: Color(0xFF8057E2),
-          borderRadius: BorderRadius.circular(40),
-        ),
-        child: Center(
-          child: Text(
-            '+',
-            style: TextStyle(
-                color: Colors.white, fontSize: 30, fontFamily: 'Montserrat'),
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: _onTap,
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Color(0xFF8057E2),
+            borderRadius: BorderRadius.circular(40),
+          ),
+          child: Center(
+            child: Text(
+              '+',
+              style: TextStyle(
+                  color: Colors.white, fontSize: 30, fontFamily: 'Montserrat'),
+            ),
           ),
         ),
       );
@@ -146,14 +158,13 @@ class ChallengeItem extends StatelessWidget {
   ChallengeItem(Challenge challenge) : _challenge = challenge;
 
   @override
-
   Widget build(BuildContext context) => GestureDetector(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => Scaffold(
-                      body: Game(
+                      body: GameScreen(
                     "cheese",
                     "assets/ingredients/cheese.png",
                     bgColor,
@@ -163,12 +174,12 @@ class ChallengeItem extends StatelessWidget {
           );
         },
         child: Container(
-        margin: EdgeInsets.only(top: 10, bottom: 10),
-        height: 100,
-        decoration: BoxDecoration(
-          color: Color(0xFF7C54EA),
-          borderRadius:
-              BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+          margin: EdgeInsets.only(top: 10, bottom: 10),
+          height: 100,
+          decoration: BoxDecoration(
+            color: Color(0xFF7C54EA),
+            borderRadius:
+                BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
           ),
           child: ChallengeInnerContent(_challenge),
         ),
@@ -212,7 +223,7 @@ class ChallengeInnerContent extends StatelessWidget {
                   borderWidth: 4,
                 ),
               ],
-              iconOffset: -10,
+              iconOffset: -15,
               hasMoreIcon: false,
             ),
           ),

@@ -13,13 +13,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Game extends StatefulWidget {
+class GameScreen extends StatefulWidget {
   final String _ingredientName;
   final String _iconPath;
   final Color _bgColor;
   final Challenge _challenge;
 
-  Game(String ingredientName, String iconPath, Color bgColor,
+  GameScreen(String ingredientName, String iconPath, Color bgColor,
       {Challenge challenge})
       : _challenge = challenge,
         _ingredientName =
@@ -31,10 +31,10 @@ class Game extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() =>
-      _GameState(_ingredientName, _iconPath, _bgColor, _challenge);
+      _GameScreenState(_ingredientName, _iconPath, _bgColor, _challenge);
 }
 
-class _GameState extends State<Game> {
+class _GameScreenState extends State<GameScreen> {
   final FriendsBloc _friendsBloc = FriendsBloc();
   final String _ingredientName;
   final String _iconPath;
@@ -51,7 +51,7 @@ class _GameState extends State<Game> {
   String _owner = "elena";
   TimeLeftWidget _timeLeftWidget;
 
-  _GameState(String ingredientName, String iconPath, Color bgColor,
+  _GameScreenState(String ingredientName, String iconPath, Color bgColor,
       [Challenge challenge])
       : _challenge = challenge,
         _ingredientName = ingredientName,

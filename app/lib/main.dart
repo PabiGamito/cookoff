@@ -1,4 +1,4 @@
-import 'package:cookoff/screens/home.dart';
+import 'package:cookoff/screens/main.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,5 +19,5 @@ void main() {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
-      MaterialApp(home: Scaffold(body: HomeScreen()));
+      MaterialApp(home: Scaffold(body: MainScreen()));
 }

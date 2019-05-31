@@ -3,29 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TileCarousel extends StatelessWidget {
+  final List<Tile> _tiles;
+
+  TileCarousel({@required List<Tile> tiles}) : _tiles = tiles;
+
   @override
   Widget build(BuildContext context) => Container(
-      margin: EdgeInsets.only(
-        top: 25,
-        bottom: 25,
-      ),
-      height: 100,
-      child: ListView(
+        margin: EdgeInsets.only(
+          top: 25,
+          bottom: 25,
+        ),
+        height: 100,
+        child: ListView(
           padding: EdgeInsets.only(
             left: 20,
             right: 20,
           ),
           scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            Tile("cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
-            Tile("orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
-            Tile("cauliflower", "assets/ingredients/cauliflower.png",
-                Color(0xFF65D2EB)),
-            Tile("cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
-            Tile("orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
-            Tile("cauliflower", "assets/ingredients/cauliflower.png",
-                Color(0xFF65D2EB)),
-          ]));
+          children: _tiles,
+        ),
+      );
 }
 
 class Tile extends StatelessWidget {
@@ -46,7 +43,7 @@ class Tile extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                Scaffold(body: Game(ingredientName, _iconPath, _bgColor)),
+                Scaffold(body: GameScreen(ingredientName, _iconPath, _bgColor)),
           ),
         );
       },
