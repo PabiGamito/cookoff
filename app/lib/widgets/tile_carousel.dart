@@ -1,3 +1,4 @@
+import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -28,25 +29,35 @@ class TileCarousel extends StatelessWidget {
 class Tile extends StatelessWidget {
   final String _iconPath;
   final Color _bgColor;
-  final String ingredientName;
+  final void Function(BuildContext) _onTap;
+  final Widget _child;
 
-  Tile(this.ingredientName, String iconPath, Color bgColor)
+  Tile(
+      {String iconPath,
+      @required Color bgColor,
+      void Function(BuildContext) onTap,
+      Widget child})
       : _iconPath = iconPath,
-        _bgColor = bgColor;
+        _bgColor = bgColor,
+        _onTap = onTap ?? ((c) => {}),
+        _child = child {
+    assert((iconPath != null || child != null) && bgColor != null);
+  }
 
   @override
   Widget build(BuildContext context) {
+    var child;
+
+    if (_child == null) {
+      child = Container(
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.055),
+          child: Image.asset(_iconPath));
+    } else {
+      child = _child;
+    }
+
     return GestureDetector(
-      onTap: () {
-        // Some sort of event trigger
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                Scaffold(body: GameScreen(ingredientName, _iconPath, _bgColor)),
-          ),
-        );
-      },
+      onTap: () => _onTap(context),
       child: Center(
         child: new Container(
           width: 100,
@@ -57,12 +68,28 @@ class Tile extends StatelessWidget {
             borderRadius:
                 BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
           ),
-          child: Container(
-              padding:
-                  EdgeInsets.all(MediaQuery.of(context).size.width * 0.055),
-              child: Image.asset(_iconPath)),
+          child: Center(child: child),
         ),
       ),
     );
   }
+}
+
+class IngredientTile extends Tile {
+  final Ingredient _ingredient;
+
+  IngredientTile(Ingredient ingredient)
+      : _ingredient = ingredient,
+        super(
+          iconPath: ingredient.imgPath,
+          bgColor: ingredient.bgColor,
+          onTap: (context) => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                      body: GameScreen(ingredient.name, ingredient.imgPath,
+                          ingredient.bgColor)),
+                ),
+              ),
+        );
 }

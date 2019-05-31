@@ -1,6 +1,7 @@
+import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
-import 'package:cookoff/widgets/featured_section.dart';
+import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,19 @@ class HomeScreen extends StatelessWidget {
       child: Column(children: [
         Container(
           padding: EdgeInsets.only(bottom: 15),
-          child: FeaturedSection('Start cooking...', Color(0xFF8EE5B6)),
+          child: IngredientsSection(
+            title: 'Start cooking...',
+            titleUnderlineColor: Color(0xFF8EE5B6),
+            ingredients: <Ingredient>[
+              Ingredient(
+                  "cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
+              Ingredient(
+                  "orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
+              Ingredient("cauliflower", "assets/ingredients/cauliflower.png",
+                  Color(0xFF65D2EB)),
+            ],
+            more: true,
+          ),
         ),
         Expanded(
           child: Container(
