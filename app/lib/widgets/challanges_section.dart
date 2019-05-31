@@ -213,12 +213,14 @@ class ChallengeInnerContent extends StatelessWidget {
             child: ProfileList(
               [
                 ProfileIcon(
-                  'assets/faces/veronica.png',
+                  // random network image until we get users sorted out properly
+                  'https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
                   size: 45,
                   borderWidth: 4,
                 ),
                 ProfileIcon(
-                  'assets/faces/veronica.png',
+                  // random network image until we get users sorted out properly
+                  'https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
                   size: 45,
                   borderWidth: 4,
                 ),

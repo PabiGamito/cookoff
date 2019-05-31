@@ -87,17 +87,21 @@ class _GameScreenState extends State<GameScreen> {
     var initial = 0.0;
     const iconScale = 0.2;
     var iconDistanceScale = 0.05;
+    // set icons to a random network image until we get friends sorted properly
     var friendsList = <ProfileIcon>[
-      ProfileIcon("assets/faces/archie.jpg",
+      ProfileIcon(
+          "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
           size: mediaSize.width * 0.155, profileName: "Archie Candoro"),
-      ProfileIcon("assets/faces/cheryl.jpg",
+      ProfileIcon(
+          "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
           size: mediaSize.width * 0.155, profileName: "Cheryl Sinatra"),
       ProfileIcon(
-        "assets/faces/betty.jpg",
+        "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
         size: mediaSize.width * 0.155,
         profileName: "Betty White",
       ),
-      ProfileIcon("assets/faces/jughead.png",
+      ProfileIcon(
+          "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
           size: mediaSize.width * 0.155, profileName: "Jughead Jones"),
     ];
 
