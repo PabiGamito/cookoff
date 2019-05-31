@@ -13,7 +13,6 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
   Stream<Iterable<Challenge>> challengesStream(String user) => _firestore
       .collection(collection)
       .where('participants', arrayContains: user)
-      .where('owner', isEqualTo: user)
       .snapshots()
       .map((snapshot) =>
           snapshot.documents.map((json) => Challenge.fromJson(json.data)));
