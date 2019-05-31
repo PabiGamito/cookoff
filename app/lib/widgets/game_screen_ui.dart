@@ -1,3 +1,4 @@
+import 'package:cookoff/scalar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,19 +11,19 @@ class GameBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaSize = MediaQuery.of(context).size;
     return Container(
-      height: mediaSize.height * 0.15,
+      height: Scalar(context).scale(135),
       padding: EdgeInsets.only(
-        top: mediaSize.height * 0.04,
-        bottom: mediaSize.height * 0.02,
+        top: Scalar(context).scale(35),
+        bottom: Scalar(context).scale(18),
       ),
-      margin: EdgeInsets.only(left: mediaSize.width * 0.05),
+      margin: EdgeInsets.only(left: Scalar(context).scale(20)),
       child: Wrap(children: [
         GestureDetector(
           onTap: _popScreen,
           child: Text(
             "\u{2190}",
             style: TextStyle(
-              fontSize: 60,
+              fontSize: Scalar(context).scale(60),
               fontFamily: "Montserrat",
               color: Colors.white,
             ),
@@ -46,7 +47,7 @@ class IngredientName extends StatelessWidget {
         child: Text(
           "${_ingredientName[0].toUpperCase()}${_ingredientName.substring(1)}",
           style: TextStyle(
-            fontSize: mediaSize.height * 0.06,
+            fontSize: Scalar(context).scale(50),
             fontFamily: "Montserrat",
             color: Colors.white,
             letterSpacing: 2,
@@ -106,16 +107,17 @@ class GameStartButton extends StatelessWidget {
       child: Center(
         child: Container(
           padding: EdgeInsets.only(
-            top: mediaSize.height * 0.005,
-            bottom: mediaSize.height * 0.005,
-            left: mediaSize.width * 0.06,
-            right: mediaSize.width * 0.06,
+            top: Scalar(context).scale(5),
+            bottom: Scalar(context).scale(5),
+            left: Scalar(context).scale(5),
+            right: Scalar(context).scale(5),
           ),
           margin:
               EdgeInsets.only(bottom: mediaSize.height * _iconDistanceScale),
           decoration: BoxDecoration(
             color: Color(0x65000000),
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderRadius:
+                BorderRadius.all(Radius.circular(Scalar(context).scale(30))),
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Visibility(
@@ -128,10 +130,10 @@ class GameStartButton extends StatelessWidget {
                     // Rocket Icon
                     Container(
                       margin: EdgeInsets.only(
-                        left: 30,
+                        left: Scalar(context).scale(30),
                       ),
-                      height: mediaSize.width * 0.135,
-                      width: mediaSize.width * 0.135,
+                      height: Scalar(context).scale(50),
+                      width: Scalar(context).scale(50),
                       child: Transform.rotate(
                         angle: 1.2,
                         child: Image.asset("assets/icons/rocket.png"),
@@ -139,13 +141,13 @@ class GameStartButton extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.only(
-                        left: 10,
-                        right: 30,
+                        left: Scalar(context).scale(10),
+                        right: Scalar(context).scale(30),
                       ),
                       child: Text(
                         "START",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: Scalar(context).scale(20),
                           fontFamily: "Montserrat",
                           color: Colors.white,
                           letterSpacing: 2,
@@ -158,10 +160,10 @@ class GameStartButton extends StatelessWidget {
               visible: _gameStarted,
               child: Container(
                 margin: EdgeInsets.only(
-                  top: mediaSize.height * 0.01,
-                  bottom: mediaSize.height * 0.01,
-                  left: mediaSize.width * 0.03,
-                  right: mediaSize.width * 0.03,
+                  top: Scalar(context).scale(10),
+                  bottom: Scalar(context).scale(10),
+                  left: Scalar(context).scale(25),
+                  right: Scalar(context).scale(25),
                 ),
                 child: _timeLeftWidget,
               ),

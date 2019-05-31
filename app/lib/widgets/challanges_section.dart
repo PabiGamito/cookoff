@@ -1,5 +1,6 @@
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
@@ -19,7 +20,9 @@ class ChallengesSection extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: 30, right: 30),
+            padding: EdgeInsets.only(
+                left: Scalar(context).scale(30),
+                right: Scalar(context).scale(30)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -28,7 +31,9 @@ class ChallengesSection extends StatelessWidget {
                   children: [
                     Text(
                       'My challenges',
-                      style: TextStyle(fontSize: 25, fontFamily: 'Montserrat'),
+                      style: TextStyle(
+                          fontSize: Scalar(context).scale(25),
+                          fontFamily: 'Montserrat'),
                       textAlign: TextAlign.left,
                     ),
                     CircleAddButton(
@@ -38,9 +43,9 @@ class ChallengesSection extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
-                  width: 45,
-                  height: 6,
+                  margin: EdgeInsets.only(top: Scalar(context).scale(10)),
+                  width: Scalar(context).scale(45),
+                  height: Scalar(context).scale(6),
                   decoration: new BoxDecoration(
                     color: Color(0xFF8057E2),
                     borderRadius: BorderRadius.circular(
@@ -52,7 +57,9 @@ class ChallengesSection extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(left: 30, right: 30),
+              padding: EdgeInsets.only(
+                  left: Scalar(context).scale(30),
+                  right: Scalar(context).scale(30)),
               child: StreamBuilder<Iterable<Challenge>>(
                 stream: _challengeProvider.challengesStream('elena'),
                 builder: (BuildContext context,
@@ -83,17 +90,19 @@ class CircleAddButton extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
         onTap: _onTap,
         child: Container(
-          width: 40,
-          height: 40,
+          width: Scalar(context).scale(40),
+          height: Scalar(context).scale(40),
           decoration: BoxDecoration(
             color: Color(0xFF8057E2),
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(Scalar(context).scale(40)),
           ),
           child: Center(
             child: Text(
               '+',
               style: TextStyle(
-                  color: Colors.white, fontSize: 30, fontFamily: 'Montserrat'),
+                  color: Colors.white,
+                  fontSize: Scalar(context).scale(30),
+                  fontFamily: 'Montserrat'),
             ),
           ),
         ),
@@ -106,8 +115,8 @@ class NoChallenges extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            width: 100,
-            height: 100,
+            width: Scalar(context).scale(100),
+            height: Scalar(context).scale(100),
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 image: new AssetImage(
@@ -118,11 +127,11 @@ class NoChallenges extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 25),
+            padding: EdgeInsets.only(top: Scalar(context).scale(25)),
             child: Text(
               'NO CURRENT\nCHALLENGES',
               style: TextStyle(
-                  fontSize: 21,
+                  fontSize: Scalar(context).scale(21),
                   fontFamily: 'Montserrat',
                   color: Color(0xFFC1C1C1),
                   letterSpacing: 2.0),
@@ -141,10 +150,10 @@ class ChallengesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(
         padding: EdgeInsets.only(
-          top: 15,
-          bottom: 15,
-          left: 0,
-          right: 0,
+          top: Scalar(context).scale(15),
+          bottom: Scalar(context).scale(15),
+          left: Scalar(context).scale(0),
+          right: Scalar(context).scale(0),
         ),
         children:
             _challenges.map((challenge) => ChallengeItem(challenge)).toList(),
@@ -174,8 +183,10 @@ class ChallengeItem extends StatelessWidget {
           );
         },
         child: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10),
-          height: 100,
+          margin: EdgeInsets.only(
+              top: Scalar(context).scale(10),
+              bottom: Scalar(context).scale(10)),
+          height: Scalar(context).scale(100),
           decoration: BoxDecoration(
             color: Color(0xFF7C54EA),
             borderRadius:
@@ -199,7 +210,7 @@ class ChallengeInnerContent extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(25),
+                padding: EdgeInsets.all(Scalar(context).scale(25)),
                 child: Image.asset(
                     'assets/ingredients/' + _challenge.ingredient + '.png'),
               ),
@@ -209,23 +220,24 @@ class ChallengeInnerContent extends StatelessWidget {
             ],
           ),
           Container(
-            padding: EdgeInsets.only(right: 25),
+            padding: EdgeInsets.only(right: Scalar(context).scale(25)),
             child: ProfileList(
               [
                 ProfileIcon(
                   // random network image until we get users sorted out properly
                   'https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                  size: 45,
-                  borderWidth: 4,
+                  size: Scalar(context).scale(45),
+                  borderWidth: Scalar(context).scale(4),
                 ),
                 ProfileIcon(
                   // random network image until we get users sorted out properly
                   'https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                  size: 45,
-                  borderWidth: 4,
+                  size: Scalar(context).scale(45),
+                  borderWidth: Scalar(context).scale(4),
                 ),
               ],
-              iconOffset: -15,
+              iconSize: Scalar(context).scale(45),
+              iconOffset: Scalar(context).scale(-10),
               hasMoreIcon: false,
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:cookoff/scalar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,20 +16,20 @@ class PillButton extends StatelessWidget {
         child: Container(
           child: Container(
             padding: EdgeInsets.only(
-              top: 15,
-              bottom: 15,
-              left: 50,
-              right: 50,
+              top: Scalar(context).scale(15),
+              bottom: Scalar(context).scale(15),
+              left: Scalar(context).scale(50),
+              right: Scalar(context).scale(50),
             ),
             decoration: new BoxDecoration(
               color: Color(0xFF8057E2),
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(Scalar(context).scale(50)),
             ),
             child: Center(
               child: Text(
                 _text,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: Scalar(context).scale(16),
                   fontFamily: "Montserrat",
                   color: Colors.white,
                   letterSpacing: 2,

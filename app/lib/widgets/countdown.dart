@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../scalar.dart';
+
 class Countdown extends StatefulWidget {
   final DateTime _end;
 
@@ -57,10 +59,10 @@ class _CountdownState extends State<Countdown> {
   }
 
   @override
-  Widget build(BuildContext context) => _timeText.getWidget();
+  Widget build(BuildContext context) => _timeText;
 }
 
-class TimeText {
+class TimeText extends StatelessWidget {
   List<int> _values = [0, 0, 0, 0];
   List<String> _units = ['d', 'h', 'm', 's'];
 
@@ -92,14 +94,16 @@ class TimeText {
     return res;
   }
 
-  Widget getWidget() {
+  Widget getWidget(BuildContext context) {
     List<Widget> text = [];
 
     if (_values.last < 0) {
       return Text(
         'Done',
         style: TextStyle(
-            color: Colors.white, fontSize: 24, fontFamily: 'Montserrat'),
+            color: Colors.white,
+            fontSize: Scalar(context).scale(24),
+            fontFamily: 'Montserrat'),
       );
     }
 
@@ -111,14 +115,18 @@ class TimeText {
           Text(
             _valueToString(_values[i]),
             style: TextStyle(
-                color: Colors.white, fontSize: 24, fontFamily: 'Montserrat'),
+                color: Colors.white,
+                fontSize: Scalar(context).scale(24),
+                fontFamily: 'Montserrat'),
           ),
         );
         text.add(
           Text(
             _units[i].toString() + " ",
             style: TextStyle(
-                color: Colors.white, fontSize: 16, fontFamily: 'Montserrat'),
+                color: Colors.white,
+                fontSize: Scalar(context).scale(16),
+                fontFamily: 'Montserrat'),
           ),
         );
       }
@@ -128,5 +136,10 @@ class TimeText {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: text,
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return getWidget(context);
   }
 }

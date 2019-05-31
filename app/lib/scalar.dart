@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 
 class Scalar {
-  static const _smallHeight = 100;
-  static const _largeHeight = 500;
+  static const _smallHeight = 450;
+  static const _largeHeight = 890;
 
-  static const _smallScalar = 1;
-  static const _largeScalar = 2;
+  static const _smallScalar = 0.7;
+  static const _largeScalar = 1;
 
   static const _gradient =
       (_largeScalar - _smallScalar) / (_largeHeight - _smallHeight);

@@ -1,4 +1,5 @@
 import 'package:cookoff/models/ingredient.dart';
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/pill_button.dart';
@@ -9,17 +10,22 @@ class IngredientsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 40),
+      padding: EdgeInsets.only(top: Scalar(context).scale(40)),
       decoration: new BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(38), topRight: Radius.circular(38)),
+            topLeft: Radius.circular(Scalar(context).scale(38)),
+            topRight: Radius.circular(Scalar(context).scale(38))),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            padding: EdgeInsets.only(top: 0, bottom: 30, left: 20, right: 20),
+            padding: EdgeInsets.only(
+                top: Scalar(context).scale(0),
+                bottom: Scalar(context).scale(30),
+                left: Scalar(context).scale(20),
+                right: Scalar(context).scale(20)),
             child: PillButton(
               "BACK TO CHALLENGES",
               onTap: () {
@@ -32,7 +38,7 @@ class IngredientsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                     child: IngredientsSection(
                       title: 'Featured',
                       ingredients: <Ingredient>[
@@ -48,7 +54,7 @@ class IngredientsScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                     child: IngredientsSection(
                       title: 'Keep it simple',
                       ingredients: <Ingredient>[
@@ -62,7 +68,7 @@ class IngredientsScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                     child: IngredientsSection(
                       title: 'Healthy eating',
                       ingredients: <Ingredient>[

@@ -1,4 +1,5 @@
 import 'package:cookoff/models/ingredient.dart';
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,14 +12,14 @@ class TileCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         margin: EdgeInsets.only(
-          top: 25,
-          bottom: 25,
+          top: Scalar(context).scale(25),
+          bottom: Scalar(context).scale(25),
         ),
-        height: 100,
+        height: Scalar(context).scale(100),
         child: ListView(
           padding: EdgeInsets.only(
-            left: 20,
-            right: 20,
+            left: Scalar(context).scale(20),
+            right: Scalar(context).scale(20),
           ),
           scrollDirection: Axis.horizontal,
           children: _tiles,
@@ -50,7 +51,7 @@ class Tile extends StatelessWidget {
 
     if (_child == null) {
       child = Container(
-          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.055),
+          padding: EdgeInsets.all(Scalar(context).scale(20)),
           child: Image.asset(_iconPath));
     } else {
       child = _child;
@@ -60,9 +61,11 @@ class Tile extends StatelessWidget {
       onTap: () => _onTap(context),
       child: Center(
         child: new Container(
-          width: 100,
-          height: 100,
-          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+          width: Scalar(context).scale(100),
+          height: Scalar(context).scale(100),
+          margin: EdgeInsets.only(
+              left: Scalar(context).scale(10.0),
+              right: Scalar(context).scale(10.0)),
           decoration: BoxDecoration(
             color: _bgColor,
             borderRadius:

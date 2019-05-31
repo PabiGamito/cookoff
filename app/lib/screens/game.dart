@@ -1,6 +1,7 @@
 import 'package:cookoff/blocs/friends_bloc.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/card_helper.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/friends_selection.dart';
@@ -85,16 +86,15 @@ class _GameScreenState extends State<GameScreen> {
         InjectorWidget.of(context).injector.challengeProvider;
     var mediaSize = MediaQuery.of(context).size;
     var initial = 0.0;
-    const iconScale = 0.2;
-    var iconDistanceScale = 0.05;
-    // set icons to a random network image until we get friends sorted properly
     var friendsList = <ProfileIcon>[
       ProfileIcon(
           "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
-          size: mediaSize.width * 0.155, profileName: "Archie Candoro"),
+          size: mediaSize.width * 0.155,
+          profileName: "Archie Candoro"),
       ProfileIcon(
           "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
-          size: mediaSize.width * 0.155, profileName: "Cheryl Sinatra"),
+          size: mediaSize.width * 0.155,
+          profileName: "Cheryl Sinatra"),
       ProfileIcon(
         "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
         size: mediaSize.width * 0.155,
@@ -102,7 +102,8 @@ class _GameScreenState extends State<GameScreen> {
       ),
       ProfileIcon(
           "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
-          size: mediaSize.width * 0.155, profileName: "Jughead Jones"),
+          size: mediaSize.width * 0.155,
+          profileName: "Jughead Jones"),
     ];
 
     return WillPopScope(
@@ -122,9 +123,13 @@ class _GameScreenState extends State<GameScreen> {
                     children: [
                       GameBackButton(_popScreen),
                       IngredientName(_ingredientName),
-                      IngredientIcon(mediaSize.height * iconScale, _iconPath,
-                          margin: EdgeInsets.only(
-                              bottom: mediaSize.height * iconDistanceScale)),
+                      IngredientIcon(
+                        Scalar(context).scale(180),
+                        _iconPath,
+                        margin: EdgeInsets.only(
+                          bottom: Scalar(context).scale(50),
+                        ),
+                      ),
 
                       // Start button
                       GameStartButton(
@@ -157,7 +162,8 @@ class _GameScreenState extends State<GameScreen> {
                                     : ticked;
                                 return list.contains(f.name);
                               }).toList(),
-                              iconOffset: -10,
+                              iconSize: Scalar(context).scale(50),
+                              iconOffset: Scalar(context).scale(-10),
                               hasMoreIcon: !_gameStarted,
                               onTap: () {
                                 setState(() {
@@ -170,7 +176,7 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                       Container(
-                        height: mediaSize.height * 0.1,
+                        height: Scalar(context).scale(90),
                       )
                     ]),
                 // Inspiration tab
@@ -200,11 +206,11 @@ class _GameScreenState extends State<GameScreen> {
                             SectionTitle(
                               'Some inspiration...',
                               Color(_bgColor.value + 0x00112211),
-                              fontSize: mediaSize.height * 0.03,
+                              fontSize: Scalar(context).scale(25),
                             ),
                             Container(
                               padding: EdgeInsets.only(
-                                  bottom: mediaSize.height * 0.02),
+                                  bottom: Scalar(context).scale(20)),
                             )
                           ],
                         ),

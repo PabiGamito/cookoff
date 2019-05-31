@@ -1,3 +1,4 @@
+import 'package:cookoff/scalar.dart';
 import 'package:flutter/widgets.dart';
 
 class CardRoundedBorder extends StatelessWidget {
@@ -14,8 +15,8 @@ class CardRoundedBorder extends StatelessWidget {
     return Container(
       height: _cardHeight + mediaSize.height * 0.13,
       padding: EdgeInsets.only(
-        top: 30,
-        left: mediaSize.width * 0.07,
+        top: Scalar(context).scale(30),
+        left: Scalar(context).scale(30),
       ),
       decoration: new BoxDecoration(
         color: Color(0xFFF5F5F5),

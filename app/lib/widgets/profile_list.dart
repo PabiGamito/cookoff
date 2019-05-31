@@ -14,7 +14,7 @@ class ProfileList extends StatelessWidget {
       {Function onTap,
       bool hasMoreIcon = true,
       double iconOffset = 0,
-      double iconSize = 50})
+      double iconSize})
       : _onTap = onTap,
         _profiles = profiles,
         _iconOffset = iconOffset + iconSize,

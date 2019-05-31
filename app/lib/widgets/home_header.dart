@@ -1,3 +1,4 @@
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -20,23 +21,23 @@ class HomeHeader extends StatelessWidget {
               children: [
                 Positioned(
                   child: Container(
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(Scalar(context).scale(10)),
                     child: ProfileIcon(
                       _profileImagePath,
-                      size: 108,
-                      borderWidth: 5,
+                      size: Scalar(context).scale(108),
+                      borderWidth: Scalar(context).scale(5),
                     ),
                   ),
                 ),
                 if (_notificationCount > 0)
                   Positioned(
-                      top: 3,
-                      right: 8,
+                      top: Scalar(context).scale(3),
+                      right: Scalar(context).scale(8),
                       child: NotificationBadge(_notificationCount))
               ],
             ),
             Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: Scalar(context).scale(20)),
               child: HelloMessage(_name),
             ),
           ],
@@ -56,7 +57,7 @@ class HelloMessage extends StatelessWidget {
           Text(
             'HELLO',
             style: TextStyle(
-              fontSize: 22,
+              fontSize: Scalar(context).scale(22),
               fontFamily: 'Montserrat',
               color: Color(0xFFFFFFFF),
               letterSpacing: 2.0,
@@ -66,7 +67,7 @@ class HelloMessage extends StatelessWidget {
           Text(
             _name,
             style: TextStyle(
-              fontSize: 42,
+              fontSize: Scalar(context).scale(42),
               fontFamily: 'Montserrat',
               color: Color(0xFF333333),
               height: 0.8,
@@ -85,8 +86,8 @@ class NotificationBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 40,
-        height: 40,
+        width: Scalar(context).scale(40),
+        height: Scalar(context).scale(40),
         decoration: BoxDecoration(
           color: Color(0xFFE5505E),
           borderRadius: BorderRadius.circular(40),
@@ -95,7 +96,9 @@ class NotificationBadge extends StatelessWidget {
           child: Text(
             _notificationCount.toString(),
             style: TextStyle(
-                color: Colors.white, fontSize: 18, fontFamily: 'Montserrat'),
+                color: Colors.white,
+                fontSize: Scalar(context).scale(18),
+                fontFamily: 'Montserrat'),
           ),
         ),
       );

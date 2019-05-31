@@ -1,4 +1,5 @@
 import 'package:cookoff/models/ingredient.dart';
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:cookoff/widgets/tile_carousel.dart';
@@ -35,7 +36,7 @@ class IngredientsSection extends StatelessWidget {
             style: TextStyle(
                 color: Color(0xFF5F5F5F),
                 fontFamily: 'Montserrat',
-                fontSize: 56),
+                fontSize: Scalar(context).scale(56)),
           ),
         ),
         onTap: (BuildContext context) =>
@@ -47,10 +48,13 @@ class IngredientsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: 30, right: 30),
+          padding: EdgeInsets.only(
+              left: Scalar(context).scale(30),
+              right: Scalar(context).scale(30)),
           child: SectionTitle(
             _title,
             _titleUnderlineColor,
+            fontSize: Scalar(context).scale(25),
           ),
         ),
         TileCarousel(

@@ -1,3 +1,4 @@
+import 'package:cookoff/scalar.dart';
 import 'package:flutter/widgets.dart';
 
 class SectionTitle extends StatelessWidget {
@@ -5,7 +6,7 @@ class SectionTitle extends StatelessWidget {
   final Color _color;
   final double _fontSize;
 
-  const SectionTitle(String title, Color color, {double fontSize = 25})
+  const SectionTitle(String title, Color color, {@required double fontSize})
       : _title = title,
         _color = color,
         _fontSize = fontSize;
@@ -22,9 +23,9 @@ class SectionTitle extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
           Container(
-              margin: EdgeInsets.only(top: 10),
-              width: 45,
-              height: 6,
+              margin: EdgeInsets.only(top: Scalar(context).scale(10)),
+              width: Scalar(context).scale(45),
+              height: Scalar(context).scale(6),
               decoration: new BoxDecoration(
                 color: _color,
                 borderRadius: BorderRadius.circular(
