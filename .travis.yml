@@ -2,23 +2,24 @@ stages:
   - name: test
     if: type = pull_request AND branch = master
   - name: deploy
-    if: type = push AND branch = release
+    if: type = push AND branch = master
 
 jobs:
   include:
-    # Test phase, runs on master
+    # Run Flutter tests
     - stage: test
       name: flutter
       language: dart
       addons:
         apt:
           sources:
-            # If we don't specify this, the libstdc++6 we get is the wrong version.
+            # To get correct version of libstdc++6
             - ubuntu-toolchain-r-test
       packages:
         - libstdc++6
         - fonts-droid
       before_script:
+        # Install Flutter
         - git clone https://github.com/flutter/flutter.git -b stable
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
         - flutter doctor
@@ -26,7 +27,19 @@ jobs:
         - cd app
         - flutter test
 
-    # Deploy phase for android APK
+    # Tag commit with version
+    - stage: deploy
+      name: tag
+      language: minimal
+      before_script:
+        - export LAST_TRAVIS_TAG=$(git describe --abbrev=0 --tags)
+        - export TRAVIS_TAG=$((LAST_TRAVIS_TAG + 1))
+      script:
+        - git tag $TRAVIS_TAG
+        - git push origin $TRAVIS_BRANCH --tags
+      if: tag IS blank
+
+    # Build and deploy APK for Android
     - stage: deploy
       name: android
       language: android
@@ -36,6 +49,7 @@ jobs:
           - build-tools-28.0.3
           - android-28
       addons:
+        # Deploy APK to S3 bucket
         artifacts:
           s3_region: eu-west-1
           working_dir: build/app/outputs/apk/release
@@ -45,19 +59,21 @@ jobs:
             - /
         apt:
           sources:
-            # If we don't specify this, the libstdc++6 we get is the wrong version.
+            # To get correct version of libstdc++6
             - ubuntu-toolchain-r-test
       packages:
         - libstdc++6
         - fonts-droid
       before_script:
+        # Install Flutter
         - git clone https://github.com/flutter/flutter.git -b stable
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
         - flutter doctor
-      script:
-        # Decrypt secrets file.
+        # Decrypt secrets file
         - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
         - tar xvf secrets.tar
+      script:
+        # Package app for Android using tag
         - cd app
         - flutter packages get
-        - flutter build apk --release
+        - flutter build apk --release --build-number=$TRAVIS_TAG
