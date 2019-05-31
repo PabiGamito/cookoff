@@ -80,6 +80,18 @@ class TimeText {
     _values[3] = seconds;
   }
 
+  String _valueToString(int val) {
+    String res = '';
+
+    if (val < 10) {
+      res += '0';
+    }
+
+    res += val.toString();
+
+    return res;
+  }
+
   Widget getWidget() {
     List<Widget> text = [];
 
@@ -97,7 +109,7 @@ class TimeText {
         cnt++;
         text.add(
           Text(
-            _values[i].toString(),
+            _valueToString(_values[i]),
             style: TextStyle(
                 color: Colors.white, fontSize: 24, fontFamily: 'Montserrat'),
           ),
