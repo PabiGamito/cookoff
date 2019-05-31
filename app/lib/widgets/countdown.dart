@@ -68,34 +68,34 @@ class _CountdownState extends State<Countdown> {
     var values = List<String>();
     var units = List<String>();
 
-    if (_timeLeft.inDays > 0) {
+    var days = _timeLeft.inDays;
+    if (days > 0) {
       units.add('d');
       values.add(_timeLeft.inDays.toString());
       valueCnt++;
     }
 
-    if (_timeLeft.inHours > 0) {
+    var hours = _timeLeft.inHours - _timeLeft.inDays * 24;
+    if (hours > 0) {
       units.add('h');
-      var hours = _timeLeft.inHours - _timeLeft.inDays * 24;
       values.add(hours.toString());
       valueCnt++;
     }
 
-    if (valueCnt < 2 && _timeLeft.inMinutes > 0) {
+    var minutes = _timeLeft.inMinutes - hours * 60 - days * 24 * 60;
+
+    if (valueCnt < 2 && minutes > 0) {
       units.add('m');
-      var minutes = _timeLeft.inMinutes -
-          _timeLeft.inHours * 60 -
-          _timeLeft.inDays * 24 * 60;
       values.add(minutes.toString());
       valueCnt++;
     }
 
-    if (valueCnt < 2 && _timeLeft.inSeconds > 0) {
+    var seconds = _timeLeft.inSeconds -
+        minutes * 60 -
+        hours * 60 * 60 -
+        days * 24 * 60 * 60;
+    if (valueCnt < 2 && seconds > 0) {
       units.add('s');
-      var seconds = _timeLeft.inSeconds -
-          _timeLeft.inMinutes * 60 -
-          _timeLeft.inHours * 60 * 60 -
-          _timeLeft.inDays * 24 * 60 * 60;
       values.add(seconds.toString());
       valueCnt++;
     }
