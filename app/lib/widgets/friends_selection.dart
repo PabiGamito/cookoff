@@ -92,14 +92,12 @@ class FriendsList extends StatelessWidget {
 
 class FriendCard extends StatelessWidget {
   const FriendCard({
-    Key key,
-    @required FriendsSelectionBloc friendsBloc,
-    @required this.friend,
-    @required this.mediaSize,
-    @required Set<String> tickedFriends,
+    FriendsSelectionBloc friendsBloc,
+    this.friend,
+    this.mediaSize,
+    Set<String> tickedFriends,
   })  : _friendsBloc = friendsBloc,
-        _tickedFriends = tickedFriends,
-        super(key: key);
+        _tickedFriends = tickedFriends;
 
   final FriendsSelectionBloc _friendsBloc;
   final ProfileIcon friend;

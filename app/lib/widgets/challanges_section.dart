@@ -238,7 +238,7 @@ class ChallengeInnerContent extends StatelessWidget {
         ],
       );
 
-  // Returns a list of 2 users
+  // Returns a list of max 2 users for home screen
   List<Stream<User>> profileListContent(BuildContext context) {
     List<Stream<User>> users = [];
 
@@ -246,7 +246,10 @@ class ChallengeInnerContent extends StatelessWidget {
       if (i >= _challenge.participants.length - 1) {
         break;
       }
-      Observable<User> user = InjectorWidget.of(context).injector.userProvider.user(_challenge.participants[i]);
+      Observable<User> user = InjectorWidget.of(context)
+          .injector
+          .userProvider
+          .user(_challenge.participants[i]);
       users.add(user);
     }
 
