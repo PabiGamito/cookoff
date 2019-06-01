@@ -44,7 +44,6 @@ class _GameScreenState extends State<GameScreen> {
   bool _displayPlayers = true;
   bool _displayFriends = false;
   bool _gameStarted;
-  DateTime _gameLength;
   Duration _gameDuration;
 
   String _owner = "elena";
@@ -160,8 +159,8 @@ class _GameScreenState extends State<GameScreen> {
                                 participants: List.of(ticked)..add(_owner),
                                 ingredient: _ingredientName,
                                 complete: false,
-                                end: _gameLength ??
-                                    DateTime.now().add(Duration(days: 1)));
+                                end: DateTime.now()
+                                    .add(_gameDuration ?? Duration(days: 1)));
                             challengeProvider.addChallenge(_challenge);
                             _gameStarted = true;
                             _timeLeftWidget = Countdown(_challenge.end);
