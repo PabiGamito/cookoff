@@ -14,7 +14,6 @@ import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class GameScreen extends StatefulWidget {
   final String _ingredientName;
@@ -133,12 +132,12 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                       // Duration Button
-                      GestureDetector(
-                        onTap: () {
-                          DatePicker.showPicker(
-                            context,
-                            pickerModel: DurationPickerModel(),
-                            onConfirm: (DateTime time) {
+                      Visibility(
+                          visible: !_gameStarted,
+                          child: DurationPicker(
+                            duration: _gameDuration,
+                            bgColor: _bgColor,
+                            onDurationChange: (DateTime time) {
                               setState(() {
                                 _gameDuration = Duration(
                                     days: time.day - 1,
@@ -150,27 +149,8 @@ class _GameScreenState extends State<GameScreen> {
                                 );
                               });
                             },
-                          );
-                        },
-                        child: Center(
-                          child: Container(
-                            width: mediaSize.width * 0.4,
-                            padding: EdgeInsets.only(
-                              left: mediaSize.width * 0.04,
-                              top: Scalar(context).scale(5),
-                              bottom: Scalar(context).scale(5),
-                            ),
-                            decoration: BoxDecoration(
-                              color: Color.lerp(_bgColor, Colors.white, 0.15),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(Scalar(context).scale(5))),
-                            ),
-                            child: Center(
-                              child: _durationText,
-                            ),
-                          ),
-                        ),
-                      ),
+                          )),
+
                       // Start button
                       GameStartButton(
                         onGameStart: () {
@@ -190,6 +170,7 @@ class _GameScreenState extends State<GameScreen> {
                         gameStarted: _gameStarted,
                         countdownWidget: _timeLeftWidget,
                       ),
+
                       // Friends list display
                       Center(
                         child: Visibility(

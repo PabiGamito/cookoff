@@ -1,11 +1,66 @@
 //a date&time picker model
+import 'package:cookoff/scalar.dart';
+import 'package:cookoff/widgets/countdown.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-class DurationPickerModel extends CommonPickerModel {
+class DurationPicker extends StatelessWidget {
+  final Function _onDurationChange;
+  final Color _bgColor;
+
+  final Duration _duration;
+
+  DurationPicker({
+    Duration duration,
+    Color bgColor,
+    Function onDurationChange,
+  })  : _duration = duration ?? Duration(days: 1),
+        _onDurationChange = onDurationChange,
+        _bgColor = bgColor;
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaSize = MediaQuery.of(context).size;
+    const List<bool> _showAllButSecs = [true, true, true, false];
+    return GestureDetector(
+      onTap: () {
+        DatePicker.showPicker(
+          context,
+          pickerModel: _DurationPickerModel(),
+          onConfirm: _onDurationChange,
+        );
+      },
+      child: Center(
+        child: Container(
+          width: mediaSize.width * 0.4,
+          padding: EdgeInsets.only(
+            left: mediaSize.width * 0.04,
+            top: Scalar(context).scale(5),
+            bottom: Scalar(context).scale(5),
+          ),
+          decoration: BoxDecoration(
+            color: Color.lerp(_bgColor, Colors.black45, 0.3),
+            borderRadius:
+                BorderRadius.all(Radius.circular(Scalar(context).scale(5))),
+          ),
+          child: Center(
+            child: TimeText(
+              duration: _duration,
+              showAll: _showAllButSecs,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DurationPickerModel extends CommonPickerModel {
   int maxDays;
   int minMinutes;
 
-  DurationPickerModel(
+  _DurationPickerModel(
       {DateTime currentTime,
       LocaleType locale,
       this.maxDays = 30,
