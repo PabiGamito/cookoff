@@ -7,11 +7,13 @@ class ProfileIcon extends StatelessWidget {
   final double size;
   final double _borderWidth;
   final name;
+  final String uid;
 
   ProfileIcon(this.imgPath,
-      {this.size = 50, double borderWidth = 5, String profileName})
+      {this.size = 50, double borderWidth = 5, String profileName, String uid})
       : name = profileName ?? imgPath,
-        _borderWidth = borderWidth;
+        _borderWidth = borderWidth,
+        this.uid = uid;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -28,7 +30,10 @@ class ProfileIcon extends StatelessWidget {
 
   factory ProfileIcon.fromUser(User user, {size = 50.0, borderWidth = 5.0}) =>
       ProfileIcon(user.profilePictureUrl,
-          profileName: user.name, size: size, borderWidth: borderWidth);
+          profileName: user.name,
+          size: size,
+          borderWidth: borderWidth,
+          uid: user.userId);
 }
 
 class AddProfileIcon extends StatelessWidget {

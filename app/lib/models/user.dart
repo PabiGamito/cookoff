@@ -17,10 +17,13 @@ class User {
         this.firstName = name.split(' ')[0],
         this.friendsList = friendsList;
 
-  factory User.withFriendsList(User user, List<User> friendsList) {
-    return User(user.email, user.profilePictureUrl, user.name, user.userId,
-        friendsList: friendsList);
-  }
+  factory User.copyWithFriendsList(User user, List<User> friendsList) =>
+      User(user.email, user.profilePictureUrl, user.name, user.userId,
+          friendsList: friendsList);
+
+  factory User.copyWithId(User user, String id) =>
+      User(user.email, user.profilePictureUrl, user.name, id,
+          friendsList: user.friendsList);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

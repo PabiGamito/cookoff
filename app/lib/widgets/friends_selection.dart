@@ -109,7 +109,7 @@ class FriendCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _friendsBloc.dispatch(friend.name),
+      onTap: () => _friendsBloc.dispatch(friend.uid),
       child: Container(
         height: mediaSize.height * 0.1,
         margin: EdgeInsets.only(
@@ -135,7 +135,7 @@ class FriendCard extends StatelessWidget {
               height: mediaSize.width * 0.15,
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
-                color: _tickedFriends.contains(friend.name)
+                color: _tickedFriends.contains(friend.uid)
                     ? Colors.lightBlueAccent
                     : Colors.grey,
               ),

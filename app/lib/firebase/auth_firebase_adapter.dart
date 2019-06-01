@@ -49,6 +49,7 @@ class AuthFirebaseAdapter implements AuthProvider {
       await _firestore.collection(friendsCollection).document(user.uid).setData({
         'name': user.displayName,
         'email': user.email,
+        'profilePictureUrl': user.photoUrl,
         'friends': []
       });
     }

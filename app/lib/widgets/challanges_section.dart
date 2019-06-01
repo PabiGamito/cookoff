@@ -5,13 +5,14 @@ import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/fragment.dart';
-import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'countdown.dart';
+import 'injector_widget.dart';
 
 class ChallengesSection extends StatelessWidget {
   final ChallengeProvider _challengeProvider;
@@ -227,22 +228,8 @@ class ChallengeInnerContent extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(right: Scalar(context).scale(25)),
-            // TODO
             child: ProfileList(
-              [
-                ProfileIcon(
-                  // random network image until we get users sorted out properly
-                  'https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                  size: Scalar(context).scale(45),
-                  borderWidth: Scalar(context).scale(4),
-                ),
-                ProfileIcon(
-                  // random network image until we get users sorted out properly
-                  'https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                  size: Scalar(context).scale(45),
-                  borderWidth: Scalar(context).scale(4),
-                ),
-              ],
+              profileListContent(context),
               iconSize: Scalar(context).scale(45),
               iconOffset: Scalar(context).scale(-10),
               hasMoreIcon: false,
@@ -250,4 +237,19 @@ class ChallengeInnerContent extends StatelessWidget {
           ),
         ],
       );
+
+  // Returns a list of 2 users
+  List<Stream<User>> profileListContent(BuildContext context) {
+    List<Stream<User>> users = [];
+
+    for (int i = 0; i < 2; i++) {
+      if (i >= _challenge.participants.length - 1) {
+        break;
+      }
+      Observable<User> user = InjectorWidget.of(context).injector.userProvider.user(_challenge.participants[i]);
+      users.add(user);
+    }
+
+    return users;
+  }
 }

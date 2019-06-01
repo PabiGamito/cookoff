@@ -31,14 +31,16 @@ class MainScreen extends StatelessWidget {
           } else {
             // User is signed in
             User user = snapshot.data;
+            // Notify auth bloc
             AuthBloc.instance.dispatch(user);
+            // Retrieve friends
             return StreamBuilder<Iterable<User>>(
                 stream: userProvider.friends(user.userId),
                 builder: (BuildContext context,
                     AsyncSnapshot<Iterable<User>> snapshot) {
-                  // Set friends list
+                  // Set friends list and notify auth bloc
                   AuthBloc.instance
-                      .dispatch(User.withFriendsList(user, snapshot.data));
+                      .dispatch(User.copyWithFriendsList(user, snapshot.data));
                   return AuthorizedMainScreen();
                 });
           }

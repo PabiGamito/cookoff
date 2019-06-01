@@ -13,8 +13,10 @@ class UserFirebaseAdapter implements UserProvider {
         .collection(usersCollection)
         .where("friends", arrayContains: uid)
         .snapshots()
-        .map((snapshot) =>
-            snapshot.documents.map((json) => User.fromJson(json.data)).toList()));
+        .map((snapshot) => snapshot.documents
+            .map((json) =>
+                User.copyWithId(User.fromJson(json.data), json.documentID))
+            .toList()));
   }
 
   @override

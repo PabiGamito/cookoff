@@ -16,6 +16,7 @@ import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 class GameScreen extends StatefulWidget {
   final String _ingredientName;
@@ -151,31 +152,30 @@ class _GameScreenState extends State<GameScreen> {
                         child: Visibility(
                           visible: _displayPlayers,
                           child: Container(
-                            height: mediaSize.width * _smallProfileScale * 1.4,
-                            child: BlocBuilder(
-                                bloc: AuthBloc.instance,
-                                builder: (BuildContext context, User user) =>
-                                    ProfileList(
-                                      user.friendsList
-                                          .map((user) =>
-                                              ProfileIcon.fromUser(user))
-                                          .where((f) {
-                                        var list = _gameStarted
-                                            ? _challenge.participants
-                                            : ticked;
-                                        return list.contains(f.name);
-                                      }).toList(),
-                                      iconSize: Scalar(context).scale(50),
-                                      iconOffset: Scalar(context).scale(-10),
-                                      hasMoreIcon: !_gameStarted,
-                                      onTap: () {
-                                        setState(() {
-                                          _displayFriends = true;
-                                          _cardHeight = 0;
-                                        });
-                                      },
-                                    )),
-                          ),
+                              height:
+                                  mediaSize.width * _smallProfileScale * 1.4,
+                              child: BlocBuilder(
+                                  bloc: AuthBloc.instance,
+                                  builder: (BuildContext context, User user) =>
+                                      ProfileList(
+                                        user.friendsList
+                                            .where((friend) {
+                                          var list = _gameStarted
+                                              ? _challenge.participants
+                                              : ticked;
+                                          return list.contains(friend.userId);
+                                        }).map((user) => Observable.just(user))
+                                            .toList(),
+                                        iconSize: Scalar(context).scale(50),
+                                        iconOffset: Scalar(context).scale(-10),
+                                        hasMoreIcon: !_gameStarted,
+                                        onTap: () {
+                                          setState(() {
+                                            _displayFriends = true;
+                                            _cardHeight = 0;
+                                          });
+                                        },
+                                      ))),
                         ),
                       ),
                       Container(
