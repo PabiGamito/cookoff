@@ -1,6 +1,7 @@
 import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/auth_provider.dart';
+import 'package:cookoff/providers/user_provider.dart';
 import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
@@ -15,6 +16,8 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthProvider authProvider =
         InjectorWidget.of(context).injector.authProvider;
+    UserProvider userProvider =
+        InjectorWidget.of(context).injector.userProvider;
     return StreamBuilder<User>(
         stream: authProvider.profile,
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
@@ -27,8 +30,17 @@ class MainScreen extends StatelessWidget {
             return UnauthorizedMainScreen();
           } else {
             // User is signed in
-            AuthBloc.instance.dispatch(snapshot.data);
-            return AuthorizedMainScreen();
+            User user = snapshot.data;
+            AuthBloc.instance.dispatch(user);
+            return StreamBuilder<Iterable<User>>(
+                stream: userProvider.friends(user.userId),
+                builder: (BuildContext context,
+                    AsyncSnapshot<Iterable<User>> snapshot) {
+                  // Set friends list
+                  AuthBloc.instance
+                      .dispatch(User.withFriendsList(user, snapshot.data));
+                  return AuthorizedMainScreen();
+                });
           }
         });
   }

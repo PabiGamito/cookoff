@@ -1,15 +1,10 @@
 import 'package:cookoff/models/ingredient.dart';
-import 'package:cookoff/blocs/auth_bloc.dart';
-import 'package:cookoff/models/user.dart';
-import 'package:cookoff/providers/auth_provider.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 // Home screen to be rendered if the user is signed in
 class HomeScreen extends StatelessWidget {
