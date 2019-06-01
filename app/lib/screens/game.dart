@@ -48,10 +48,6 @@ class _GameScreenState extends State<GameScreen> {
 
   String _owner = "elena";
   Countdown _timeLeftWidget;
-  TimeText _durationText = TimeText(
-    duration: Duration(days: 1),
-    showAll: [true, true, true, false],
-  );
 
   _GameScreenState(String ingredientName, Color bgColor, [Challenge challenge])
       : _challenge = challenge,
@@ -142,10 +138,6 @@ class _GameScreenState extends State<GameScreen> {
                                     days: time.day - 1,
                                     minutes: time.minute,
                                     hours: time.hour);
-                                _durationText = TimeText(
-                                  duration: _gameDuration,
-                                  showAll: [true, true, true, false],
-                                );
                               });
                             },
                           )),

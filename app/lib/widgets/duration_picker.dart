@@ -47,7 +47,9 @@ class DurationPicker extends StatelessWidget {
           child: Center(
             child: TimeText(
               duration: _duration,
-              showAll: _showAllButSecs,
+              alwaysShowDays: true,
+              alwaysShowMinutes: true,
+              alwaysShowHours: true,
             ),
           ),
         ),

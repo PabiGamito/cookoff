@@ -63,15 +63,24 @@ class _CountdownState extends State<Countdown> {
 }
 
 class TimeText extends StatelessWidget {
-  final List<bool> _showAll;
+  final bool _showSeconds;
+  final bool _showMinutes;
+  final bool _showHours;
+  final bool _showDays;
 
   List<int> _values = [0, 0, 0, 0];
   List<String> _units = ['d', 'h', 'm', 's'];
 
   TimeText(
-      {List<bool> showAll = const <bool>[false, false, false, false],
+      {bool alwaysShowSeconds = false,
+      bool alwaysShowMinutes = false,
+      bool alwaysShowHours = false,
+      bool alwaysShowDays = false,
       Duration duration})
-      : _showAll = showAll {
+      : _showSeconds = alwaysShowSeconds,
+        _showMinutes = alwaysShowMinutes,
+        _showHours = alwaysShowHours,
+        _showDays = alwaysShowDays {
     if (duration != null) {
       setDays(duration.inDays.round());
       setHours(duration.inHours.round() % 24);
@@ -109,6 +118,7 @@ class TimeText extends StatelessWidget {
 
   Widget getWidget(BuildContext context) {
     List<Widget> text = [];
+    List<bool> showUnits = [_showDays, _showHours, _showMinutes, _showSeconds];
 
     if (_values.last < 0) {
       return Text(
@@ -122,7 +132,7 @@ class TimeText extends StatelessWidget {
 
     int cnt = 0;
     for (int i = 0; i < _values.length; i++) {
-      if (_showAll[i] || (cnt < 2 && _values[i] > 0)) {
+      if (showUnits[i] || (cnt < 2 && _values[i] > 0)) {
         cnt++;
         text.add(
           Text(
