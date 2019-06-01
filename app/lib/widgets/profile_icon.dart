@@ -26,7 +26,7 @@ class ProfileIcon extends StatelessWidget {
         ),
       );
 
-  factory ProfileIcon.fromUser(User user, {size = 50, borderWidth = 5}) =>
+  factory ProfileIcon.fromUser(User user, {size = 50.0, borderWidth = 5.0}) =>
       ProfileIcon(user.profilePictureUrl,
           profileName: user.name, size: size, borderWidth: borderWidth);
 }
