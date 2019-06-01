@@ -27,7 +27,7 @@ class GameScreen extends StatefulWidget {
             challenge == null ? ingredientName : challenge.ingredient,
         _iconPath = challenge == null
             ? iconPath
-            : "assets/ingredients/${challenge.ingredient}.png",
+            : "assets/ingredients/${challenge.ingredient.toLowerCase()}.png",
         _bgColor = bgColor;
 
   @override

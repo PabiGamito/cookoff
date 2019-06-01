@@ -58,11 +58,11 @@ class IngredientsScreen extends StatelessWidget {
                     child: IngredientsSection(
                       title: 'Keep it simple',
                       ingredients: <Ingredient>[
-                        Ingredient("Bacon", "assets/ingredients/bacon.png",
+                        Ingredient("bacon", "assets/ingredients/bacon.png",
                             Color(0xFF65D2EB)),
-                        Ingredient("Fish", "assets/ingredients/fish.png",
+                        Ingredient("fish", "assets/ingredients/fish.png",
                             Color(0xFFEF8EBD)),
-                        Ingredient("Onion", "assets/ingredients/onion.png",
+                        Ingredient("onion", "assets/ingredients/onion.png",
                             Color(0xFFE3BF73)),
                       ],
                     ),
