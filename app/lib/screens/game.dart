@@ -4,6 +4,7 @@ import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/card_helper.dart';
 import 'package:cookoff/widgets/countdown.dart';
+import 'package:cookoff/widgets/duration_picker.dart';
 import 'package:cookoff/widgets/friends_selection.dart';
 import 'package:cookoff/widgets/game_screen_ui.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
@@ -13,34 +14,30 @@ import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class GameScreen extends StatefulWidget {
   final String _ingredientName;
-  final String _iconPath;
   final Color _bgColor;
   final Challenge _challenge;
 
-  GameScreen(String ingredientName, String iconPath, Color bgColor,
-      {Challenge challenge})
+  GameScreen(String ingredientName, Color bgColor, {Challenge challenge})
       : _challenge = challenge,
         _ingredientName =
             challenge == null ? ingredientName : challenge.ingredient,
-        _iconPath = challenge == null
-            ? iconPath
-            : "assets/ingredients/${challenge.ingredient.toLowerCase()}.png",
         _bgColor = bgColor;
 
   @override
   State<StatefulWidget> createState() =>
-      _GameScreenState(_ingredientName, _iconPath, _bgColor, _challenge);
+      _GameScreenState(_ingredientName, _bgColor, _challenge);
 }
 
 class _GameScreenState extends State<GameScreen> {
   final FriendsBloc _friendsBloc = FriendsBloc();
   final String _ingredientName;
-  final String _iconPath;
   final Color _bgColor;
   final double _smallProfileScale = 0.13;
+  final Duration _defaultChallengeDuration = Duration(days: 1);
 
   Challenge _challenge;
   double _cardHeight = 0.0;
@@ -48,15 +45,19 @@ class _GameScreenState extends State<GameScreen> {
   bool _displayPlayers = true;
   bool _displayFriends = false;
   bool _gameStarted;
-  Duration _duration = Duration(days: 1, hours: 1);
+  DateTime _gameLength;
+  Duration _gameDuration;
+
   String _owner = "elena";
   Countdown _timeLeftWidget;
+  TimeText _durationText = TimeText(
+    duration: Duration(days: 1),
+    showAll: [true, true, true, false],
+  );
 
-  _GameScreenState(String ingredientName, String iconPath, Color bgColor,
-      [Challenge challenge])
+  _GameScreenState(String ingredientName, Color bgColor, [Challenge challenge])
       : _challenge = challenge,
         _ingredientName = ingredientName,
-        _iconPath = iconPath,
         _bgColor = bgColor {
     _gameStarted = _challenge != null;
     _timeLeftWidget = _challenge != null ? Countdown(_challenge.end) : null;
@@ -85,7 +86,6 @@ class _GameScreenState extends State<GameScreen> {
     ChallengeProvider challengeProvider =
         InjectorWidget.of(context).injector.challengeProvider;
     var mediaSize = MediaQuery.of(context).size;
-    var initial = 0.0;
     var friendsList = <ProfileIcon>[
       ProfileIcon(
           "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
@@ -105,6 +105,8 @@ class _GameScreenState extends State<GameScreen> {
           size: mediaSize.width * 0.155,
           profileName: "Jughead Jones"),
     ];
+
+    var _iconPath = "assets/ingredients/$_ingredientName.png";
 
     return WillPopScope(
       onWillPop: () {
@@ -130,7 +132,45 @@ class _GameScreenState extends State<GameScreen> {
                           bottom: Scalar(context).scale(50),
                         ),
                       ),
-
+                      // Duration Button
+                      GestureDetector(
+                        onTap: () {
+                          DatePicker.showPicker(
+                            context,
+                            pickerModel: DurationPickerModel(),
+                            onConfirm: (DateTime time) {
+                              setState(() {
+                                _gameDuration = Duration(
+                                    days: time.day - 1,
+                                    minutes: time.minute,
+                                    hours: time.hour);
+                                _durationText = TimeText(
+                                  duration: _gameDuration,
+                                  showAll: [true, true, true, false],
+                                );
+                              });
+                            },
+                          );
+                        },
+                        child: Center(
+                          child: Container(
+                            width: mediaSize.width * 0.4,
+                            padding: EdgeInsets.only(
+                              left: mediaSize.width * 0.04,
+                              top: Scalar(context).scale(5),
+                              bottom: Scalar(context).scale(5),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color.lerp(_bgColor, Colors.white, 0.15),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(Scalar(context).scale(5))),
+                            ),
+                            child: Center(
+                              child: _durationText,
+                            ),
+                          ),
+                        ),
+                      ),
                       // Start button
                       GameStartButton(
                         onGameStart: () {
@@ -140,7 +180,8 @@ class _GameScreenState extends State<GameScreen> {
                                 participants: List.of(ticked)..add(_owner),
                                 ingredient: _ingredientName,
                                 complete: false,
-                                end: DateTime.now().add(_duration));
+                                end: _gameLength ??
+                                    DateTime.now().add(Duration(days: 1)));
                             challengeProvider.addChallenge(_challenge);
                             _gameStarted = true;
                             _timeLeftWidget = Countdown(_challenge.end);

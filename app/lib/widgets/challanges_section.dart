@@ -175,7 +175,6 @@ class ChallengeItem extends StatelessWidget {
               builder: (context) => Scaffold(
                       body: GameScreen(
                     "cheese",
-                    "assets/ingredients/cheese.png",
                     bgColor,
                     challenge: _challenge,
                   )),

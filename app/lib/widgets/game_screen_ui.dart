@@ -41,7 +41,6 @@ class IngredientName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mediaSize = MediaQuery.of(context).size;
     return Center(
       child: Container(
         child: Text(

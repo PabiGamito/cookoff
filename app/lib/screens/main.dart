@@ -14,13 +14,12 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider =
-        InjectorWidget
-            .of(context)
-            .injector
-            .authProvider;
+        InjectorWidget.of(context).injector.authProvider;
     return StreamBuilder<User>(
         stream: authProvider.profile,
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+          // Debug
+          return AuthorizedMainScreen();
           if (!snapshot.hasData) {
             AuthBloc.instance.dispatch(NullUser());
             return UnauthorizedMainScreen();
@@ -69,10 +68,7 @@ class UnauthorizedMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider =
-        InjectorWidget
-            .of(context)
-            .injector
-            .authProvider;
+        InjectorWidget.of(context).injector.authProvider;
     return Container(
         color: Color(0xFFFFC544),
         child: Center(
