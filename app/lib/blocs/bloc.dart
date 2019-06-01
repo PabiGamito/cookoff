@@ -1,1 +1,1 @@
-export 'friends_bloc.dart';
+export 'friends_selection_bloc.dart';

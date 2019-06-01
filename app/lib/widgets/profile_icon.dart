@@ -1,3 +1,4 @@
+import 'package:cookoff/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,6 +25,10 @@ class ProfileIcon extends StatelessWidget {
                   fit: BoxFit.cover, image: NetworkImage(imgPath))),
         ),
       );
+
+  factory ProfileIcon.fromUser(User user, {size = 50, borderWidth = 5}) =>
+      ProfileIcon(user.profilePictureUrl,
+          profileName: user.name, size: size, borderWidth: borderWidth);
 }
 
 class AddProfileIcon extends StatelessWidget {

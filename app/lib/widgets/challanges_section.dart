@@ -227,6 +227,7 @@ class ChallengeInnerContent extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(right: Scalar(context).scale(25)),
+            // TODO
             child: ProfileList(
               [
                 ProfileIcon(

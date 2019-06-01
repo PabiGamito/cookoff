@@ -1,4 +1,4 @@
-import 'package:cookoff/blocs/friends_bloc.dart';
+import 'package:cookoff/blocs/friends_selection_bloc.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +7,12 @@ import 'package:flutter/widgets.dart';
 class FriendsTab extends StatelessWidget {
   final Function _onSelect;
   final double _cardHeight;
-  final FriendsBloc _friendsBloc;
+  final FriendsSelectionBloc _friendsBloc;
   final List<ProfileIcon> _friendsList;
   final Set<String> _tickedFriends;
 
   FriendsTab({
-    FriendsBloc friendsBloc,
+    FriendsSelectionBloc friendsBloc,
     List<ProfileIcon> friendsList,
     Set<String> tickedFriends,
     double cardHeight,
@@ -55,12 +55,12 @@ class FriendsTab extends StatelessWidget {
 }
 
 class FriendsList extends StatelessWidget {
-  final FriendsBloc _friendsBloc;
+  final FriendsSelectionBloc _friendsBloc;
   final List<ProfileIcon> _friendsList;
   final Set<String> _tickedFriends;
   final double _inspirationCardHeight;
 
-  FriendsList(double inspirationCardHeight, FriendsBloc friendsBloc,
+  FriendsList(double inspirationCardHeight, FriendsSelectionBloc friendsBloc,
       List<ProfileIcon> friendsList, Set<String> tickedFriends)
       : _inspirationCardHeight = inspirationCardHeight,
         _friendsBloc = friendsBloc,
@@ -80,53 +80,79 @@ class FriendsList extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             for (var friend in _friendsList)
-              GestureDetector(
-                onTap: () => _friendsBloc.dispatch(friend.name),
-                child: Container(
-                  height: mediaSize.height * 0.1,
-                  margin: EdgeInsets.only(
-                    bottom: 10,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        child: friend,
-                      ),
-                      Container(
-                        width: mediaSize.width * 0.55,
-                        child: Text(
-                          friend.name,
-                          style: TextStyle(
-                            fontSize: mediaSize.width * 0.05,
-                            fontFamily: "Montserrat",
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: mediaSize.width * 0.15,
-                        height: mediaSize.width * 0.15,
-                        decoration: new BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _tickedFriends.contains(friend.name)
-                              ? Colors.lightBlueAccent
-                              : Colors.grey,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "\u{2713}",
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: mediaSize.width * 0.09,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+              new FriendCard(
+                  friendsBloc: _friendsBloc,
+                  friend: friend,
+                  mediaSize: mediaSize,
+                  tickedFriends: _tickedFriends),
+          ]),
+    );
+  }
+}
+
+class FriendCard extends StatelessWidget {
+  const FriendCard({
+    Key key,
+    @required FriendsSelectionBloc friendsBloc,
+    @required this.friend,
+    @required this.mediaSize,
+    @required Set<String> tickedFriends,
+  })  : _friendsBloc = friendsBloc,
+        _tickedFriends = tickedFriends,
+        super(key: key);
+
+  final FriendsSelectionBloc _friendsBloc;
+  final ProfileIcon friend;
+  final Size mediaSize;
+  final Set<String> _tickedFriends;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _friendsBloc.dispatch(friend.name),
+      child: Container(
+        height: mediaSize.height * 0.1,
+        margin: EdgeInsets.only(
+          bottom: 10,
+        ),
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: friend,
+            ),
+            Container(
+              width: mediaSize.width * 0.55,
+              child: Text(
+                friend.name,
+                style: TextStyle(
+                  fontSize: mediaSize.width * 0.05,
+                  fontFamily: "Montserrat",
+                ),
+              ),
+            ),
+            Container(
+              width: mediaSize.width * 0.15,
+              height: mediaSize.width * 0.15,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                color: _tickedFriends.contains(friend.name)
+                    ? Colors.lightBlueAccent
+                    : Colors.grey,
+              ),
+              child: Center(
+                child: Text(
+                  "\u{2713}",
+                  style: TextStyle(
+                    fontFamily: "Montserrat",
+                    fontSize: mediaSize.width * 0.09,
+                    color: Colors.white,
                   ),
                 ),
               ),
-          ]),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

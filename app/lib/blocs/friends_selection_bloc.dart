@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-class FriendsBloc extends Bloc<String, Set<String>> {
+class FriendsSelectionBloc extends Bloc<String, Set<String>> {
   @override
   Set<String> get initialState => const {};
 

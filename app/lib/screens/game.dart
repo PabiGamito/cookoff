@@ -1,5 +1,5 @@
 import 'package:cookoff/blocs/auth_bloc.dart';
-import 'package:cookoff/blocs/friends_bloc.dart';
+import 'package:cookoff/blocs/friends_selection_bloc.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
@@ -34,7 +34,7 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  final FriendsBloc _friendsBloc = FriendsBloc();
+  final FriendsSelectionBloc _friendsBloc = FriendsSelectionBloc();
   final String _ingredientName;
   final Color _bgColor;
   final double _smallProfileScale = 0.13;
@@ -81,25 +81,6 @@ class _GameScreenState extends State<GameScreen> {
     ChallengeProvider challengeProvider =
         InjectorWidget.of(context).injector.challengeProvider;
     var mediaSize = MediaQuery.of(context).size;
-    var friendsList = <ProfileIcon>[
-      ProfileIcon(
-          "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
-          size: mediaSize.width * 0.155,
-          profileName: "Archie Candoro"),
-      ProfileIcon(
-          "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
-          size: mediaSize.width * 0.155,
-          profileName: "Cheryl Sinatra"),
-      ProfileIcon(
-        "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
-        size: mediaSize.width * 0.155,
-        profileName: "Betty White",
-      ),
-      ProfileIcon(
-          "https://t4.ftcdn.net/jpg/00/64/67/27/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
-          size: mediaSize.width * 0.155,
-          profileName: "Jughead Jones"),
-    ];
 
     var _iconPath = "assets/ingredients/${_ingredientName.toLowerCase()}.png";
 
@@ -171,23 +152,29 @@ class _GameScreenState extends State<GameScreen> {
                           visible: _displayPlayers,
                           child: Container(
                             height: mediaSize.width * _smallProfileScale * 1.4,
-                            child: ProfileList(
-                              friendsList.where((f) {
-                                var list = _gameStarted
-                                    ? _challenge.participants
-                                    : ticked;
-                                return list.contains(f.name);
-                              }).toList(),
-                              iconSize: Scalar(context).scale(50),
-                              iconOffset: Scalar(context).scale(-10),
-                              hasMoreIcon: !_gameStarted,
-                              onTap: () {
-                                setState(() {
-                                  _displayFriends = true;
-                                  _cardHeight = 0;
-                                });
-                              },
-                            ),
+                            child: BlocBuilder(
+                                bloc: AuthBloc.instance,
+                                builder: (BuildContext context, User user) =>
+                                    ProfileList(
+                                      user.friendsList
+                                          .map((user) =>
+                                              ProfileIcon.fromUser(user))
+                                          .where((f) {
+                                        var list = _gameStarted
+                                            ? _challenge.participants
+                                            : ticked;
+                                        return list.contains(f.name);
+                                      }).toList(),
+                                      iconSize: Scalar(context).scale(50),
+                                      iconOffset: Scalar(context).scale(-10),
+                                      hasMoreIcon: !_gameStarted,
+                                      onTap: () {
+                                        setState(() {
+                                          _displayFriends = true;
+                                          _cardHeight = 0;
+                                        });
+                                      },
+                                    )),
                           ),
                         ),
                       ),
@@ -269,20 +256,26 @@ class _GameScreenState extends State<GameScreen> {
                             _dragPos = details.globalPosition.dy;
                           },
                           child: CardRoundedBorder(
-                            cardHeight: _cardHeight,
-                            child: FriendsTab(
-                              friendsBloc: _friendsBloc,
-                              friendsList: friendsList,
-                              tickedFriends: ticked,
                               cardHeight: _cardHeight,
-                              onSelect: () {
-                                setState(() {
-                                  _displayFriends = false;
-                                  _cardHeight = 0;
-                                });
-                              },
-                            ),
-                          ),
+                              child: BlocBuilder(
+                                  bloc: AuthBloc.instance,
+                                  builder: (BuildContext context, User user) =>
+                                      FriendsTab(
+                                        friendsBloc: _friendsBloc,
+                                        friendsList: user.friendsList
+                                            .map((user) => ProfileIcon.fromUser(
+                                                user,
+                                                size: mediaSize.width * 0.155))
+                                            .toList(),
+                                        tickedFriends: ticked,
+                                        cardHeight: _cardHeight,
+                                        onSelect: () {
+                                          setState(() {
+                                            _displayFriends = false;
+                                            _cardHeight = 0;
+                                          });
+                                        },
+                                      ))),
                         ),
                       ),
                     ]),
