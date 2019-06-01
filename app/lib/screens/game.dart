@@ -105,7 +105,7 @@ class _GameScreenState extends State<GameScreen> {
           profileName: "Jughead Jones"),
     ];
 
-    var _iconPath = "assets/ingredients/$_ingredientName.png";
+    var _iconPath = "assets/ingredients/${_ingredientName.toLowerCase()}.png";
 
     return WillPopScope(
       onWillPop: () {

@@ -18,8 +18,6 @@ class MainScreen extends StatelessWidget {
     return StreamBuilder<User>(
         stream: authProvider.profile,
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          // Debug
-          return AuthorizedMainScreen();
           if (!snapshot.hasData) {
             AuthBloc.instance.dispatch(NullUser());
             return UnauthorizedMainScreen();
