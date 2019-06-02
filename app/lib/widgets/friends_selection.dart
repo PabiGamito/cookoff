@@ -100,7 +100,7 @@ class FriendsList extends StatelessWidget {
                   children: [
                     for (var friend in user.friendsList)
                       new FriendCard(
-                          friendsBloc: _friendsBloc,
+                          bloc: _friendsBloc,
                           friend: friend,
                           mediaSize: mediaSize),
                   ])),
@@ -109,61 +109,58 @@ class FriendsList extends StatelessWidget {
 }
 
 class FriendCard extends StatelessWidget {
-  final FriendsSelectionBloc _friendsBloc;
+  final FriendsSelectionBloc _bloc;
   final User _friend;
   final Size mediaSize;
 
   const FriendCard({
-    FriendsSelectionBloc friendsBloc,
+    FriendsSelectionBloc bloc,
     User friend,
     this.mediaSize,
-  })  : _friendsBloc = friendsBloc,
+  })  : _bloc = bloc,
         _friend = friend;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _friendsBloc.dispatch(_friend.userId),
+      behavior: HitTestBehavior.translucent,
+      onTap: () => _bloc.dispatch(_friend.userId),
       child: Container(
-        height: mediaSize.height * 0.1,
-        margin: EdgeInsets.only(
-          bottom: 10,
-        ),
+        margin: EdgeInsets.only(bottom: Scalar(context).scale(20)),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            ProfileIcon(
-                user: _friend, size: Scalar(context).scale(60), borderWidth: 0),
-            Container(
-              width: mediaSize.width * 0.55,
-              child: Text(
+            Row(children: [
+              Container(
+                  padding: EdgeInsets.only(right: Scalar(context).scale(20)),
+                  child: ProfileIcon(
+                      user: _friend,
+                      size: Scalar(context).scale(60),
+                      borderWidth: 0)),
+              Text(
                 _friend.name,
                 style: TextStyle(
                   fontSize: mediaSize.width * 0.05,
                   fontFamily: "Montserrat",
                 ),
               ),
-            ),
+            ]),
             BlocBuilder(
-                bloc: _friendsBloc,
+                bloc: _bloc,
                 builder: (BuildContext context, Set<String> tickedFriends) =>
                     Container(
-                      width: mediaSize.width * 0.15,
-                      height: mediaSize.width * 0.15,
+                      width: Scalar(context).scale(45),
+                      height: Scalar(context).scale(45),
                       decoration: new BoxDecoration(
                         shape: BoxShape.circle,
                         color: tickedFriends.contains(_friend.userId)
                             ? Colors.lightBlueAccent
-                            : Colors.grey,
+                            : Color(0xFFC6C6C6),
                       ),
                       child: Center(
-                        child: Text(
-                          "\u{2713}",
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: mediaSize.width * 0.09,
+                        child: Icon(Icons.check,
                             color: Colors.white,
-                          ),
-                        ),
+                            size: Scalar(context).scale(20)),
                       ),
                     )),
           ],
