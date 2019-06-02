@@ -6,19 +6,40 @@ import 'rounded_card.dart';
 class ScrollableCard extends StatefulWidget {
   final Widget _background;
   final Widget _card;
+  final Color _cardColor;
+  final double _minHeight;
+  final double _maxHeight;
+  final double _startingHeight;
 
-  ScrollableCard({Widget background, Widget card})
-      : _background = background,
-        _card = card;
+  ScrollableCard({
+    Widget background,
+    Widget card,
+    Color cardColor = Colors.white,
+    double minHeight = 100,
+    double maxHeight,
+    double startingHeight,
+  })  : _background = background,
+        _card = card,
+        _cardColor = cardColor,
+        _minHeight = minHeight,
+        _maxHeight = maxHeight,
+        _startingHeight = startingHeight ?? minHeight;
 
   @override
-  State<StatefulWidget> createState() =>
-      _ScrollableCardState(background: _background, card: _card);
+  State<StatefulWidget> createState() => _ScrollableCardState(
+      background: _background,
+      card: _card,
+      cardColor: _cardColor,
+      minHeight: _minHeight,
+      maxHeight: _maxHeight,
+      startingHeight: _startingHeight);
 }
 
 class _ScrollableCardState extends State<ScrollableCard> {
   final Widget _background;
   final Widget _card;
+  final Color _cardColor;
+
   final double _minHeight;
   double _maxHeight;
 
@@ -28,11 +49,13 @@ class _ScrollableCardState extends State<ScrollableCard> {
   _ScrollableCardState({
     Widget background,
     Widget card,
+    Color cardColor = Colors.white,
     double minHeight = 100,
     double maxHeight,
     double startingHeight,
   })  : _background = background,
         _card = card,
+        _cardColor = cardColor,
         _minHeight = minHeight,
         _maxHeight = maxHeight,
         _cardHeight = startingHeight ?? minHeight;
@@ -81,6 +104,7 @@ class _ScrollableCardState extends State<ScrollableCard> {
             },
             child: RoundedCard(
               child: _card,
+              color: _cardColor,
             ),
           ),
         ),

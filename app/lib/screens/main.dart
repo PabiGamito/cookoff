@@ -5,6 +5,7 @@ import '../blocs/auth_bloc.dart';
 import '../models/user.dart';
 import '../providers/auth_provider.dart';
 import '../providers/user_provider.dart';
+import '../scalar.dart';
 import '../widgets/fragment.dart';
 import '../widgets/home_header.dart';
 import '../widgets/injector_widget.dart';
@@ -54,12 +55,19 @@ class NewAuthorizedMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollableCard(
+      maxHeight: MediaQuery.of(context).size.height,
+      // TODO: Figure out a better way to get these values
+      minHeight: MediaQuery.of(context).size.height -
+          (Scalar(context).scale(65) + Scalar(context).scale(25)),
+      // Container padding top, Container padding bottom, HomeHeader height,
       background: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Color(0xFFFFC544),
         child: Container(
-          padding: EdgeInsets.only(top: 65, bottom: 25),
+          padding: EdgeInsets.only(
+              top: Scalar(context).scale(65),
+              bottom: Scalar(context).scale(25)),
           child: BlocBuilder(
             bloc: AuthBloc.instance,
             builder: (BuildContext context, User user) {
@@ -74,7 +82,7 @@ class NewAuthorizedMainScreen extends StatelessWidget {
       card: FragmentContainer(
         startingFragment: 'home',
         fragments: {
-          'home': HomeScreen(),
+          'home': NewHomeScreen(),
           'ingredients': IngredientsScreen(),
         },
       ),
