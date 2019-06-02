@@ -17,6 +17,7 @@ class TileCarousel extends StatelessWidget {
         ),
         height: Scalar(context).scale(100),
         child: ListView(
+          physics: BouncingScrollPhysics(),
           padding: EdgeInsets.only(
             left: Scalar(context).scale(20),
             right: Scalar(context).scale(20),

@@ -157,6 +157,7 @@ class ChallengesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
+        physics: BouncingScrollPhysics(),
         padding: EdgeInsets.only(
           top: Scalar(context).scale(15),
           bottom: Scalar(context).scale(15),
