@@ -203,8 +203,8 @@ class _GameScreenState extends State<GameScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           SectionTitle(
-                            'Some inspiration...',
-                            Color(_bgColor.value + 0x00112211),
+                            title: 'Some inspiration...',
+                            color: Color(_bgColor.value + 0x00112211),
                             fontSize: Scalar(context).scale(25),
                           ),
                           Container(

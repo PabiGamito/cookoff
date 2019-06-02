@@ -6,7 +6,7 @@ class SectionTitle extends StatelessWidget {
   final Color _color;
   final double _fontSize;
 
-  const SectionTitle(String title, Color color, {@required double fontSize})
+  const SectionTitle({String title, Color color, double fontSize})
       : _title = title,
         _color = color,
         _fontSize = fontSize;

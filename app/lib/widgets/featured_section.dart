@@ -22,8 +22,8 @@ class FeaturedSection extends StatelessWidget {
                 left: Scalar(context).scale(30),
                 right: Scalar(context).scale(30)),
             child: SectionTitle(
-              _title,
-              _titleUnderlineColor,
+              title: _title,
+              color: _titleUnderlineColor,
               fontSize: Scalar(context).scale(25),
             ),
           ),

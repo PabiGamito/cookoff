@@ -35,15 +35,10 @@ class FriendsTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(
-            left: mediaSize.width * 0.07,
-          ),
-          child: SectionTitle(
-            'Friends',
-            Color(0x00112211),
-            fontSize: mediaSize.height * 0.03,
-          ),
+        SectionTitle(
+          title: 'Friends',
+          color: Colors.lightBlue,
+          fontSize: mediaSize.height * 0.03,
         ),
         Container(
           padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
