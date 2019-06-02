@@ -17,6 +17,7 @@ class CardRoundedBorder extends StatelessWidget {
       padding: EdgeInsets.only(
         top: Scalar(context).scale(30),
         left: Scalar(context).scale(30),
+        right: Scalar(context).scale(30),
       ),
       decoration: new BoxDecoration(
         color: Color(0xFFF5F5F5),

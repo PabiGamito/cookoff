@@ -23,7 +23,8 @@ class FriendsTab extends StatelessWidget {
     Function onSelect,
     Function onScroll,
     bool scrollable = false,
-  })  : _friendsBloc = friendsBloc,
+  })
+      : _friendsBloc = friendsBloc,
         _tickedFriends = tickedFriends,
         _cardHeight = cardHeight,
         _onSelect = onSelect,
@@ -32,7 +33,9 @@ class FriendsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mediaSize = MediaQuery.of(context).size;
+    var mediaSize = MediaQuery
+        .of(context)
+        .size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -45,14 +48,13 @@ class FriendsTab extends StatelessWidget {
           padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
         ),
         FriendsList(
-            inspirationCardHeight: _cardHeight,
             friendsBloc: _friendsBloc,
             scrollable: _scrollable,
             onScroll: _onScroll),
         Center(
           child: GestureDetector(
             onTap: _onSelect,
-            child: FriendSelectButton(),
+            child: FriendsSelectButton(),
           ),
         ),
       ],
@@ -63,22 +65,19 @@ class FriendsTab extends StatelessWidget {
 class FriendsList extends StatelessWidget {
   final FriendsSelectionBloc _friendsBloc;
   final Function _onScroll;
-  final double _inspirationCardHeight;
   final bool _scrollable;
 
   FriendsList(
-      {double inspirationCardHeight,
-      FriendsSelectionBloc friendsBloc,
-      bool scrollable,
-      Function onScroll})
-      : _inspirationCardHeight = inspirationCardHeight,
-        _friendsBloc = friendsBloc,
+      {FriendsSelectionBloc friendsBloc, bool scrollable, Function onScroll})
+      : _friendsBloc = friendsBloc,
         _scrollable = scrollable,
         _onScroll = onScroll;
 
   @override
   Widget build(BuildContext context) {
-    var mediaSize = MediaQuery.of(context).size;
+    var mediaSize = MediaQuery
+        .of(context)
+        .size;
     var scrollController = ScrollController();
     scrollController?.addListener(() {
       double offset = scrollController.offset;
@@ -90,7 +89,8 @@ class FriendsList extends StatelessWidget {
       height: 250,
       child: BlocBuilder(
           bloc: AuthBloc.instance,
-          builder: (BuildContext context, User user) => ListView(
+          builder: (BuildContext context, User user) =>
+              ListView(
                   padding: EdgeInsets.only(top: 0),
                   addRepaintBoundaries: false,
                   physics: _scrollable
@@ -117,7 +117,8 @@ class FriendCard extends StatelessWidget {
     FriendsSelectionBloc bloc,
     User friend,
     this.mediaSize,
-  })  : _bloc = bloc,
+  })
+      : _bloc = bloc,
         _friend = friend;
 
   @override
@@ -170,30 +171,24 @@ class FriendCard extends StatelessWidget {
   }
 }
 
-class FriendSelectButton extends StatelessWidget {
+class FriendsSelectButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    var mediaSize = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.only(top: mediaSize.height * 0.03),
-      width: mediaSize.width * 0.8,
-      height: mediaSize.height * 0.08,
-      decoration: new BoxDecoration(
-          color: Colors.lightBlueAccent,
-          borderRadius:
-              BorderRadius.all(Radius.circular(mediaSize.width * 0.03))),
-      child: Center(
-        child: Text(
-          "\u{2713} Select",
-          style: TextStyle(
-            fontSize: mediaSize.width * 0.07,
-            fontFamily: "Montserrat",
-            letterSpacing: 2,
-            wordSpacing: 2,
-            color: Colors.white,
+  Widget build(BuildContext context) =>
+      Container(
+        padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(15)),
+        decoration: new BoxDecoration(
+            color: Colors.lightBlueAccent,
+            borderRadius: BorderRadius.all(Radius.circular(8))),
+        child: Center(
+          child: Text(
+            "SELECT",
+            style: TextStyle(
+              fontSize: Scalar(context).scale(22),
+              fontFamily: "Montserrat",
+              letterSpacing: 3,
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
