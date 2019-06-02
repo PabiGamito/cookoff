@@ -1,3 +1,4 @@
+import 'package:cookoff/widgets/scrollable_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,7 +45,7 @@ class MainScreen extends StatelessWidget {
                   // Set friends list and notify auth bloc
                   AuthBloc.instance
                       .dispatch(User.copyWithFriendsList(user, snapshot.data));
-                  return NewAuthorizedMainScreen();
+                  return AuthorizedMainScreen();
                 });
           }
         });
@@ -58,7 +59,9 @@ class NewAuthorizedMainScreen extends StatelessWidget {
       maxHeight: MediaQuery.of(context).size.height,
       // TODO: Figure out a better way to get these values
       minHeight: MediaQuery.of(context).size.height -
-          (Scalar(context).scale(65) + Scalar(context).scale(25)),
+          (Scalar(context).scale(65) +
+              Scalar(context).scale(25) +
+              Scalar(context).scale(108)),
       // Container padding top, Container padding bottom, HomeHeader height,
       background: Container(
         height: MediaQuery.of(context).size.height,
@@ -82,7 +85,7 @@ class NewAuthorizedMainScreen extends StatelessWidget {
       card: FragmentContainer(
         startingFragment: 'home',
         fragments: {
-          'home': NewHomeScreen(),
+          'home': HomeScreen(),
           'ingredients': IngredientsScreen(),
         },
       ),
@@ -93,36 +96,42 @@ class NewAuthorizedMainScreen extends StatelessWidget {
 class AuthorizedMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AuthProvider provider = InjectorWidget.of(context).injector.authProvider;
-
-    return Container(
-      color: Color(0xFFFFC544),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Container(
-            padding: EdgeInsets.only(top: 65, bottom: 25),
-            child: BlocBuilder(
-              bloc: AuthBloc.instance,
-              builder: (BuildContext context, User user) {
-                // Tapping the header signs out the user for now
-                return GestureDetector(
-                  child: HomeHeader(user: user, notificationCount: 3),
-                  onTap: () {
-                    AuthBloc.instance.dispatch(NullUser());
-                    provider.signOut();
-                  },
-                );
-              },
-            )),
-        Expanded(
-          child: FragmentContainer(
-            startingFragment: 'home',
-            fragments: {
-              'home': HomeScreen(),
-              'ingredients': IngredientsScreen(),
-            },
-          ),
+    return ScrollableLayout(
+      // TODO: Do this in a clear way
+      maxOffset: Scalar(context).scale(65) +
+          Scalar(context).scale(25) +
+          Scalar(context).scale(108) +
+          Scalar(context).scale(10) +
+          Scalar(context).scale(10),
+      main: Container(
+        color: Color(0xFFFFC544),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                  top: Scalar(context).scale(65),
+                  bottom: Scalar(context).scale(25)),
+              child: BlocBuilder(
+                bloc: AuthBloc.instance,
+                builder: (BuildContext context, User user) {
+                  return HomeHeader(user: user, notificationCount: 3);
+                },
+              ),
+            ),
+            Expanded(
+              child: Container(),
+            ),
+          ],
         ),
-      ]),
+      ),
+      card: FragmentContainer(
+        startingFragment: 'home',
+        fragments: {
+          'home': NewHomeScreen(),
+          'ingredients': IngredientsScreen(),
+        },
+      ),
     );
   }
 }

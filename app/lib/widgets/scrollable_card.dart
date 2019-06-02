@@ -104,7 +104,7 @@ class _ScrollableCardState extends State<ScrollableCard> {
             },
             child: RoundedCard(
               child: _card,
-              color: _cardColor,
+              backgroundColor: _cardColor,
             ),
           ),
         ),

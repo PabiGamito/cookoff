@@ -186,11 +186,8 @@ class _GameScreenState extends State<GameScreen> {
                     ]),
                 // Inspiration tab
                 VerticalScrollable(
-                  heightOffset: _cardHeight,
-                  initialHeight: mediaSize.height,
-                  initialWidth: mediaSize.width,
                   maxHeight: mediaSize.height * 0.76,
-                  initialHeightOffset: mediaSize.height * 0.89,
+                  startingHeightOffset: mediaSize.height * 0.89,
                   child: RoundedCard(
                       child: TitledSection(
                           title: 'Some inspiration...',
