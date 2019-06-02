@@ -3,58 +3,43 @@ import 'package:cookoff/blocs/friends_selection_bloc.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
-import 'package:cookoff/widgets/section_title.dart';
+import 'package:cookoff/widgets/titled_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FriendsTab extends StatelessWidget {
-  final Function _onSelect;
+  final Function _onClose;
   final Function _onScroll;
-  final double _cardHeight;
-  final FriendsSelectionBloc _friendsBloc;
-  final Set<String> _tickedFriends;
+  final FriendsSelectionBloc _bloc;
   final bool _scrollable;
 
   FriendsTab({
-    FriendsSelectionBloc friendsBloc,
-    Set<String> tickedFriends,
-    double cardHeight,
-    Function onSelect,
+    FriendsSelectionBloc bloc,
+    Function onClose,
     Function onScroll,
     bool scrollable = false,
-  })  : _friendsBloc = friendsBloc,
-        _tickedFriends = tickedFriends,
-        _cardHeight = cardHeight,
-        _onSelect = onSelect,
+  })  : _bloc = bloc,
+        _onClose = onClose,
         _onScroll = onScroll,
         _scrollable = scrollable;
 
   @override
-  Widget build(BuildContext context) {
-    var mediaSize = MediaQuery.of(context).size;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SectionTitle(
-          title: 'Friends',
-          color: Colors.lightBlue,
-          fontSize: mediaSize.height * 0.03,
-        ),
-        Container(
-          padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
-        ),
-        FriendsList(
-            bloc: _friendsBloc, scrollable: _scrollable, onScroll: _onScroll),
-        Center(
-          child: GestureDetector(
-            onTap: _onSelect,
-            child: FriendsSelectButton(),
+  Widget build(BuildContext context) => TitledSection(
+      title: 'Add friends...',
+      underlineColor: Colors.lightBlue,
+      child: Column(
+        children: <Widget>[
+          FriendsList(
+              bloc: _bloc, scrollable: _scrollable, onScroll: _onScroll),
+          Center(
+            child: GestureDetector(
+              onTap: _onClose,
+              child: FriendsSelectButton(),
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      ));
 }
 
 class FriendsList extends StatelessWidget {
@@ -78,7 +63,7 @@ class FriendsList extends StatelessWidget {
     });
 
     return Container(
-      height: 250,
+      height: 220,
       child: BlocBuilder(
           bloc: AuthBloc.instance,
           builder: (BuildContext context, User user) => ListView(

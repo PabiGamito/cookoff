@@ -244,29 +244,22 @@ class _GameScreenState extends State<GameScreen> {
                         },
                         child: CardRoundedBorder(
                             cardHeight: _cardHeight,
-                            child: BlocBuilder(
-                                bloc: AuthBloc.instance,
-                                builder: (BuildContext context, User user) =>
-                                    FriendsTab(
-                                      friendsBloc: _friendsBloc,
-                                      tickedFriends: ticked,
-                                      cardHeight: _cardHeight,
-                                      scrollable: _friendsListScrollable &&
-                                          (_cardHeight >=
-                                              (mediaSize.height * 0.3 - 1)),
-                                      onSelect: () {
-                                        setState(() {
-                                          _displayFriends = false;
-                                          _cardHeight = 0;
-                                        });
-                                      },
-                                      onScroll: (double offset) {
-                                        setState(() {
-                                          _friendsListScrollable =
-                                              offset >= 0.0;
-                                        });
-                                      },
-                                    ))),
+                            child: FriendsTab(
+                              bloc: _friendsBloc,
+                              scrollable: _friendsListScrollable &&
+                                  (_cardHeight >= (mediaSize.height * 0.3 - 1)),
+                              onClose: () {
+                                setState(() {
+                                  _displayFriends = false;
+                                  _cardHeight = 0;
+                                });
+                              },
+                              onScroll: (double offset) {
+                                setState(() {
+                                  _friendsListScrollable = offset >= 0.0;
+                                });
+                              },
+                            )),
                       ),
                     ]),
                   ),
