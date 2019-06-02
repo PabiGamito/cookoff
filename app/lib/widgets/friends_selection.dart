@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 
 class FriendsTab extends StatelessWidget {
   final Function _onSelect;
-  final Function _onTopMost;
+  final Function _onScroll;
   final double _cardHeight;
   final FriendsSelectionBloc _friendsBloc;
   final List<ProfileIcon> _friendsList;
@@ -19,14 +19,14 @@ class FriendsTab extends StatelessWidget {
     Set<String> tickedFriends,
     double cardHeight,
     Function onSelect,
-    Function onTopMost,
+    Function onScroll,
     bool scrollable = false,
   })  : _friendsBloc = friendsBloc,
         _friendsList = friendsList,
         _tickedFriends = tickedFriends,
         _cardHeight = cardHeight,
         _onSelect = onSelect,
-        _onTopMost = onTopMost,
+        _onScroll = onScroll,
         _scrollable = scrollable;
 
   @override
@@ -49,7 +49,7 @@ class FriendsTab extends StatelessWidget {
           padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
         ),
         FriendsList(_cardHeight, _friendsBloc, _friendsList, _tickedFriends,
-            _scrollable, _onTopMost),
+            _scrollable, _onScroll),
         Center(
           child: GestureDetector(
             onTap: _onSelect,
@@ -63,7 +63,7 @@ class FriendsTab extends StatelessWidget {
 
 class FriendsList extends StatelessWidget {
   final FriendsSelectionBloc _friendsBloc;
-  final Function _onTopMost;
+  final Function _onScroll;
   final List<ProfileIcon> _friendsList;
   final Set<String> _tickedFriends;
   final double _inspirationCardHeight;
@@ -75,13 +75,13 @@ class FriendsList extends StatelessWidget {
       List<ProfileIcon> friendsList,
       Set<String> tickedFriends,
       bool scrollable,
-      Function onTopMost)
+      Function onScroll)
       : _inspirationCardHeight = inspirationCardHeight,
         _friendsBloc = friendsBloc,
         _friendsList = friendsList,
         _tickedFriends = tickedFriends,
         _scrollable = scrollable,
-        _onTopMost = onTopMost;
+        _onScroll = onScroll;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class FriendsList extends StatelessWidget {
       double offset = scrollController.offset;
 
       if (offset < 0.0) scrollController.jumpTo(0.0);
-      _onTopMost(offset);
+      _onScroll(offset);
     });
     return Container(
       margin: EdgeInsets.only(

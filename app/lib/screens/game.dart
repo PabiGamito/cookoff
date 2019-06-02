@@ -139,7 +139,8 @@ class _GameScreenState extends State<GameScreen> {
                                           ..add(owner.userId),
                                         ingredient: _ingredientName,
                                         complete: false,
-                                        end: DateTime.now().add(_gameDuration ?? Duration(days: 1)));
+                                        end: DateTime.now().add(_gameDuration ??
+                                            Duration(days: 1)));
                                     challengeProvider.addChallenge(_challenge);
                                     _gameStarted = true;
                                     _timeLeftWidget = Countdown(_challenge.end);
@@ -161,11 +162,14 @@ class _GameScreenState extends State<GameScreen> {
                                       ProfileList(
                                         user.friendsList
                                             .where((friend) {
-                                          var list = _gameStarted
-                                              ? _challenge.participants
-                                              : ticked;
-                                          return list.contains(friend.userId);
-                                        }).map((user) => Observable.just(user))
+                                              var list = _gameStarted
+                                                  ? _challenge.participants
+                                                  : ticked;
+                                              return list
+                                                  .contains(friend.userId);
+                                            })
+                                            .map(
+                                                (user) => Observable.just(user))
                                             .toList(),
                                         iconSize: Scalar(context).scale(50),
                                         iconOffset: Scalar(context).scale(-10),
@@ -277,18 +281,20 @@ class _GameScreenState extends State<GameScreen> {
                                         tickedFriends: ticked,
                                         cardHeight: _cardHeight,
                                         scrollable: _friendsListScrollable &&
-                                  (_cardHeight >= (mediaSize.height * 0.3 - 1)),
-                              onSelect: () {
-                                setState(() {
-                                  _displayFriends = false;
-                                  _cardHeight = 0;
-                                });
-                              },
-                              onTopMost: (double offset) {
-                                setState(() {
-                                  _friendsListScrollable = offset >= 0.0;
-                                });
-                              },
+                                            (_cardHeight >=
+                                                (mediaSize.height * 0.3 - 1)),
+                                        onSelect: () {
+                                          setState(() {
+                                            _displayFriends = false;
+                                            _cardHeight = 0;
+                                          });
+                                        },
+                                        onScroll: (double offset) {
+                                          setState(() {
+                                            _friendsListScrollable =
+                                                offset >= 0.0;
+                                          });
+                                        },
                                       ))),
                         ),
                       ),
