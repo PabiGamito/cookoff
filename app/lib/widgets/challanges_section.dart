@@ -244,7 +244,7 @@ class ChallengeInnerContent extends StatelessWidget {
     List<Stream<User>> users = [];
 
     for (int i = 0; i < 2; i++) {
-      if (i >= _challenge.participants.length - 1) {
+      if (i >= _challenge.participants.length) {
         break;
       }
       Observable<User> user = InjectorWidget.of(context)
