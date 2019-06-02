@@ -10,7 +10,6 @@ import 'package:cookoff/widgets/duration_picker.dart';
 import 'package:cookoff/widgets/friends_selection.dart';
 import 'package:cookoff/widgets/game_screen_ui.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
-import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:cookoff/widgets/scrollable.dart';
 import 'package:cookoff/widgets/section_title.dart';
@@ -250,11 +249,6 @@ class _GameScreenState extends State<GameScreen> {
                                 builder: (BuildContext context, User user) =>
                                     FriendsTab(
                                       friendsBloc: _friendsBloc,
-                                      friendsList: user.friendsList
-                                          .map((user) => ProfileIcon.fromUser(
-                                              user,
-                                              size: mediaSize.width * 0.155))
-                                          .toList(),
                                       tickedFriends: ticked,
                                       cardHeight: _cardHeight,
                                       scrollable: _friendsListScrollable &&

@@ -51,7 +51,11 @@ class IngredientsSection extends StatelessWidget {
           padding: EdgeInsets.only(
               left: Scalar(context).scale(30),
               right: Scalar(context).scale(30)),
-          child: SectionTitle(title: _title, color: _titleUnderlineColor),
+          child: SectionTitle(
+            title: _title,
+            color: _titleUnderlineColor,
+            fontSize: Scalar(context).scale(25),
+          ),
         ),
         TileCarousel(
           tiles: tiles,

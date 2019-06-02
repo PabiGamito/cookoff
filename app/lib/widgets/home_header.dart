@@ -1,16 +1,15 @@
+import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
-  final String _name;
+  final User _user;
   final int _notificationCount;
-  final String _profileImagePath;
 
-  HomeHeader(String name, int notificationCount, String profileImagePath)
-      : _name = name,
-        _notificationCount = notificationCount,
-        _profileImagePath = profileImagePath;
+  HomeHeader({User user, int notificationCount})
+      : _user = user,
+        _notificationCount = notificationCount;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -23,7 +22,7 @@ class HomeHeader extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.all(Scalar(context).scale(10)),
                     child: ProfileIcon(
-                      _profileImagePath,
+                      user: _user,
                       size: Scalar(context).scale(108),
                       borderWidth: Scalar(context).scale(5),
                     ),
@@ -38,7 +37,7 @@ class HomeHeader extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(left: Scalar(context).scale(20)),
-              child: HelloMessage(_name),
+              child: HelloMessage(_user.firstName),
             ),
           ],
         ),

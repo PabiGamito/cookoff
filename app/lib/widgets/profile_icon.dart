@@ -3,37 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ProfileIcon extends StatelessWidget {
-  final String imgPath;
-  final double size;
-  final double _borderWidth;
-  final name;
-  final String uid;
+  // Placeholder for null profile
+  static const String _placeholderUrl =
+      'https://firebasestorage.googleapis.com/v0/b/pomegranate-catfish.appspot.'
+      'com/o/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg?alt=media&token'
+      '=3c1cb58c-f054-4fc1-a684-734b4ee0e3d3';
 
-  ProfileIcon(this.imgPath,
-      {this.size = 50, double borderWidth = 5, String profileName, String uid})
-      : name = profileName ?? imgPath,
-        _borderWidth = borderWidth,
-        this.uid = uid;
+  final User _user;
+  final double _size;
+  final double _borderWidth;
+
+  ProfileIcon({User user, double size, double borderWidth})
+      : _user = user,
+        _size = size,
+        _borderWidth = borderWidth;
 
   @override
   Widget build(BuildContext context) => Container(
         child: new Container(
-          width: size,
-          height: size,
+          width: _size,
+          height: _size,
           decoration: new BoxDecoration(
               border: Border.all(color: Colors.white, width: _borderWidth),
               shape: BoxShape.circle,
               image: new DecorationImage(
-                  fit: BoxFit.cover, image: NetworkImage(imgPath))),
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                      _user?.profilePictureUrl ?? _placeholderUrl))),
         ),
       );
-
-  factory ProfileIcon.fromUser(User user, {size = 50.0, borderWidth = 5.0}) =>
-      ProfileIcon(user.profilePictureUrl,
-          profileName: user.name,
-          size: size,
-          borderWidth: borderWidth,
-          uid: user.userId);
 }
 
 class AddProfileIcon extends StatelessWidget {

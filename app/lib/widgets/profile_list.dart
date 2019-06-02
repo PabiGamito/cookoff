@@ -12,12 +12,6 @@ class ProfileList extends StatelessWidget {
   final Function _onTap;
   final double _iconSize;
 
-  // placeholder for null profile image
-  static const String placeholderUrl =
-      'https://firebasestorage.googleapis.com/v0/b/pomegranate-catfish.appspot.'
-      'com/o/240_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg?alt=media&token'
-      '=3c1cb58c-f054-4fc1-a684-734b4ee0e3d3';
-
   ProfileList(List<Stream<User>> users,
       {Function onTap,
       bool hasMoreIcon = true,
@@ -37,17 +31,11 @@ class ProfileList extends StatelessWidget {
     for (var i = 0; i < _users.length; i++) {
       iconBuilders.add(StreamBuilder(
         stream: _users[i],
-        builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          String url = snapshot.data == null
-              ? placeholderUrl
-              : snapshot.data.profilePictureUrl;
-          return Positioned(
-              left: _iconOffset * i,
-              child: ProfileIcon(
-                url,
-                size: _iconSize,
-              ));
-        },
+        builder: (BuildContext context, AsyncSnapshot<User> snapshot) =>
+            Positioned(
+                left: _iconOffset * i,
+                child: ProfileIcon(
+                    user: snapshot.data, size: _iconSize, borderWidth: 5)),
       ));
     }
 
