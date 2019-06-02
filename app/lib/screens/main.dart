@@ -1,13 +1,14 @@
-import 'package:cookoff/blocs/auth_bloc.dart';
-import 'package:cookoff/models/user.dart';
-import 'package:cookoff/providers/auth_provider.dart';
-import 'package:cookoff/providers/user_provider.dart';
-import 'package:cookoff/widgets/fragment.dart';
-import 'package:cookoff/widgets/home_header.dart';
-import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/auth_bloc.dart';
+import '../models/user.dart';
+import '../providers/auth_provider.dart';
+import '../providers/user_provider.dart';
+import '../widgets/fragment.dart';
+import '../widgets/home_header.dart';
+import '../widgets/injector_widget.dart';
+import '../widgets/scrollable_card.dart';
 import 'home.dart';
 import 'ingredients.dart';
 
@@ -42,10 +43,42 @@ class MainScreen extends StatelessWidget {
                   // Set friends list and notify auth bloc
                   AuthBloc.instance
                       .dispatch(User.copyWithFriendsList(user, snapshot.data));
-                  return AuthorizedMainScreen();
+                  return NewAuthorizedMainScreen();
                 });
           }
         });
+  }
+}
+
+class NewAuthorizedMainScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ScrollableCard(
+      background: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        color: Color(0xFFFFC544),
+        child: Container(
+          padding: EdgeInsets.only(top: 65, bottom: 25),
+          child: BlocBuilder(
+            bloc: AuthBloc.instance,
+            builder: (BuildContext context, User user) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [HomeHeader(user: user, notificationCount: 3)],
+              );
+            },
+          ),
+        ),
+      ),
+      card: FragmentContainer(
+        startingFragment: 'home',
+        fragments: {
+          'home': HomeScreen(),
+          'ingredients': IngredientsScreen(),
+        },
+      ),
+    );
   }
 }
 

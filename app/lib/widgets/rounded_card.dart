@@ -18,8 +18,8 @@ class RoundedCard extends StatelessWidget {
         decoration: new BoxDecoration(
             color: _backgroundColor,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(Scalar(context).scale(35)),
-              topRight: Radius.circular(Scalar(context).scale(35)),
+              topLeft: Radius.circular(Scalar(context).scale(38)),
+              topRight: Radius.circular(Scalar(context).scale(38)),
             )),
         child: _child);
   }

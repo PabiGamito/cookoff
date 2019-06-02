@@ -1,9 +1,9 @@
-import 'package:cookoff/screens/main.dart';
-import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'injector.dart';
+import 'screens/main.dart';
+import 'widgets/injector_widget.dart';
 
 void main() {
   var injector = InjectorWidget(child: App(), injector: Injector());
@@ -18,6 +18,9 @@ void main() {
 
 class App extends StatelessWidget {
   @override
-  Widget build(BuildContext context) =>
-      MaterialApp(home: Scaffold(body: MainScreen()));
+  Widget build(BuildContext context) => MaterialApp(
+        home: Scaffold(
+          body: MainScreen(),
+        ),
+      );
 }
