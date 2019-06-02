@@ -23,8 +23,7 @@ class FriendsTab extends StatelessWidget {
     Function onSelect,
     Function onScroll,
     bool scrollable = false,
-  })
-      : _friendsBloc = friendsBloc,
+  })  : _friendsBloc = friendsBloc,
         _tickedFriends = tickedFriends,
         _cardHeight = cardHeight,
         _onSelect = onSelect,
@@ -33,9 +32,7 @@ class FriendsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mediaSize = MediaQuery
-        .of(context)
-        .size;
+    var mediaSize = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -48,9 +45,7 @@ class FriendsTab extends StatelessWidget {
           padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
         ),
         FriendsList(
-            friendsBloc: _friendsBloc,
-            scrollable: _scrollable,
-            onScroll: _onScroll),
+            bloc: _friendsBloc, scrollable: _scrollable, onScroll: _onScroll),
         Center(
           child: GestureDetector(
             onTap: _onSelect,
@@ -63,21 +58,17 @@ class FriendsTab extends StatelessWidget {
 }
 
 class FriendsList extends StatelessWidget {
-  final FriendsSelectionBloc _friendsBloc;
+  final FriendsSelectionBloc _bloc;
   final Function _onScroll;
   final bool _scrollable;
 
-  FriendsList(
-      {FriendsSelectionBloc friendsBloc, bool scrollable, Function onScroll})
-      : _friendsBloc = friendsBloc,
+  FriendsList({FriendsSelectionBloc bloc, bool scrollable, Function onScroll})
+      : _bloc = bloc,
         _scrollable = scrollable,
         _onScroll = onScroll;
 
   @override
   Widget build(BuildContext context) {
-    var mediaSize = MediaQuery
-        .of(context)
-        .size;
     var scrollController = ScrollController();
     scrollController?.addListener(() {
       double offset = scrollController.offset;
@@ -85,13 +76,13 @@ class FriendsList extends StatelessWidget {
       if (offset < 0.0) scrollController.jumpTo(0.0);
       _onScroll(offset);
     });
+
     return Container(
       height: 250,
       child: BlocBuilder(
           bloc: AuthBloc.instance,
-          builder: (BuildContext context, User user) =>
-              ListView(
-                  padding: EdgeInsets.only(top: 0),
+          builder: (BuildContext context, User user) => ListView(
+                  padding: EdgeInsets.zero,
                   addRepaintBoundaries: false,
                   physics: _scrollable
                       ? BouncingScrollPhysics()
@@ -99,10 +90,7 @@ class FriendsList extends StatelessWidget {
                   controller: scrollController,
                   children: [
                     for (var friend in user.friendsList)
-                      new FriendCard(
-                          bloc: _friendsBloc,
-                          friend: friend,
-                          mediaSize: mediaSize),
+                      new FriendCard(bloc: _bloc, friend: friend),
                   ])),
     );
   }
@@ -111,14 +99,11 @@ class FriendsList extends StatelessWidget {
 class FriendCard extends StatelessWidget {
   final FriendsSelectionBloc _bloc;
   final User _friend;
-  final Size mediaSize;
 
   const FriendCard({
     FriendsSelectionBloc bloc,
     User friend,
-    this.mediaSize,
-  })
-      : _bloc = bloc,
+  })  : _bloc = bloc,
         _friend = friend;
 
   @override
@@ -136,25 +121,25 @@ class FriendCard extends StatelessWidget {
                   padding: EdgeInsets.only(right: Scalar(context).scale(20)),
                   child: ProfileIcon(
                       user: _friend,
-                      size: Scalar(context).scale(60),
+                      size: Scalar(context).scale(55),
                       borderWidth: 0)),
               Text(
                 _friend.name,
                 style: TextStyle(
-                  fontSize: mediaSize.width * 0.05,
+                  fontSize: Scalar(context).scale(20),
                   fontFamily: "Montserrat",
                 ),
               ),
             ]),
             BlocBuilder(
                 bloc: _bloc,
-                builder: (BuildContext context, Set<String> tickedFriends) =>
+                builder: (BuildContext context, Set<String> ticked) =>
                     Container(
                       width: Scalar(context).scale(45),
                       height: Scalar(context).scale(45),
                       decoration: new BoxDecoration(
                         shape: BoxShape.circle,
-                        color: tickedFriends.contains(_friend.userId)
+                        color: ticked.contains(_friend.userId)
                             ? Colors.lightBlueAccent
                             : Color(0xFFC6C6C6),
                       ),
@@ -173,8 +158,7 @@ class FriendCard extends StatelessWidget {
 
 class FriendsSelectButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context) =>
-      Container(
+  Widget build(BuildContext context) => Container(
         padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(15)),
         decoration: new BoxDecoration(
             color: Colors.lightBlueAccent,
