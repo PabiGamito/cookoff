@@ -12,6 +12,7 @@ import 'package:cookoff/widgets/game_screen_ui.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/profile_list.dart';
+import 'package:cookoff/widgets/scrollable.dart';
 import 'package:cookoff/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -190,38 +191,27 @@ class _GameScreenState extends State<GameScreen> {
                 // Inspiration tab
                 Visibility(
                   visible: !_displayFriends,
-                  child: Container(
-                    transform: Matrix4.translationValues(
-                        0, mediaSize.height * 0.89 - _cardHeight, 0),
-                    child: GestureDetector(
-                      onPanStart: (DragStartDetails details) {
-                        _dragPos = details.globalPosition.dy;
-                      },
-                      onPanUpdate: (DragUpdateDetails details) {
-                        var change = details.globalPosition.dy - _dragPos;
-                        if (_cardHeight - change >= 0 &&
-                            _cardHeight - change < mediaSize.height * 0.76)
-                          setState(() {
-                            _cardHeight -= change;
-                          });
-                        _dragPos = details.globalPosition.dy;
-                      },
-                      child: CardRoundedBorder(
-                        cardHeight: _cardHeight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SectionTitle(
-                              'Some inspiration...',
-                              Color(_bgColor.value + 0x00112211),
-                              fontSize: Scalar(context).scale(25),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  bottom: Scalar(context).scale(20)),
-                            )
-                          ],
-                        ),
+                  child: VerticalScrollable(
+                    heightOffset: _cardHeight,
+                    initialHeight: mediaSize.height,
+                    initialWidth: mediaSize.width,
+                    maxHeight: mediaSize.height * 0.76,
+                    initialHeightOffset: mediaSize.height * 0.89,
+                    child: CardRoundedBorder(
+                      cardHeight: _cardHeight,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SectionTitle(
+                            'Some inspiration...',
+                            Color(_bgColor.value + 0x00112211),
+                            fontSize: Scalar(context).scale(25),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                                bottom: Scalar(context).scale(20)),
+                          )
+                        ],
                       ),
                     ),
                   ),
@@ -242,61 +232,47 @@ class _GameScreenState extends State<GameScreen> {
                           color: Color(0x66000000),
                         ),
                       ),
-                      Container(
-                        height: mediaSize.height,
-                        width: mediaSize.width,
-                        transform: Matrix4.translationValues(
-                            0, mediaSize.height * 0.45 - _cardHeight, 0),
-                        child: GestureDetector(
-                          onPanStart: (DragStartDetails details) {
-                            _dragPos = details.globalPosition.dy;
-                          },
-                          onPanUpdate: (DragUpdateDetails details) {
-                            var change = details.globalPosition.dy - _dragPos;
-                            if (_cardHeight - change >= 0 &&
-                                _cardHeight - change < mediaSize.height * 0.3) {
-                              setState(() {
-                                _cardHeight -= change;
-                              });
-                            } else {
-                              setState(() {
-                                _friendsListScrollable = true;
-                              });
-                            }
-
-                            _dragPos = details.globalPosition.dy;
-                          },
-                          child: CardRoundedBorder(
-                              cardHeight: _cardHeight,
-                              child: BlocBuilder(
-                                  bloc: AuthBloc.instance,
-                                  builder: (BuildContext context, User user) =>
-                                      FriendsTab(
-                                        friendsBloc: _friendsBloc,
-                                        friendsList: user.friendsList
-                                            .map((user) => ProfileIcon.fromUser(
-                                                user,
-                                                size: mediaSize.width * 0.155))
-                                            .toList(),
-                                        tickedFriends: ticked,
-                                        cardHeight: _cardHeight,
-                                        scrollable: _friendsListScrollable &&
-                                            (_cardHeight >=
-                                                (mediaSize.height * 0.3 - 1)),
-                                        onSelect: () {
-                                          setState(() {
-                                            _displayFriends = false;
-                                            _cardHeight = 0;
-                                          });
-                                        },
-                                        onScroll: (double offset) {
-                                          setState(() {
-                                            _friendsListScrollable =
-                                                offset >= 0.0;
-                                          });
-                                        },
-                                      ))),
-                        ),
+                      VerticalScrollable(
+                        heightOffset: _cardHeight,
+                        initialWidth: mediaSize.width,
+                        initialHeight: mediaSize.height,
+                        maxHeight: mediaSize.height * 0.3,
+                        initialHeightOffset: mediaSize.height * 0.45,
+                        onScrollLimit: () {
+                          setState(() {
+                            _friendsListScrollable = true;
+                          });
+                        },
+                        child: CardRoundedBorder(
+                            cardHeight: _cardHeight,
+                            child: BlocBuilder(
+                                bloc: AuthBloc.instance,
+                                builder: (BuildContext context, User user) =>
+                                    FriendsTab(
+                                      friendsBloc: _friendsBloc,
+                                      friendsList: user.friendsList
+                                          .map((user) => ProfileIcon.fromUser(
+                                              user,
+                                              size: mediaSize.width * 0.155))
+                                          .toList(),
+                                      tickedFriends: ticked,
+                                      cardHeight: _cardHeight,
+                                      scrollable: _friendsListScrollable &&
+                                          (_cardHeight >=
+                                              (mediaSize.height * 0.3 - 1)),
+                                      onSelect: () {
+                                        setState(() {
+                                          _displayFriends = false;
+                                          _cardHeight = 0;
+                                        });
+                                      },
+                                      onScroll: (double offset) {
+                                        setState(() {
+                                          _friendsListScrollable =
+                                              offset >= 0.0;
+                                        });
+                                      },
+                                    ))),
                       ),
                     ]),
                   ),
