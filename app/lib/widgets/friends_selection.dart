@@ -6,10 +6,12 @@ import 'package:flutter/widgets.dart';
 
 class FriendsTab extends StatelessWidget {
   final Function _onSelect;
+  final Function _onTopMost;
   final double _cardHeight;
   final FriendsSelectionBloc _friendsBloc;
   final List<ProfileIcon> _friendsList;
   final Set<String> _tickedFriends;
+  final bool _scrollable;
 
   FriendsTab({
     FriendsSelectionBloc friendsBloc,
@@ -17,11 +19,15 @@ class FriendsTab extends StatelessWidget {
     Set<String> tickedFriends,
     double cardHeight,
     Function onSelect,
+    Function onTopMost,
+    bool scrollable = false,
   })  : _friendsBloc = friendsBloc,
         _friendsList = friendsList,
         _tickedFriends = tickedFriends,
         _cardHeight = cardHeight,
-        _onSelect = onSelect;
+        _onSelect = onSelect,
+        _onTopMost = onTopMost,
+        _scrollable = scrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,8 @@ class FriendsTab extends StatelessWidget {
         Container(
           padding: EdgeInsets.only(bottom: mediaSize.height * 0.02),
         ),
-        FriendsList(_cardHeight, _friendsBloc, _friendsList, _tickedFriends),
+        FriendsList(_cardHeight, _friendsBloc, _friendsList, _tickedFriends,
+            _scrollable, _onTopMost),
         Center(
           child: GestureDetector(
             onTap: _onSelect,
@@ -56,20 +63,36 @@ class FriendsTab extends StatelessWidget {
 
 class FriendsList extends StatelessWidget {
   final FriendsSelectionBloc _friendsBloc;
+  final Function _onTopMost;
   final List<ProfileIcon> _friendsList;
   final Set<String> _tickedFriends;
   final double _inspirationCardHeight;
+  final bool _scrollable;
 
-  FriendsList(double inspirationCardHeight, FriendsSelectionBloc friendsBloc,
-      List<ProfileIcon> friendsList, Set<String> tickedFriends)
+  FriendsList(
+      double inspirationCardHeight,
+      FriendsSelectionBloc friendsBloc,
+      List<ProfileIcon> friendsList,
+      Set<String> tickedFriends,
+      bool scrollable,
+      Function onTopMost)
       : _inspirationCardHeight = inspirationCardHeight,
         _friendsBloc = friendsBloc,
         _friendsList = friendsList,
-        _tickedFriends = tickedFriends;
+        _tickedFriends = tickedFriends,
+        _scrollable = scrollable,
+        _onTopMost = onTopMost;
 
   @override
   Widget build(BuildContext context) {
     var mediaSize = MediaQuery.of(context).size;
+    var scrollController = ScrollController();
+    scrollController?.addListener(() {
+      double offset = scrollController.offset;
+
+      if (offset < 0.0) scrollController.jumpTo(0.0);
+      _onTopMost(offset);
+    });
     return Container(
       margin: EdgeInsets.only(
         left: mediaSize.width * 0.03,
@@ -77,7 +100,11 @@ class FriendsList extends StatelessWidget {
       height: mediaSize.height * 0.27 + _inspirationCardHeight,
       child: ListView(
           padding: EdgeInsets.only(top: 0),
-          physics: NeverScrollableScrollPhysics(),
+          addRepaintBoundaries: false,
+          physics: _scrollable
+              ? BouncingScrollPhysics()
+              : NeverScrollableScrollPhysics(),
+          controller: scrollController,
           children: [
             for (var friend in _friendsList)
               new FriendCard(

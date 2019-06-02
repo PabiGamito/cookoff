@@ -39,7 +39,6 @@ class _GameScreenState extends State<GameScreen> {
   final String _ingredientName;
   final Color _bgColor;
   final double _smallProfileScale = 0.13;
-  final Duration _defaultChallengeDuration = Duration(days: 1);
 
   Challenge _challenge;
   double _cardHeight = 0.0;
@@ -50,6 +49,8 @@ class _GameScreenState extends State<GameScreen> {
   Duration _gameDuration;
 
   Countdown _timeLeftWidget;
+
+  bool _friendsListScrollable = false;
 
   _GameScreenState(String ingredientName, Color bgColor, [Challenge challenge])
       : _challenge = challenge,
@@ -249,10 +250,16 @@ class _GameScreenState extends State<GameScreen> {
                           onPanUpdate: (DragUpdateDetails details) {
                             var change = details.globalPosition.dy - _dragPos;
                             if (_cardHeight - change >= 0 &&
-                                _cardHeight - change < mediaSize.height * 0.3)
+                                _cardHeight - change < mediaSize.height * 0.3) {
                               setState(() {
                                 _cardHeight -= change;
                               });
+                            } else {
+                              setState(() {
+                                _friendsListScrollable = true;
+                              });
+                            }
+
                             _dragPos = details.globalPosition.dy;
                           },
                           child: CardRoundedBorder(
@@ -269,12 +276,19 @@ class _GameScreenState extends State<GameScreen> {
                                             .toList(),
                                         tickedFriends: ticked,
                                         cardHeight: _cardHeight,
-                                        onSelect: () {
-                                          setState(() {
-                                            _displayFriends = false;
-                                            _cardHeight = 0;
-                                          });
-                                        },
+                                        scrollable: _friendsListScrollable &&
+                                  (_cardHeight >= (mediaSize.height * 0.3 - 1)),
+                              onSelect: () {
+                                setState(() {
+                                  _displayFriends = false;
+                                  _cardHeight = 0;
+                                });
+                              },
+                              onTopMost: (double offset) {
+                                setState(() {
+                                  _friendsListScrollable = offset >= 0.0;
+                                });
+                              },
                                       ))),
                         ),
                       ),
