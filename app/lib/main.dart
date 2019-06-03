@@ -18,9 +18,11 @@ void main() {
 
 class App extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        home: Scaffold(
-          body: MainScreen(),
-        ),
-      );
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: MainScreen(),
+      ),
+    );
+  }
 }

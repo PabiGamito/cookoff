@@ -10,7 +10,6 @@ import '../scalar.dart';
 import '../widgets/fragment.dart';
 import '../widgets/home_header.dart';
 import '../widgets/injector_widget.dart';
-import '../widgets/scrollable_card.dart';
 import 'home.dart';
 import 'ingredients.dart';
 
@@ -96,41 +95,42 @@ class NewAuthorizedMainScreen extends StatelessWidget {
 class AuthorizedMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScrollableLayout(
-      // TODO: Do this in a clear way
-      maxOffset: Scalar(context).scale(65) +
-          Scalar(context).scale(25) +
-          Scalar(context).scale(108) +
-          Scalar(context).scale(10) +
-          Scalar(context).scale(10),
-      main: Container(
-        color: Color(0xFFFFC544),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                  top: Scalar(context).scale(65),
-                  bottom: Scalar(context).scale(25)),
-              child: BlocBuilder(
-                bloc: AuthBloc.instance,
-                builder: (BuildContext context, User user) {
-                  return HomeHeader(user: user, notificationCount: 3);
-                },
+    return Container(
+      // Status bar height
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      child: ScrollableLayout(
+        maxOffset: Scalar(context).scale(185),
+        minOffset: Scalar(context).scale(0),
+        onTopOverScroll: (d) => {print("TOP OVERFLOW!!!")},
+        main: Container(
+          color: Color(0xFFFFC544),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                    top: Scalar(context).scale(30),
+                    bottom: Scalar(context).scale(25)),
+                child: BlocBuilder(
+                  bloc: AuthBloc.instance,
+                  builder: (BuildContext context, User user) {
+                    return HomeHeader(user: user, notificationCount: 3);
+                  },
+                ),
               ),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-          ],
+              Expanded(
+                child: Container(),
+              ),
+            ],
+          ),
         ),
-      ),
-      card: FragmentContainer(
-        startingFragment: 'home',
-        fragments: {
-          'home': NewHomeScreen(),
-          'ingredients': IngredientsScreen(),
-        },
+        card: FragmentContainer(
+          startingFragment: 'home',
+          fragments: {
+            'home': NewHomeScreen(),
+            'ingredients': IngredientsScreen(),
+          },
+        ),
       ),
     );
   }

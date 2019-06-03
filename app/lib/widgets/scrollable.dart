@@ -1,56 +1,69 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class VerticalScrollable extends StatefulWidget {
   final Widget _child;
+  final double _width;
+  final double _height;
   final double _maxHeight;
-  final double _minHeight;
+  final double _initialHeight;
 
   // Callback variable that updates based on scroll
-  final double _startingHeightOffset;
+  double heightOffset;
 
   // Callback function when reached max scroll height
   Function _onTopScrollLimit;
 
   VerticalScrollable(
-      {@required double startingHeightOffset,
+      {@required double heightOffset,
+      double initialHeight = 100,
+      double initialWidth = 100,
       double maxHeight = 200,
-      double minHeight = 100,
+      double initialHeightOffset = 100,
       Function onScrollLimit,
       Widget child})
-      : _startingHeightOffset = startingHeightOffset,
-        _minHeight = minHeight,
+      : heightOffset = heightOffset,
+        _height = initialHeight,
+        _width = initialWidth,
+        _initialHeight = initialHeightOffset,
         _maxHeight = maxHeight,
         _onTopScrollLimit = onScrollLimit,
         _child = child;
 
   @override
   State<StatefulWidget> createState() => _ScrollableState(
+      initialWidth: _width,
+      initialHeight: _height,
       maxHeight: _maxHeight,
-      minHeight: _minHeight,
-      startingHeightOffset: _startingHeightOffset,
+      initialHeightOffset: _initialHeight,
+      heightOffset: heightOffset,
       onScrollLimit: _onTopScrollLimit,
       child: _child);
 }
 
 class _ScrollableState extends State<VerticalScrollable> {
   Widget _child;
+  double _width;
+  double _height;
   double _maxHeight;
-  double _currentHeightOffset;
-  double _minHeight;
+  double _initialHeight;
+  double heightOffset;
 
   Function _onTopScrollLimit;
 
   double _dragPos;
 
   _ScrollableState(
-      {@required double startingHeightOffset,
+      {@required double heightOffset,
+      double initialHeight = 100,
+      double initialWidth = 100,
       double maxHeight = 200,
-      double minHeight = 100,
+      double initialHeightOffset = 100,
       Function onScrollLimit,
       Widget child})
-      : _currentHeightOffset = startingHeightOffset,
-        _minHeight = minHeight,
+      : heightOffset = heightOffset,
+        _height = initialHeight,
+        _width = initialWidth,
+        _initialHeight = initialHeightOffset,
         _maxHeight = maxHeight,
         _onTopScrollLimit = onScrollLimit,
         _child = child;
@@ -58,43 +71,28 @@ class _ScrollableState extends State<VerticalScrollable> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height + _maxHeight,
-      width: MediaQuery.of(context).size.width,
+      height: _height,
+      width: _width,
 
       // Translates the child widget to the initial height set, grows based on scroll height
-      transform: Matrix4.translationValues(0, -_currentHeightOffset, 0),
+      transform: Matrix4.translationValues(0, _initialHeight - heightOffset, 0),
       child: GestureDetector(
         onPanStart: (DragStartDetails details) {
           _dragPos = details.globalPosition.dy;
         },
         onPanUpdate: (DragUpdateDetails details) {
-          var _change = details.globalPosition.dy - _dragPos;
-          var _newHeightOffset = _currentHeightOffset - _change;
-
-          if (_newHeightOffset > _maxHeight) {
+          var change = details.globalPosition.dy - _dragPos;
+          if (heightOffset - change >= 0 &&
+              heightOffset - change < _maxHeight) {
             setState(() {
-              _currentHeightOffset = _maxHeight;
-              if (_onTopScrollLimit != null) _onTopScrollLimit();
-            });
-          } else if (_newHeightOffset < _minHeight) {
-            setState(() {
-              _currentHeightOffset = _minHeight;
+              heightOffset -= change;
             });
           } else {
-            setState(() {
-              _currentHeightOffset = _newHeightOffset;
-            });
+            if (_onTopScrollLimit != null) _onTopScrollLimit();
           }
-
           _dragPos = details.globalPosition.dy;
         },
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-              height: MediaQuery.of(context).size.height + _currentHeightOffset,
-              width: MediaQuery.of(context).size.width,
-              child: _child),
-        ),
+        child: _child,
       ),
     );
   }
