@@ -4,17 +4,22 @@ import 'package:flutter/material.dart';
 class RoundedCard extends StatelessWidget {
   final Color _backgroundColor;
   final Widget _child;
+  final bool _padding;
 
-  const RoundedCard({Color backgroundColor = Colors.white, Widget child})
+  const RoundedCard(
+      {Color backgroundColor = Colors.white, Widget child, bool padding = true})
       : _backgroundColor = backgroundColor,
-        _child = child;
+        _child = child,
+        _padding = padding;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.symmetric(
-            vertical: Scalar(context).scale(45),
-            horizontal: Scalar(context).scale(35)),
+          vertical: Scalar(context).scale(45),
+          horizontal:
+              _padding ? Scalar(context).scale(35) : Scalar(context).scale(0),
+        ),
         decoration: new BoxDecoration(
             color: _backgroundColor,
             borderRadius: BorderRadius.only(

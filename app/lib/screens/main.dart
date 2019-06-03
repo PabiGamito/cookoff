@@ -84,6 +84,7 @@ class AuthorizedMainScreen extends StatelessWidget {
         },
         cardBuilder: (context, scrolledAmount) {
           return RoundedCard(
+            padding: false,
             child: Container(
               padding: EdgeInsets.only(
                 bottom: Scalar(context).scale(15),
@@ -116,6 +117,7 @@ class AuthorizedMainScreen extends StatelessWidget {
       },
       cardBuilder: (context, scrolledAmount) {
         return RoundedCard(
+          padding: false,
           backgroundColor: Color(0xFFF5F5F5),
           child: ChallengesSection(challengeProvider),
         );

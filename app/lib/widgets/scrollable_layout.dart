@@ -156,7 +156,6 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
 
     if (scrollAmount < 0 && scrollUpAmountAvailable + scrollAmount < 0) {
       // Can't scroll this card up anymore
-      print("Can't scroll $cardIndex anymore");
 
       // Start scrolling card above it
       if (cardIndex > 0)
@@ -168,6 +167,11 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
     if (scrollAmount > 0 && scrollDownAmountAvailable - scrollAmount < 0) {
       // Can't scroll this card down anymore
 
+      // Start scrolling card above it
+      if (cardIndex > 0)
+        liveScrollCard(cardIndex - 1, scrollAmount - scrollDownAmountAvailable);
+
+      scrollAmount = scrollDownAmountAvailable;
     }
 
     _card.liveScroll(scrollAmount);
