@@ -30,7 +30,6 @@ class AuthFirebaseAdapter implements AuthProvider {
 
   @override
   Future signIn() async {
-    print("called");
     GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     AuthCredential credential = GoogleAuthProvider.getCredential(
