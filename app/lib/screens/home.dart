@@ -1,10 +1,8 @@
 import 'package:cookoff/models/ingredient.dart';
-import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
-import 'package:cookoff/widgets/scrollable_layout.dart';
 import 'package:flutter/material.dart';
 
 import '../models/ingredient.dart';
@@ -48,40 +46,5 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     ]);
-  }
-}
-
-class NewHomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // Challenge provider for challenge section
-    ChallengeProvider challengeProvider =
-        InjectorWidget.of(context).injector.challengeProvider;
-    return ScrollableLayout(
-      minOffset: Scalar(context).scale(100),
-      maxOffset: Scalar(context).scale(245),
-      main: RoundedCard(
-        child: Container(
-          padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
-          child: IngredientsSection(
-            title: 'Start cooking...',
-            titleUnderlineColor: Color(0xFF8EE5B6),
-            ingredients: <Ingredient>[
-              Ingredient(
-                  "cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
-              Ingredient(
-                  "orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
-              Ingredient("cauliflower", "assets/ingredients/cauliflower.png",
-                  Color(0xFF65D2EB)),
-            ],
-            more: true,
-          ),
-        ),
-      ),
-      card: RoundedCard(
-        backgroundColor: Color(0xFFF5F5F5),
-        child: ChallengesSection(challengeProvider),
-      ),
-    );
   }
 }

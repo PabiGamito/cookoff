@@ -1,3 +1,9 @@
+import 'package:cookoff/models/ingredient.dart';
+import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/widgets/challanges_section.dart';
+import 'package:cookoff/widgets/home_header.dart';
+import 'package:cookoff/widgets/ingredients_section.dart';
+import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/scrollable_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,11 +13,7 @@ import '../models/user.dart';
 import '../providers/auth_provider.dart';
 import '../providers/user_provider.dart';
 import '../scalar.dart';
-import '../widgets/fragment.dart';
-import '../widgets/home_header.dart';
 import '../widgets/injector_widget.dart';
-import 'home.dart';
-import 'ingredients.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -95,44 +97,155 @@ class NewAuthorizedMainScreen extends StatelessWidget {
 class AuthorizedMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Challenge provider for challenge section
+    ChallengeProvider challengeProvider =
+        InjectorWidget.of(context).injector.challengeProvider;
+
+    const double firstCardMaxOffset = 188;
+    const double firstCardTitleHeight = 100;
+    const double firstCardContentHeight = 160;
+
+    const double secondCardMaxOffset =
+        firstCardMaxOffset + firstCardTitleHeight + firstCardContentHeight;
+
+    const double minScrollAmount =
+        -(secondCardMaxOffset - firstCardTitleHeight);
+
+    var card1 = ScrollableCard(
+        minOffset: 0,
+        maxOffset: Scalar(context).scale(firstCardMaxOffset),
+        startingOffset: Scalar(context).scale(firstCardMaxOffset),
+        cardOffset: (context, scrolledAmount) {
+          if (scrolledAmount > -Scalar(context).scale(firstCardContentHeight)) {
+            return Scalar(context).scale(firstCardMaxOffset);
+          }
+          return Scalar(context)
+                  .scale(firstCardMaxOffset + firstCardContentHeight) +
+              scrolledAmount;
+        },
+        cardBuilder: (context, scrolledAmount) {
+          return RoundedCard(
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: Scalar(context).scale(15),
+              ),
+              child: IngredientsSection(
+                title: 'Start cooking...',
+                titleUnderlineColor: Color(0xFF8EE5B6),
+                ingredients: <Ingredient>[
+                  Ingredient("cheese", "assets/ingredients/cheese.png",
+                      Color(0xFF7C54EA)),
+                  Ingredient("orange", "assets/ingredients/orange.png",
+                      Color(0xFFD0EB5C)),
+                  Ingredient("cauliflower",
+                      "assets/ingredients/cauliflower.png", Color(0xFF65D2EB)),
+                ],
+                more: true,
+              ),
+            ),
+          );
+        });
+
+    var card2 = ScrollableCard(
+      minOffset: firstCardTitleHeight,
+      maxOffset:
+          Scalar(context).scale(firstCardTitleHeight + firstCardContentHeight),
+      startingOffset:
+          Scalar(context).scale(firstCardTitleHeight + firstCardContentHeight),
+      cardOffset: (context, scrolledAmount) {
+        return Scalar(context).scale(secondCardMaxOffset) + scrolledAmount;
+      },
+      cardBuilder: (context, scrolledAmount) {
+        return RoundedCard(
+          color: Color(0xFFF5F5F5),
+          child: ChallengesSection(challengeProvider),
+        );
+      },
+    );
+
     return Container(
       // Status bar height
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: ScrollableLayout(
-        maxOffset: Scalar(context).scale(185),
-        minOffset: Scalar(context).scale(0),
-        onTopOverScroll: (d) => {print("TOP OVERFLOW!!!")},
-        main: Container(
-          color: Color(0xFFFFC544),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.only(
-                    top: Scalar(context).scale(30),
-                    bottom: Scalar(context).scale(25)),
-                child: BlocBuilder(
-                  bloc: AuthBloc.instance,
-                  builder: (BuildContext context, User user) {
-                    return HomeHeader(user: user, notificationCount: 3);
-                  },
+        minScroll: Scalar(context).scale(minScrollAmount),
+        maxScroll: 0,
+        scrollableCards: [
+          ScrollableCard(
+            minOffset: 0,
+            maxOffset: 0,
+            startingOffset: 0,
+            cardOffset: (context, scrolledAmount) => 0,
+            cardBuilder: (context, scrolledAmount) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: Color(0xFFFFC544),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: Scalar(context).scale(30),
+                          bottom: Scalar(context).scale(25)),
+                      child: BlocBuilder(
+                        bloc: AuthBloc.instance,
+                        builder: (BuildContext context, User user) {
+                          return HomeHeader(user: user, notificationCount: 3);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                  ],
                 ),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-            ],
+              );
+            },
           ),
-        ),
-        card: FragmentContainer(
-          startingFragment: 'home',
-          fragments: {
-            'home': NewHomeScreen(),
-            'ingredients': IngredientsScreen(),
-          },
-        ),
+          card1,
+          card2,
+        ],
       ),
     );
+
+//    return Container(
+//      // Status bar height
+//      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+//      child: ScrollableLayout(
+//        maxOffset: Scalar(context).scale(185),
+//        minOffset: Scalar(context).scale(0),
+//        onTopOverScroll: (d) => {print("TOP OVERFLOW!!!")},
+//        main: Container(
+//          color: Color(0xFFFFC544),
+//          child: Column(
+//            mainAxisSize: MainAxisSize.min,
+//            children: [
+//              Container(
+//                padding: EdgeInsets.only(
+//                    top: Scalar(context).scale(30),
+//                    bottom: Scalar(context).scale(25)),
+//                child: BlocBuilder(
+//                  bloc: AuthBloc.instance,
+//                  builder: (BuildContext context, User user) {
+//                    return HomeHeader(user: user, notificationCount: 3);
+//                  },
+//                ),
+//              ),
+//              Expanded(
+//                child: Container(),
+//              ),
+//            ],
+//          ),
+//        ),
+//        card: FragmentContainer(
+//          startingFragment: 'home',
+//          fragments: {
+//            'home': NewHomeScreen(),
+//            'ingredients': IngredientsScreen(),
+//          },
+//        ),
+//      ),
+//    );
   }
 }
 
