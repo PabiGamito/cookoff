@@ -40,13 +40,9 @@ class _FriendsTabState extends State<FriendsTab> {
   @override
   Widget build(BuildContext context) =>
       Stack(alignment: AlignmentDirectional.bottomEnd, children: <Widget>[
-        GestureDetector(
-          onTap: widget._onClose,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Color(0x66000000),
-          ),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          color: Color(0x80000000),
         ),
         Container(height: _height, color: Colors.white),
         ListView(
@@ -54,12 +50,13 @@ class _FriendsTabState extends State<FriendsTab> {
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.zero,
             children: [
-              Container(
-                margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height -
-                        Scalar(context).scale(500)),
-                child: FriendsCard(bloc: widget._bloc),
-              )
+              GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: widget._onClose,
+                  child: Container(
+                      height: MediaQuery.of(context).size.height -
+                          Scalar(context).scale(500))),
+              FriendsCard(bloc: widget._bloc),
             ]),
         FriendsSelectButton(onTap: widget._onClose),
       ]);
