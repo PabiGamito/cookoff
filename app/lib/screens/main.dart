@@ -33,6 +33,7 @@ class MainScreen extends StatelessWidget {
             User user = snapshot.data;
             // Notify auth bloc
             AuthBloc.instance.dispatch(user);
+            LoadingAuthBloc.instance.dispatch(false);
             // Retrieve friends
             return StreamBuilder<Iterable<User>>(
                 stream: userProvider.friends(user.userId),
@@ -50,29 +51,39 @@ class MainScreen extends StatelessWidget {
 
 class AuthorizedMainScreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Container(
-        color: Color(0xFFFFC544),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Container(
-              padding: EdgeInsets.only(top: 65, bottom: 25),
-              child: BlocBuilder(
-                bloc: AuthBloc.instance,
-                builder: (BuildContext context, User user) {
-                  return HomeHeader(user: user, notificationCount: 3);
-                },
-              )),
-          Expanded(
-            child: FragmentContainer(
-              startingFragment: 'home',
-              fragments: {
-                'home': HomeScreen(),
-                'ingredients': IngredientsScreen(),
+  Widget build(BuildContext context) {
+    AuthProvider provider = InjectorWidget.of(context).injector.authProvider;
+
+    return Container(
+      color: Color(0xFFFFC544),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Container(
+            padding: EdgeInsets.only(top: 65, bottom: 25),
+            child: BlocBuilder(
+              bloc: AuthBloc.instance,
+              builder: (BuildContext context, User user) {
+                // Tapping the header signs out the user for now
+                return GestureDetector(
+                  child: HomeHeader(user: user, notificationCount: 3),
+                  onTap: () {
+                    AuthBloc.instance.dispatch(NullUser());
+                    provider.signOut();
+                  },
+                );
               },
-            ),
+            )),
+        Expanded(
+          child: FragmentContainer(
+            startingFragment: 'home',
+            fragments: {
+              'home': HomeScreen(),
+              'ingredients': IngredientsScreen(),
+            },
           ),
-        ]),
-      );
+        ),
+      ]),
+    );
+  }
 }
 
 // Home screen to be rendered if the user is not signed on
@@ -84,24 +95,32 @@ class UnauthorizedMainScreen extends StatelessWidget {
     return Container(
         color: Color(0xFFFFC544),
         child: Center(
-          child: GestureDetector(
-              onTap: () => authProvider.signIn(),
-              child: Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Color(0xFF52C7F2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  'Sign In with Google',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: "Montserrat",
-                    color: Colors.white,
-                    letterSpacing: 2,
-                  ),
-                ),
-              )),
+          child: BlocBuilder(
+              bloc: LoadingAuthBloc.instance,
+              builder: (BuildContext context, bool loading) => GestureDetector(
+                  onTap: () {
+                    LoadingAuthBloc.instance.dispatch(true);
+                    // disable button while loading
+                    if (!loading) {
+                      authProvider.signIn();
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF52C7F2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      loading ? 'Loading...' : 'Sign In with Google',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: "Montserrat",
+                        color: Colors.white,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ))),
         ));
   }
 }

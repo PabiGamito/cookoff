@@ -14,3 +14,18 @@ class AuthBloc extends Bloc<User, User> {
     yield event;
   }
 }
+
+class LoadingAuthBloc extends Bloc<bool, bool> {
+  static final LoadingAuthBloc instance = LoadingAuthBloc._internal();
+
+  LoadingAuthBloc._internal();
+
+  @override
+  bool get initialState => false;
+
+  @override
+  Stream<bool> mapEventToState(bool event) async* {
+    yield event;
+  }
+
+}
