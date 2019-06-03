@@ -6,7 +6,7 @@ import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/duration_picker.dart';
-import 'package:cookoff/widgets/friends_card.dart';
+import 'package:cookoff/widgets/friends_tab.dart';
 import 'package:cookoff/widgets/game_screen_ui.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
@@ -204,38 +204,14 @@ class _GameScreenState extends State<GameScreen> {
                 // Friends tab
                 Visibility(
                   visible: _displayFriends,
-                  child: Stack(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () => setState(() {
-                                _displayFriends = false;
-                                _cardHeight = 0;
-                              }),
-                          child: Container(
-                            height: mediaSize.height,
-                            width: mediaSize.width,
-                            color: Color(0x66000000),
-                          ),
-                        ),
-                        ListView(
-                            physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    top: MediaQuery.of(context).size.height -
-                                        Scalar(context).scale(500)),
-                                child: FriendsCard(bloc: _friendsBloc),
-                              )
-                            ]),
-                        FriendsSelectButton(onTap: () {
-                          setState(() {
-                            _displayFriends = false;
-                            _cardHeight = 0;
-                          });
-                        })
-                      ]),
+                  child: FriendsTab(
+                      onClose: () {
+                        setState(() {
+                          _displayFriends = false;
+                          _cardHeight = 0;
+                        });
+                      },
+                      bloc: _friendsBloc),
                 ),
               ]),
             );

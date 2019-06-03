@@ -9,6 +9,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class FriendsTab extends StatefulWidget {
+  final Function _onClose;
+  final FriendsSelectionBloc _bloc;
+
+  const FriendsTab({Function onClose, FriendsSelectionBloc bloc})
+      : _onClose = onClose,
+        _bloc = bloc;
+
+  @override
+  _FriendsTabState createState() => _FriendsTabState();
+}
+
+class _FriendsTabState extends State<FriendsTab> {
+  final ScrollController _controller = ScrollController();
+  double _height = 0;
+
+  _FriendsTabState() {
+    _controller.addListener(() {
+      setState(() {
+        if (_controller.hasClients && _controller.offset > 0) {
+          _height = _controller.offset;
+        } else {
+          _height = 0;
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      Stack(alignment: AlignmentDirectional.bottomEnd, children: <Widget>[
+        GestureDetector(
+          onTap: widget._onClose,
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Color(0x66000000),
+          ),
+        ),
+        Container(height: _height, color: Colors.white),
+        ListView(
+            controller: _controller,
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.zero,
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height -
+                        Scalar(context).scale(500)),
+                child: FriendsCard(bloc: widget._bloc),
+              )
+            ]),
+        FriendsSelectButton(onTap: widget._onClose),
+      ]);
+}
+
 class FriendsCard extends StatelessWidget {
   final FriendsSelectionBloc _bloc;
 
