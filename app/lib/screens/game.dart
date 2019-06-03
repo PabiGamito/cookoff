@@ -7,7 +7,7 @@ import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/card_helper.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/duration_picker.dart';
-import 'package:cookoff/widgets/friends_selection.dart';
+import 'package:cookoff/widgets/friends_card.dart';
 import 'package:cookoff/widgets/game_screen_ui.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
@@ -42,15 +42,12 @@ class _GameScreenState extends State<GameScreen> {
 
   Challenge _challenge;
   double _cardHeight = 0.0;
-  double _dragPos = 0.0;
   bool _displayPlayers = true;
   bool _displayFriends = false;
   bool _gameStarted;
   Duration _gameDuration;
 
   Countdown _timeLeftWidget;
-
-  bool _friendsListScrollable = false;
 
   _GameScreenState(String ingredientName, Color bgColor, [Challenge challenge])
       : _challenge = challenge,
@@ -218,51 +215,30 @@ class _GameScreenState extends State<GameScreen> {
                 // Friends tab
                 Visibility(
                   visible: _displayFriends,
-                  child: Center(
-                    child: Stack(children: <Widget>[
-                      GestureDetector(
-                        onTap: () => setState(() {
+                  child: Stack(
+                      alignment: AlignmentDirectional.bottomStart,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () => setState(() {
+                                _displayFriends = false;
+                                _cardHeight = 0;
+                              }),
+                          child: Container(
+                            height: mediaSize.height,
+                            width: mediaSize.width,
+                            color: Color(0x66000000),
+                          ),
+                        ),
+                        FriendsCard(
+                          bloc: _friendsBloc,
+                          onClose: () {
+                            setState(() {
                               _displayFriends = false;
                               _cardHeight = 0;
-                            }),
-                        child: Container(
-                          height: mediaSize.height,
-                          width: mediaSize.width,
-                          color: Color(0x66000000),
+                            });
+                          },
                         ),
-                      ),
-                      VerticalScrollable(
-                        heightOffset: _cardHeight,
-                        initialWidth: mediaSize.width,
-                        initialHeight: mediaSize.height,
-                        maxHeight: mediaSize.height * 0.3,
-                        initialHeightOffset: mediaSize.height * 0.45,
-                        onScrollLimit: () {
-                          setState(() {
-                            _friendsListScrollable = true;
-                          });
-                        },
-                        child: CardRoundedBorder(
-                            cardHeight: _cardHeight,
-                            child: FriendsTab(
-                              bloc: _friendsBloc,
-                              scrollable: _friendsListScrollable &&
-                                  (_cardHeight >= (mediaSize.height * 0.3 - 1)),
-                              onClose: () {
-                                setState(() {
-                                  _displayFriends = false;
-                                  _cardHeight = 0;
-                                });
-                              },
-                              onScroll: (double offset) {
-                                setState(() {
-                                  _friendsListScrollable = offset >= 0.0;
-                                });
-                              },
-                            )),
-                      ),
-                    ]),
-                  ),
+                      ]),
                 ),
               ]),
             );
