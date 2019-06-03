@@ -4,15 +4,15 @@ import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
-import 'package:cookoff/widgets/card_helper.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/duration_picker.dart';
 import 'package:cookoff/widgets/friends_card.dart';
 import 'package:cookoff/widgets/game_screen_ui.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
+import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/scrollable.dart';
-import 'package:cookoff/widgets/section_title.dart';
+import 'package:cookoff/widgets/titled_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -168,7 +168,7 @@ class _GameScreenState extends State<GameScreen> {
                                             .map(
                                                 (user) => Observable.just(user))
                                             .toList(),
-                                        iconSize: Scalar(context).scale(50),
+                                        iconSize: Scalar(context).scale(55),
                                         iconOffset: Scalar(context).scale(-10),
                                         hasMoreIcon: !_gameStarted,
                                         onTap: () {
@@ -177,6 +177,7 @@ class _GameScreenState extends State<GameScreen> {
                                             _cardHeight = 0;
                                           });
                                         },
+                                        color: _bgColor,
                                       ))),
                         ),
                       ),
@@ -185,38 +186,26 @@ class _GameScreenState extends State<GameScreen> {
                       )
                     ]),
                 // Inspiration tab
-                Visibility(
-                  visible: !_displayFriends,
-                  child: VerticalScrollable(
-                    heightOffset: _cardHeight,
-                    initialHeight: mediaSize.height,
-                    initialWidth: mediaSize.width,
-                    maxHeight: mediaSize.height * 0.76,
-                    initialHeightOffset: mediaSize.height * 0.89,
-                    child: CardRoundedBorder(
-                      cardHeight: _cardHeight,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SectionTitle(
-                            title: 'Some inspiration...',
-                            color: Color(_bgColor.value + 0x00112211),
-                            fontSize: Scalar(context).scale(25),
-                          ),
-                          Container(
+                VerticalScrollable(
+                  heightOffset: _cardHeight,
+                  initialHeight: mediaSize.height,
+                  initialWidth: mediaSize.width,
+                  maxHeight: mediaSize.height * 0.76,
+                  initialHeightOffset: mediaSize.height * 0.89,
+                  child: RoundedCard(
+                      child: TitledSection(
+                          title: 'Some inspiration...',
+                          underlineColor: Color(_bgColor.value + 0x00112211),
+                          child: Container(
                             padding: EdgeInsets.only(
                                 bottom: Scalar(context).scale(20)),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                          ))),
                 ),
                 // Friends tab
                 Visibility(
                   visible: _displayFriends,
                   child: Stack(
-                      alignment: AlignmentDirectional.bottomStart,
+                      alignment: AlignmentDirectional.bottomEnd,
                       children: <Widget>[
                         GestureDetector(
                           onTap: () => setState(() {
@@ -229,15 +218,23 @@ class _GameScreenState extends State<GameScreen> {
                             color: Color(0x66000000),
                           ),
                         ),
-                        FriendsCard(
-                          bloc: _friendsBloc,
-                          onClose: () {
-                            setState(() {
-                              _displayFriends = false;
-                              _cardHeight = 0;
-                            });
-                          },
-                        ),
+                        ListView(
+                            physics: BouncingScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                    top: MediaQuery.of(context).size.height -
+                                        Scalar(context).scale(500)),
+                                child: FriendsCard(bloc: _friendsBloc),
+                              )
+                            ]),
+                        FriendsSelectButton(onTap: () {
+                          setState(() {
+                            _displayFriends = false;
+                            _cardHeight = 0;
+                          });
+                        })
                       ]),
                 ),
               ]),

@@ -13,13 +13,13 @@ class RoundedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.symmetric(
-            vertical: Scalar(context).scale(40),
-            horizontal: Scalar(context).scale(30)),
+            vertical: Scalar(context).scale(45),
+            horizontal: Scalar(context).scale(35)),
         decoration: new BoxDecoration(
             color: _backgroundColor,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(Scalar(context).scale(38)),
-              topRight: Radius.circular(Scalar(context).scale(38)),
+              topLeft: Radius.circular(Scalar(context).scale(35)),
+              topRight: Radius.circular(Scalar(context).scale(35)),
             )),
         child: _child);
   }

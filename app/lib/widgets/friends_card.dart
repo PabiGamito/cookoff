@@ -10,29 +10,20 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FriendsCard extends StatelessWidget {
-  final Function _onClose;
   final FriendsSelectionBloc _bloc;
 
   FriendsCard({
     FriendsSelectionBloc bloc,
-    Function onClose,
-  })  : _bloc = bloc,
-        _onClose = onClose;
+  }) : _bloc = bloc;
 
   @override
   Widget build(BuildContext context) => RoundedCard(
-      child: TitledSection(
-          title: 'Add friends...',
-          underlineColor: Colors.lightBlue,
-          child: Column(
-            children: <Widget>[
-              FriendsList(bloc: _bloc),
-              GestureDetector(
-                onTap: _onClose,
-                child: FriendsSelectButton(),
-              ),
-            ],
-          )));
+      child: Container(
+          padding: EdgeInsets.only(bottom: Scalar(context).scale(60)),
+          child: TitledSection(
+              title: 'Add friends...',
+              underlineColor: Colors.lightBlue,
+              child: FriendsList(bloc: _bloc))));
 }
 
 class FriendsList extends StatelessWidget {
@@ -108,23 +99,57 @@ class FriendCard extends StatelessWidget {
 }
 
 class FriendsSelectButton extends StatelessWidget {
+  final Function _onTap;
+
+  const FriendsSelectButton({Function onTap}) : _onTap = onTap;
+
   @override
-  Widget build(BuildContext context) => Container(
-        padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(15)),
-        margin: EdgeInsets.only(top: Scalar(context).scale(10)),
-        decoration: new BoxDecoration(
-            color: Colors.lightBlueAccent,
-            borderRadius: BorderRadius.all(Radius.circular(8))),
-        child: Center(
-          child: Text(
-            "SELECT",
-            style: TextStyle(
-              fontSize: Scalar(context).scale(22),
-              fontFamily: "Montserrat",
-              letterSpacing: 3,
-              color: Colors.white,
+  Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          IgnorePointer(
+            child: Container(
+              height: 150,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 0.2, 1],
+                  colors: [
+                    Color(0x00FFFFFF),
+                    Color(0x80FFFFFF),
+                    Color(0xFFFFFFFF),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+          Container(
+            color: Colors.white,
+            padding: EdgeInsets.only(bottom: Scalar(context).scale(35)),
+            child: GestureDetector(
+              onTap: _onTap,
+              child: Container(
+                height: 60,
+                margin:
+                    EdgeInsets.symmetric(horizontal: Scalar(context).scale(35)),
+                decoration: new BoxDecoration(
+                    color: Colors.lightBlueAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
+                child: Center(
+                  child: Text(
+                    "SELECT",
+                    style: TextStyle(
+                      fontSize: Scalar(context).scale(22),
+                      fontFamily: "Montserrat",
+                      letterSpacing: 3,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       );
 }

@@ -11,18 +11,21 @@ class ProfileList extends StatelessWidget {
   final double overallOffset;
   final Function _onTap;
   final double _iconSize;
+  final Color _color;
 
   ProfileList(List<Stream<User>> users,
       {Function onTap,
       bool hasMoreIcon = true,
       double iconOffset = 0,
-      double iconSize})
+      double iconSize,
+      Color color})
       : _onTap = onTap,
         _users = users,
         _iconOffset = iconOffset + iconSize,
         _hasMoreIcon = hasMoreIcon,
         _iconSize = iconSize,
-        overallOffset = users.length * iconSize / 2;
+        overallOffset = users.length * iconSize / 2,
+        _color = color;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,7 @@ class ProfileList extends StatelessWidget {
             left: _iconOffset * _users.length,
             child: GestureDetector(
               onTap: _onTap,
-              child: AddProfileIcon(_iconSize),
+              child: AddProfileIcon(_iconSize, textColor: _color),
             ),
           ),
       ]),
