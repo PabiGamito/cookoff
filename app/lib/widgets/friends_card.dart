@@ -109,12 +109,12 @@ class FriendsSelectButton extends StatelessWidget {
         children: <Widget>[
           IgnorePointer(
             child: Container(
-              height: 150,
+              height: 35,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [0, 0.2, 1],
+                  stops: [0, 0.4, 1],
                   colors: [
                     Color(0x00FFFFFF),
                     Color(0x80FFFFFF),
