@@ -8,6 +8,9 @@ class ScrollableCard {
   final double minOffset;
   final double maxOffset;
 
+  final bool bounce;
+  final bool scrollable;
+
   final double Function(BuildContext context, double scrolledAmount) cardOffset;
   final Widget Function(BuildContext context, double scrolledAmount)
       cardBuilder;
@@ -20,6 +23,8 @@ class ScrollableCard {
     @required this.minOffset,
     @required this.maxOffset,
     double startingOffset,
+    this.bounce = true,
+    this.scrollable = true,
   }) : _offset = startingOffset ?? maxOffset {
     _lastOffset = _offset;
   }
@@ -99,9 +104,6 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
           child: ListView(
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
-//            physics: scrollableCard._bouncing
-//                ? const BouncingScrollPhysics()
-//                : const NeverScrollableScrollPhysics(),
             controller: scrollableCard.controller,
             children: [
               Container(
@@ -136,8 +138,10 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
           extraScrollAmount = liveScrollCard(_cardIndex, _scrolledAmount);
         });
 
+        var _card = scrollableCards[_cardIndex];
+
         // Over limit scrolling, hack to get bounce effect
-        scrollableCards[_cardIndex].controller.jumpTo(-extraScrollAmount);
+        if (_card.bounce) _card.controller.jumpTo(-extraScrollAmount);
       },
       onVerticalDragEnd: (DragEndDetails details) {
         scrollComplete();

@@ -70,6 +70,41 @@ class AuthorizedMainScreen extends StatelessWidget {
     const double minScrollAmount =
         -(secondCardMaxOffset - firstCardTitleHeight);
 
+    var headerCard = ScrollableCard(
+      bounce: false,
+      scrollable: false,
+      minOffset: 0,
+      maxOffset: 0,
+      startingOffset: 0,
+      cardOffset: (context, scrolledAmount) => 0,
+      cardBuilder: (context, scrolledAmount) {
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Color(0xFFFFC544),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                    top: Scalar(context).scale(30),
+                    bottom: Scalar(context).scale(25)),
+                child: BlocBuilder(
+                  bloc: AuthBloc.instance,
+                  builder: (BuildContext context, User user) {
+                    return HomeHeader(user: user, notificationCount: 3);
+                  },
+                ),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
     var card1 = ScrollableCard(
         minOffset: 0,
         maxOffset: Scalar(context).scale(firstCardMaxOffset),
@@ -131,38 +166,7 @@ class AuthorizedMainScreen extends StatelessWidget {
         minScroll: Scalar(context).scale(minScrollAmount),
         maxScroll: 0,
         scrollableCards: [
-          ScrollableCard(
-            minOffset: 0,
-            maxOffset: 0,
-            startingOffset: 0,
-            cardOffset: (context, scrolledAmount) => 0,
-            cardBuilder: (context, scrolledAmount) {
-              return Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                color: Color(0xFFFFC544),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                          top: Scalar(context).scale(30),
-                          bottom: Scalar(context).scale(25)),
-                      child: BlocBuilder(
-                        bloc: AuthBloc.instance,
-                        builder: (BuildContext context, User user) {
-                          return HomeHeader(user: user, notificationCount: 3);
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
+          headerCard,
           card1,
           card2,
         ],
