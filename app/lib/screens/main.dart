@@ -1,6 +1,7 @@
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
+import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
@@ -14,6 +15,7 @@ import '../providers/auth_provider.dart';
 import '../providers/user_provider.dart';
 import '../scalar.dart';
 import '../widgets/injector_widget.dart';
+import 'ingredients.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -124,18 +126,26 @@ class AuthorizedMainScreen extends StatelessWidget {
               padding: EdgeInsets.only(
                 bottom: Scalar(context).scale(15),
               ),
-              child: IngredientsSection(
-                title: 'Start cooking...',
-                titleUnderlineColor: Color(0xFF8EE5B6),
-                ingredients: <Ingredient>[
-                  Ingredient("cheese", "assets/ingredients/cheese.png",
-                      Color(0xFF7C54EA)),
-                  Ingredient("orange", "assets/ingredients/orange.png",
-                      Color(0xFFD0EB5C)),
-                  Ingredient("cauliflower",
-                      "assets/ingredients/cauliflower.png", Color(0xFF65D2EB)),
-                ],
-                more: true,
+              child: FragmentContainer(
+                startingFragment: 'featured',
+                fragments: {
+                  'featured': IngredientsSection(
+                    title: 'Start cooking...',
+                    titleUnderlineColor: Color(0xFF8EE5B6),
+                    ingredients: <Ingredient>[
+                      Ingredient("cheese", "assets/ingredients/cheese.png",
+                          Color(0xFF7C54EA)),
+                      Ingredient("orange", "assets/ingredients/orange.png",
+                          Color(0xFFD0EB5C)),
+                      Ingredient(
+                          "cauliflower",
+                          "assets/ingredients/cauliflower.png",
+                          Color(0xFF65D2EB)),
+                    ],
+                    more: true,
+                  ),
+                  'ingredients': IngredientsScreen(),
+                },
               ),
             ),
           );
