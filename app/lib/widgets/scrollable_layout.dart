@@ -130,7 +130,8 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
         var _cardIndex = indexOfCardAtScrollStartAt(_scrollStartPos);
 
         setState(() {
-          liveScrollCard(_cardIndex, _scrolledAmount);
+          bool limit = liveScrollCard(_cardIndex, _scrolledAmount);
+          if (limit) print("LIMIT REACHED!!!!");
         });
       },
       onVerticalDragEnd: (DragEndDetails details) {
@@ -143,16 +144,13 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
     );
   }
 
-  void liveScrollCard(int cardIndex, double scrollAmount) {
+  bool liveScrollCard(int cardIndex, double scrollAmount) {
+    var scrollLimitReeached = false;
+
     var _card = scrollableCards[cardIndex];
 
     var scrollUpAmountAvailable = _card._lastOffset - _card.minOffset;
     var scrollDownAmountAvailable = _card.maxOffset - _card._lastOffset;
-
-    print("Card $cardIndex");
-    print("Scrolled $scrollAmount");
-    print("_offset ${_card._lastOffset}");
-    print("scrollUpAmountAvailable $scrollUpAmountAvailable");
 
     if (scrollAmount < 0 && scrollUpAmountAvailable + scrollAmount < 0) {
       // Can't scroll this card up anymore
@@ -168,13 +166,19 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
       // Can't scroll this card down anymore
 
       // Start scrolling card above it
-      if (cardIndex > 0)
-        liveScrollCard(cardIndex - 1, scrollAmount - scrollDownAmountAvailable);
+      if (cardIndex > 0) {
+        scrollLimitReeached = liveScrollCard(
+            cardIndex - 1, scrollAmount - scrollDownAmountAvailable);
+      } else {
+        scrollLimitReeached = true;
+      }
 
       scrollAmount = scrollDownAmountAvailable;
     }
 
     _card.liveScroll(scrollAmount);
+
+    return scrollLimitReeached;
   }
 
   void scrollComplete() {
