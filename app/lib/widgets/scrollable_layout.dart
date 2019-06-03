@@ -98,7 +98,8 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
           height: MediaQuery.of(context).size.height - offset,
           child: ListView(
             padding: EdgeInsets.zero,
-//            physics: maxScroll != null && maxScroll < _lastScrolled + _scrolled
+            physics: const NeverScrollableScrollPhysics(),
+//            physics: scrollableCard._bouncing
 //                ? const BouncingScrollPhysics()
 //                : const NeverScrollableScrollPhysics(),
             controller: scrollableCard.controller,
@@ -129,10 +130,14 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
         // Card being dragged
         var _cardIndex = indexOfCardAtScrollStartAt(_scrollStartPos);
 
+        double extraScrollAmount;
+
         setState(() {
-          bool limit = liveScrollCard(_cardIndex, _scrolledAmount);
-          if (limit) print("LIMIT REACHED!!!!");
+          extraScrollAmount = liveScrollCard(_cardIndex, _scrolledAmount);
         });
+
+        // Over limit scrolling, hack to get bounce effect
+        scrollableCards[_cardIndex].controller.jumpTo(-extraScrollAmount);
       },
       onVerticalDragEnd: (DragEndDetails details) {
         scrollComplete();
@@ -144,8 +149,8 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
     );
   }
 
-  bool liveScrollCard(int cardIndex, double scrollAmount) {
-    var scrollLimitReeached = false;
+  double liveScrollCard(int cardIndex, double scrollAmount) {
+    double extraScrollAmount = 0;
 
     var _card = scrollableCards[cardIndex];
 
@@ -167,10 +172,10 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
 
       // Start scrolling card above it
       if (cardIndex > 0) {
-        scrollLimitReeached = liveScrollCard(
+        extraScrollAmount = liveScrollCard(
             cardIndex - 1, scrollAmount - scrollDownAmountAvailable);
       } else {
-        scrollLimitReeached = true;
+        extraScrollAmount = scrollAmount - scrollDownAmountAvailable;
       }
 
       scrollAmount = scrollDownAmountAvailable;
@@ -178,7 +183,7 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
 
     _card.liveScroll(scrollAmount);
 
-    return scrollLimitReeached;
+    return extraScrollAmount;
   }
 
   void scrollComplete() {
