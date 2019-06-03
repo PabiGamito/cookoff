@@ -53,47 +53,6 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-class NewAuthorizedMainScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ScrollableCard(
-      maxHeight: MediaQuery.of(context).size.height,
-      // TODO: Figure out a better way to get these values
-      minHeight: MediaQuery.of(context).size.height -
-          (Scalar(context).scale(65) +
-              Scalar(context).scale(25) +
-              Scalar(context).scale(108)),
-      // Container padding top, Container padding bottom, HomeHeader height,
-      background: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Color(0xFFFFC544),
-        child: Container(
-          padding: EdgeInsets.only(
-              top: Scalar(context).scale(65),
-              bottom: Scalar(context).scale(25)),
-          child: BlocBuilder(
-            bloc: AuthBloc.instance,
-            builder: (BuildContext context, User user) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [HomeHeader(user: user, notificationCount: 3)],
-              );
-            },
-          ),
-        ),
-      ),
-      card: FragmentContainer(
-        startingFragment: 'home',
-        fragments: {
-          'home': HomeScreen(),
-          'ingredients': IngredientsScreen(),
-        },
-      ),
-    );
-  }
-}
-
 class AuthorizedMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -157,7 +116,7 @@ class AuthorizedMainScreen extends StatelessWidget {
       },
       cardBuilder: (context, scrolledAmount) {
         return RoundedCard(
-          color: Color(0xFFF5F5F5),
+          backgroundColor: Color(0xFFF5F5F5),
           child: ChallengesSection(challengeProvider),
         );
       },
