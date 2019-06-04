@@ -9,6 +9,8 @@ import 'package:cookoff/widgets/game/inspiration_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'camera.dart';
+
 class GameScreen extends StatefulWidget {
   final Challenge _challenge;
   final Color _color;
@@ -99,4 +101,39 @@ class _GameScreenState extends State<GameScreen> {
                     },
                     bloc: _bloc))
           ]));
+}
+
+class CameraButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Scaffold(
+                  body: CameraScreen(),
+                ),
+          ),
+        );
+      },
+      child: Container(
+        height: 60,
+        margin: EdgeInsets.symmetric(horizontal: Scalar(context).scale(170)),
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(30))),
+        child: Center(
+          child: Text(
+            "Cam",
+            style: TextStyle(
+              fontSize: Scalar(context).scale(22),
+              letterSpacing: 3,
+              color: Colors.blueGrey,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
