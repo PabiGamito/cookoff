@@ -80,7 +80,7 @@ class AuthorizedMainScreen extends StatelessWidget {
           builder: (context) => Scaffold(
                 body: Container(
                   // Status bar height
-                  padding:
+                  margin:
                       EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   color: Color(0xFFFFC544),
                   child: RoundedCard(
@@ -190,6 +190,7 @@ class AuthorizedMainScreen extends StatelessWidget {
 
     return Container(
       // Status bar height
+      color: Color(0xFFFFC544),
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: ScrollableLayout(
         minScroll: Scalar(context).scale(minScrollAmount),
