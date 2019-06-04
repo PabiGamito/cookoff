@@ -20,7 +20,7 @@ class IngredientsScreen extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.only(
-              top: Scalar(context).scale(0),
+              top: Scalar(context).scale(30),
               bottom: Scalar(context).scale(30),
               left: Scalar(context).scale(20),
               right: Scalar(context).scale(20)),
@@ -33,7 +33,6 @@ class IngredientsScreen extends StatelessWidget {
         ),
         Expanded(
           child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 Container(
@@ -70,6 +69,34 @@ class IngredientsScreen extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                   child: IngredientsSection(
                     title: 'Healthy eating',
+                    ingredients: <Ingredient>[
+                      Ingredient("cheese", "assets/ingredients/bacon.png",
+                          Color(0xFF65D2EB)),
+                      Ingredient("orange", "assets/ingredients/fish.png",
+                          Color(0xFFEF8EBD)),
+                      Ingredient("cauliflower", "assets/ingredients/onion.png",
+                          Color(0xFFE3BF73)),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
+                  child: IngredientsSection(
+                    title: 'Healthiest eating',
+                    ingredients: <Ingredient>[
+                      Ingredient("cheese", "assets/ingredients/bacon.png",
+                          Color(0xFF65D2EB)),
+                      Ingredient("orange", "assets/ingredients/fish.png",
+                          Color(0xFFEF8EBD)),
+                      Ingredient("cauliflower", "assets/ingredients/onion.png",
+                          Color(0xFFE3BF73)),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
+                  child: IngredientsSection(
+                    title: 'Most Healthy eating',
                     ingredients: <Ingredient>[
                       Ingredient("cheese", "assets/ingredients/bacon.png",
                           Color(0xFF65D2EB)),
