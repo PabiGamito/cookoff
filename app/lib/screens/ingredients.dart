@@ -1,11 +1,18 @@
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
-import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/pill_button.dart';
 import 'package:flutter/material.dart';
 
 class IngredientsScreen extends StatelessWidget {
+  final void Function(BuildContext) _onBackPress;
+
+  IngredientsScreen({void Function(BuildContext) onBackPress})
+      : _onBackPress = onBackPress ??
+            ((context) {
+              Navigator.of(context).pop();
+            });
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +27,7 @@ class IngredientsScreen extends StatelessWidget {
           child: PillButton(
             "BACK TO CHALLENGES",
             onTap: () {
-              FragmentNavigator.pop(context);
+              _onBackPress(context);
             },
           ),
         ),

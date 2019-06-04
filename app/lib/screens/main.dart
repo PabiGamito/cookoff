@@ -1,7 +1,6 @@
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
-import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
@@ -63,14 +62,36 @@ class AuthorizedMainScreen extends StatelessWidget {
         InjectorWidget.of(context).injector.challengeProvider;
 
     const double firstCardMaxOffset = 188;
-    const double firstCardTitleHeight = 100;
-    const double firstCardContentHeight = 160;
+    const double firstCardTitleHeight = 112;
+    const double firstCardContentHeight = 148;
 
     const double secondCardMaxOffset =
         firstCardMaxOffset + firstCardTitleHeight + firstCardContentHeight;
 
     const double minScrollAmount =
         -(secondCardMaxOffset - firstCardTitleHeight);
+
+    var challengesCardController = CardController();
+
+    var _showAllIngredients = (context) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+                body: Container(
+                  // Status bar height
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  color: Color(0xFFFFC544),
+                  child: RoundedCard(
+                    padding: false,
+                    child: IngredientsScreen(),
+                  ),
+                ),
+              ),
+        ),
+      );
+    };
 
     var headerCard = ScrollableCard(
       bounce: false,
@@ -107,33 +128,7 @@ class AuthorizedMainScreen extends StatelessWidget {
       },
     );
 
-    var card2Controller = CardController();
-
-    var card1Fragment = FragmentContainer(
-      startingFragment: 'featured',
-      fragments: {
-        'featured': IngredientsSection(
-          title: 'Start cooking...',
-          titleUnderlineColor: Color(0xFF8EE5B6),
-          ingredients: <Ingredient>[
-            Ingredient(
-                "cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
-            Ingredient(
-                "orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
-            Ingredient("cauliflower", "assets/ingredients/cauliflower.png",
-                Color(0xFF65D2EB)),
-          ],
-          more: true,
-          onMoreTap: (context) {
-            FragmentNavigator.navigateTo(context, 'ingredients');
-            card2Controller.fullScreen(context);
-          },
-        ),
-        'ingredients': IngredientsScreen(),
-      },
-    );
-
-    var card1 = ScrollableCard(
+    var featuredIngredientsCard = ScrollableCard(
         minOffset: 0,
         maxOffset: Scalar(context).scale(firstCardMaxOffset),
         startingOffset: Scalar(context).scale(firstCardMaxOffset),
@@ -152,13 +147,26 @@ class AuthorizedMainScreen extends StatelessWidget {
               padding: EdgeInsets.only(
                 bottom: Scalar(context).scale(15),
               ),
-              child: card1Fragment,
+              child: IngredientsSection(
+                title: 'Start cooking...',
+                titleUnderlineColor: Color(0xFF8EE5B6),
+                ingredients: <Ingredient>[
+                  Ingredient("cheese", "assets/ingredients/cheese.png",
+                      Color(0xFF7C54EA)),
+                  Ingredient("orange", "assets/ingredients/orange.png",
+                      Color(0xFFD0EB5C)),
+                  Ingredient("cauliflower",
+                      "assets/ingredients/cauliflower.png", Color(0xFF65D2EB)),
+                ],
+                more: true,
+                onMoreTap: _showAllIngredients,
+              ),
             ),
           );
         });
 
-    var card2 = ScrollableCard(
-      controler: card2Controller,
+    var challengesCard = ScrollableCard(
+      controler: challengesCardController,
       minOffset: firstCardTitleHeight,
       maxOffset:
           Scalar(context).scale(firstCardTitleHeight + firstCardContentHeight),
@@ -174,10 +182,7 @@ class AuthorizedMainScreen extends StatelessWidget {
           child: ChallengesSection(
             challengeProvider,
             scrollable: fullyExpanded,
-            onAddChallenge: (context) {
-              card1Fragment.navigateTo('ingredients');
-              card2Controller.fullScreen(context);
-            },
+            onAddChallenge: _showAllIngredients,
           ),
         );
       },
@@ -191,8 +196,8 @@ class AuthorizedMainScreen extends StatelessWidget {
         maxScroll: 0,
         scrollableCards: [
           headerCard,
-          card1,
-          card2,
+          featuredIngredientsCard,
+          challengesCard,
         ],
       ),
     );
