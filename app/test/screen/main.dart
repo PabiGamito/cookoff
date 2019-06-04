@@ -1,0 +1,42 @@
+import 'package:cookoff/models/user.dart';
+import 'package:cookoff/providers/auth_provider.dart';
+import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/providers/user_provider.dart';
+import 'package:cookoff/screens/main.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+import '../test_injector.dart';
+
+void main() {
+  var mockAuthProvider = MockAuthProvider();
+  var mockUserProvider = MockUserProvider();
+
+  var injector = TestInjector(authProvider: mockAuthProvider,
+  userProvider: mockUserProvider);
+
+  testWidgets('Main screen renders login page on no user',
+      (WidgetTester tester) async {
+    when(mockAuthProvider.profile)
+        .thenAnswer((_) => Stream.fromFuture(Future.value(null)));
+
+    await tester.pumpWidget(MaterialApp(
+      home: InjectorWidget(
+        child: MainScreen(),
+        injector: injector,
+      ),
+    ));
+
+    await tester.pump();
+    expect(find.text("Sign In with Google"), findsOneWidget);
+  });
+
+}
+
+class MockAuthProvider extends Mock implements AuthProvider {}
+
+class MockChallengeProvider extends Mock implements ChallengeProvider {}
+
+class MockUserProvider extends Mock implements UserProvider {}

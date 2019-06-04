@@ -6,5 +6,5 @@ abstract class AuthProvider {
 
   Future signOut();
 
-  Observable<User> profile;
+  Stream<User> get profile;
 }

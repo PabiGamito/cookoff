@@ -6,15 +6,17 @@ import 'package:cookoff/providers/user_provider.dart';
 
 class TestInjector implements Injector {
   @override
-  AuthProvider get authProvider => null;
-
+  final AuthProvider authProvider;
   @override
-  ChallengeProvider get challengeProvider => null;
-
+  final ChallengeProvider challengeProvider;
   @override
-  Firestore get firestore => null;
-
+  final Firestore firestore;
   @override
-  UserProvider get userProvider => null;
+  final UserProvider userProvider;
 
+  TestInjector(
+      {this.authProvider,
+      this.challengeProvider,
+      this.firestore,
+      this.userProvider});
 }

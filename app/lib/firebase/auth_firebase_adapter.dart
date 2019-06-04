@@ -13,13 +13,12 @@ class AuthFirebaseAdapter implements AuthProvider {
   static const String friendsCollection = 'users';
 
   // firebase user
-  Observable<FirebaseUser> user;
-  @override
-  Observable<User> profile;
+  Observable<FirebaseUser> _user;
+  Observable<User> _profile;
 
   AuthFirebaseAdapter() {
-    user = Observable(_firebaseAuth.onAuthStateChanged);
-    profile = user.map((user) {
+    _user = Observable(_firebaseAuth.onAuthStateChanged);
+    _profile = _user.map((user) {
       if (user != null) {
         return User(user.email, user.photoUrl, user.displayName, user.uid);
       } else {
@@ -28,19 +27,10 @@ class AuthFirebaseAdapter implements AuthProvider {
     });
   }
 
-  @override
-  Future signIn() async {
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-    FirebaseUser user = await _firebaseAuth.signInWithCredential(credential);
-    registerUser(user);
-  }
-
   // Add user to users in firestore if user doesn't exist
-  Future registerUser(FirebaseUser user) async {
-    if (!await _firestore
+
+  Future _registerUser(FirebaseUser user) async {
+    if(!await _firestore
         .collection(friendsCollection)
         .document(user.uid)
         .get()
@@ -58,7 +48,20 @@ class AuthFirebaseAdapter implements AuthProvider {
   }
 
   @override
+  Future signIn() async {
+    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+    FirebaseUser user = await _firebaseAuth.signInWithCredential(credential);
+    _registerUser(user);
+  }
+
+  @override
   Future signOut() async {
     await _firebaseAuth.signOut();
   }
+
+  @override
+  Observable<User> get profile => _profile;
 }
