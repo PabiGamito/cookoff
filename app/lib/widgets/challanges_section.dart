@@ -14,9 +14,12 @@ import 'package:rxdart/rxdart.dart';
 
 class ChallengesSection extends StatelessWidget {
   final ChallengeProvider _challengeProvider;
+  final bool _scrollable;
 
-  ChallengesSection(ChallengeProvider challengeProvider)
-      : _challengeProvider = challengeProvider;
+  ChallengesSection(ChallengeProvider challengeProvider,
+      {bool scrollable = true})
+      : _challengeProvider = challengeProvider,
+        _scrollable = scrollable;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -74,7 +77,8 @@ class ChallengesSection extends StatelessWidget {
                             if (snapshots.data.length == 0) {
                               return NoChallenges();
                             } else {
-                              return ChallengesList(snapshots.data);
+                              return ChallengesList(snapshots.data,
+                                  scrollable: _scrollable);
                             }
                           }
 
@@ -150,12 +154,17 @@ class NoChallenges extends StatelessWidget {
 
 class ChallengesList extends StatelessWidget {
   final Iterable<Challenge> _challenges;
+  final bool _scrollable;
 
-  ChallengesList(Iterable<Challenge> challenges) : _challenges = challenges;
+  ChallengesList(Iterable<Challenge> challenges, {bool scrollable = true})
+      : _challenges = challenges,
+        _scrollable = scrollable;
 
   @override
   Widget build(BuildContext context) => ListView(
-        physics: BouncingScrollPhysics(),
+        physics: _scrollable
+            ? const BouncingScrollPhysics()
+            : const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.only(
           top: Scalar(context).scale(15),
           bottom: Scalar(context).scale(15),

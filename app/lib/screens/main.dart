@@ -79,7 +79,7 @@ class AuthorizedMainScreen extends StatelessWidget {
       maxOffset: 0,
       startingOffset: 0,
       cardOffset: (context, scrolledAmount) => 0,
-      cardBuilder: (context, scrolledAmount) {
+      cardBuilder: (context, scrolledAmount, fullyExpanded) {
         return Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -119,7 +119,7 @@ class AuthorizedMainScreen extends StatelessWidget {
                   .scale(firstCardMaxOffset + firstCardContentHeight) +
               scrolledAmount;
         },
-        cardBuilder: (context, scrolledAmount) {
+        cardBuilder: (context, scrolledAmount, fullyExpanded) {
           return RoundedCard(
             padding: false,
             child: Container(
@@ -160,11 +160,12 @@ class AuthorizedMainScreen extends StatelessWidget {
       cardOffset: (context, scrolledAmount) {
         return Scalar(context).scale(secondCardMaxOffset) + scrolledAmount;
       },
-      cardBuilder: (context, scrolledAmount) {
+      cardBuilder: (context, scrolledAmount, fullyExpanded) {
         return RoundedCard(
           padding: false,
           backgroundColor: Color(0xFFF5F5F5),
-          child: ChallengesSection(challengeProvider),
+          child:
+              ChallengesSection(challengeProvider, scrollable: fullyExpanded),
         );
       },
     );

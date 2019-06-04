@@ -12,7 +12,8 @@ class ScrollableCard {
   final bool scrollable;
 
   final double Function(BuildContext context, double scrolledAmount) cardOffset;
-  final Widget Function(BuildContext context, double scrolledAmount)
+  final Widget Function(
+          BuildContext context, double scrolledAmount, bool fullyExpanded)
       cardBuilder;
 
   final ScrollController controller = ScrollController();
@@ -41,6 +42,10 @@ class ScrollableCard {
 
   void scrollComplete() {
     _lastOffset = _offset;
+  }
+
+  bool fullyExpanded() {
+    return _offset <= minOffset;
   }
 }
 
@@ -109,8 +114,8 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height - offset,
-                child:
-                    scrollableCard.cardBuilder(context, scrollableCard._offset),
+                child: scrollableCard.cardBuilder(context,
+                    scrollableCard._offset, scrollableCard.fullyExpanded()),
               ),
             ],
           ),
