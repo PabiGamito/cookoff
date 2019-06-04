@@ -115,7 +115,7 @@ class AuthorizedMainScreen extends StatelessWidget {
                 child: BlocBuilder(
                   bloc: AuthBloc.instance,
                   builder: (BuildContext context, User user) {
-                    return HomeHeader(user: user, notificationCount: 3);
+                    return HomeHeader(user: user, notificationCount: 0);
                   },
                 ),
               ),
