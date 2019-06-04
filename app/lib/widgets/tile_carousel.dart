@@ -79,19 +79,15 @@ class Tile extends StatelessWidget {
 }
 
 class IngredientTile extends Tile {
-  final Ingredient _ingredient;
-
   IngredientTile(Ingredient ingredient)
-      : _ingredient = ingredient,
-        super(
-          iconPath: ingredient.imgPath,
-          bgColor: ingredient.bgColor,
-          onTap: (context) => Navigator.push(
+      : super(
+            iconPath: ingredient.imgPath,
+            bgColor: ingredient.bgColor,
+            onTap: (context) => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Scaffold(
-                      body: GameScreen(ingredient.name, ingredient.bgColor)),
-                ),
-              ),
-        );
+                    builder: (context) => Scaffold(
+                        body: GameScreen.fromIngredient(
+                            ingredient: ingredient.name,
+                            color: ingredient.bgColor)))));
 }

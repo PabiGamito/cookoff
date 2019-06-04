@@ -27,5 +27,4 @@ class LoadingAuthBloc extends Bloc<bool, bool> {
   Stream<bool> mapEventToState(bool event) async* {
     yield event;
   }
-
 }

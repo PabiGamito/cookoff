@@ -14,14 +14,14 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
       .collection(collection)
       .where('participants', arrayContains: user)
       .snapshots()
-      .map((snapshot) =>
-          snapshot.documents.map((json) => Challenge.fromJson(json.data)));
+      .map((snapshot) => snapshot.documents.map((document) =>
+          Challenge.fromJson(document.data..['id'] = document.documentID)));
 
   @override
-  Future addChallenge(Challenge challenge) async {
+  Future<Challenge> addChallenge(Challenge challenge) async {
     var reference =
         await _firestore.collection(collection).add(challenge.toJson());
-    challenge.id = reference.documentID;
+    return challenge.copyWithId(reference.documentID);
   }
 
   @override

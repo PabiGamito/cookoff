@@ -5,7 +5,7 @@ abstract class ChallengeProvider {
   // class at some point rather than a string
   Stream<Iterable<Challenge>> challengesStream(String user);
 
-  Future addChallenge(Challenge challenge);
+  Future<Challenge> addChallenge(Challenge challenge);
 
   Future deleteChallenge(Challenge challenge);
 

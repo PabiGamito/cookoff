@@ -41,12 +41,12 @@ class MainScreen extends StatelessWidget {
             LoadingAuthBloc.instance.dispatch(false);
             // Retrieve friends
             return StreamBuilder<Iterable<User>>(
-                stream: userProvider.friends(user.userId),
+                stream: userProvider.friendsStream(user.userId),
                 builder: (BuildContext context,
                     AsyncSnapshot<Iterable<User>> snapshot) {
                   // Set friends list and notify auth bloc
                   AuthBloc.instance
-                      .dispatch(User.copyWithFriendsList(user, snapshot.data));
+                      .dispatch(user.copyWithFriendsList(snapshot.data));
                   return AuthorizedMainScreen();
                 });
           }

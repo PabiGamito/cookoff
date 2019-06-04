@@ -1,5 +1,7 @@
 import 'package:cookoff/blocs/auth_bloc.dart';
-import 'package:cookoff/blocs/friends_selection_bloc.dart';
+import 'package:cookoff/blocs/game_bloc.dart';
+import 'package:cookoff/blocs/game_event.dart';
+import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
@@ -10,9 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FriendsTab extends StatefulWidget {
   final Function _onClose;
-  final FriendsSelectionBloc _bloc;
+  final GameBloc _bloc;
 
-  const FriendsTab({Function onClose, FriendsSelectionBloc bloc})
+  const FriendsTab({Function onClose, GameBloc bloc})
       : _onClose = onClose,
         _bloc = bloc;
 
@@ -62,11 +64,9 @@ class _FriendsTabState extends State<FriendsTab> {
 }
 
 class FriendsCard extends StatelessWidget {
-  final FriendsSelectionBloc _bloc;
+  final GameBloc _bloc;
 
-  FriendsCard({
-    FriendsSelectionBloc bloc,
-  }) : _bloc = bloc;
+  FriendsCard({GameBloc bloc}) : _bloc = bloc;
 
   @override
   Widget build(BuildContext context) => RoundedCard(
@@ -79,9 +79,9 @@ class FriendsCard extends StatelessWidget {
 }
 
 class FriendsList extends StatelessWidget {
-  final FriendsSelectionBloc _bloc;
+  final GameBloc _bloc;
 
-  FriendsList({FriendsSelectionBloc bloc}) : _bloc = bloc;
+  FriendsList({GameBloc bloc}) : _bloc = bloc;
 
   @override
   Widget build(BuildContext context) => BlocBuilder(
@@ -93,11 +93,11 @@ class FriendsList extends StatelessWidget {
 }
 
 class FriendCard extends StatelessWidget {
-  final FriendsSelectionBloc _bloc;
+  final GameBloc _bloc;
   final User _friend;
 
   const FriendCard({
-    FriendsSelectionBloc bloc,
+    GameBloc bloc,
     User friend,
   })  : _bloc = bloc,
         _friend = friend;
@@ -107,7 +107,7 @@ class FriendCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: Scalar(context).scale(25)),
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: () => _bloc.dispatch(_friend.userId),
+          onTap: () => _bloc.dispatch(FriendButton(_friend.userId)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -128,13 +128,13 @@ class FriendCard extends StatelessWidget {
               ]),
               BlocBuilder(
                   bloc: _bloc,
-                  builder: (BuildContext context, Set<String> ticked) =>
+                  builder: (BuildContext context, Challenge challenge) =>
                       Container(
                         width: Scalar(context).scale(45),
                         height: Scalar(context).scale(45),
                         decoration: new BoxDecoration(
                           shape: BoxShape.circle,
-                          color: ticked.contains(_friend.userId)
+                          color: challenge.participants.contains(_friend.userId)
                               ? Color(0xFF65D2EB)
                               : Color(0xFFC6C6C6),
                         ),

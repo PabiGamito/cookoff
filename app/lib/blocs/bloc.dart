@@ -1,1 +1,3 @@
-export 'friends_selection_bloc.dart';
+export 'auth_bloc.dart';
+export 'game_bloc.dart';
+export 'game_event.dart';

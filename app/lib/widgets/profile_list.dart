@@ -13,8 +13,9 @@ class ProfileList extends StatelessWidget {
   final Color _color;
   final double _borderWidth;
 
-  ProfileList(List<Stream<User>> users,
-      {Function onTap,
+  ProfileList(
+      {List<Stream<User>> users,
+      Function onTap,
       bool hasMoreIcon = true,
       double iconOffset = 0,
       double iconSize,

@@ -5,14 +5,14 @@ part 'challenge.g.dart';
 @JsonSerializable(anyMap: true)
 class Challenge {
   @JsonKey(includeIfNull: false, nullable: true)
-  String id;
+  final String id;
   final String owner;
-  final List<String> participants;
+  final Set<String> participants;
   final String ingredient;
   final bool complete;
   final DateTime end;
 
-  Challenge(
+  Challenge._internal(
       {this.id,
       this.owner,
       this.participants,
@@ -20,18 +20,59 @@ class Challenge {
       this.complete,
       this.end});
 
+  Challenge(this.ingredient)
+      : id = null,
+        owner = null,
+        participants = {},
+        complete = false,
+        end = null;
+
   factory Challenge.fromJson(Map<String, dynamic> json) =>
       _$ChallengeFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChallengeToJson(this);
+  bool get started => id != null;
 
-  Challenge addParticipant(String name) {
-    return Challenge(
-        id: id,
-        owner: owner,
-        participants: participants..add(name),
-        ingredient: ingredient,
-        complete: complete,
-        end: end);
-  }
+  bool hasParticipant(String participant) => participants.contains(participant);
+
+  Challenge copyWithId(String id) => Challenge._internal(
+      id: id,
+      owner: owner,
+      participants: participants,
+      ingredient: ingredient,
+      complete: complete,
+      end: end);
+
+  Challenge copyWithOwner(String owner) => Challenge._internal(
+      id: id,
+      owner: owner,
+      participants: participants..add(owner),
+      ingredient: ingredient,
+      complete: complete,
+      end: end);
+
+  Challenge copyWithParticipant(String participant) => Challenge._internal(
+      id: id,
+      owner: owner,
+      participants: participants..add(participant),
+      ingredient: ingredient,
+      complete: complete,
+      end: end);
+
+  Challenge copyWithoutParticipant(String participant) => Challenge._internal(
+      id: id,
+      owner: owner,
+      participants: participants.where((p) => p != participant).toSet(),
+      ingredient: ingredient,
+      complete: complete,
+      end: end);
+
+  Challenge copyAsComplete() => Challenge._internal(
+      id: id,
+      owner: owner,
+      participants: participants,
+      ingredient: ingredient,
+      complete: true,
+      end: end);
+
+  Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }
