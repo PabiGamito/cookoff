@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:cookoff/scalar.dart';
 import 'package:flutter/material.dart';
 
+const int hoursInADay = 24;
+const int minutesInAnHour = 60;
+const int secondsInAMinute = 60;
+
 class Countdown extends StatefulWidget {
   final DateTime _end;
 
@@ -43,12 +47,9 @@ class _CountdownState extends State<Countdown> {
     var _timeLeft = _end.difference(DateTime.now());
 
     var days = _timeLeft.inDays;
-    var hours = _timeLeft.inHours - _timeLeft.inDays * 24;
-    var minutes = _timeLeft.inMinutes - hours * 60 - days * 24 * 60;
-    var seconds = _timeLeft.inSeconds -
-        minutes * 60 -
-        hours * 60 * 60 -
-        days * 24 * 60 * 60;
+    var hours = _timeLeft.inHours % hoursInADay;
+    var minutes = _timeLeft.inMinutes % minutesInAnHour;
+    var seconds = _timeLeft.inSeconds % secondsInAMinute;
 
     _timeText.setDays(days);
     _timeText.setHours(hours);
