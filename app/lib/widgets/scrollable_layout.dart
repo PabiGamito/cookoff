@@ -145,7 +145,7 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
 
         var _card = scrollableCards[_cardIndex];
 
-        // Over limit scrolling, hack to get bounce effect
+        // Over limit scrolling, hack to get bounce effect (div by 3 to scale bounce amount)
         if (_card.bounce) _card.controller.jumpTo(-extraScrollAmount / 3);
       },
       onVerticalDragEnd: (DragEndDetails details) {

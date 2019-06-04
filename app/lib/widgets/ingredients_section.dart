@@ -21,7 +21,7 @@ class IngredientsSection extends StatelessWidget {
         _titleUnderlineColor = titleUnderlineColor,
         _ingredients = ingredients,
         _more = more,
-        _onMoreTap = onMoreTap ?? (() {});
+        _onMoreTap = onMoreTap ?? ((context) {});
 
   @override
   Widget build(BuildContext context) {
