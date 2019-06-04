@@ -9,27 +9,6 @@ class CardController {
   void attachTo(ScrollableCard card) {
     _card = card;
   }
-
-  void fullScreen(BuildContext context) {
-    // TODO: Add animated expansion.
-
-    if (_card == null || _card._state == null || _card._cardIndex == null)
-      return;
-
-    for (var i = 0; i < _card._cardIndex; i++) {
-      _card._state.maximize(context, i);
-    }
-
-    for (var i = _card._cardIndex;
-        i < _card._state.scrollableCards.length;
-        i++) {
-      _card._state.minimize(context, i);
-    }
-  }
-
-  void exitFullScreen() {
-    // TODO: Implement, store some sort of state before going to fullscreen, to be able to go back to on back
-  }
 }
 
 class ScrollableCard {
