@@ -38,7 +38,7 @@ jobs:
         - export LAST_TRAVIS_TAG=$(git describe --abbrev=0 --tags)
         - export TRAVIS_TAG=$((LAST_TRAVIS_TAG + 1))
         # Decrypt secrets file
-        - openssl aes-256-cbc -K $encrypted_5b4681e315cb_key -iv $encrypted_5b4681e315cb_iv -in secrets.tar.enc -out secrets.tar -d
+        - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
         - tar xvf secrets.tar
         # Set up SSH key for GitHub
         - ssh-add github_deploy_key
@@ -78,7 +78,7 @@ jobs:
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
         - flutter doctor
         # Decrypt secrets file
-        - openssl aes-256-cbc -K $encrypted_5b4681e315cb_key -iv $encrypted_5b4681e315cb_iv -in secrets.tar.enc -out secrets.tar -d
+        - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
         - tar xvf secrets.tar
         # Confirm that there is a tag set
         - export TRAVIS_TAG=$(git tag --points-at HEAD)

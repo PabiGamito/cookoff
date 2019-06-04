@@ -27,6 +27,10 @@
 .pub/
 /build/
 
+# Fastlane related
+app/android/fastlane/metadata
+app/android/fastlane/report.xml
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
