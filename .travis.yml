@@ -1,90 +1,127 @@
 stages:
-  - name: test
-    if: type = pull_request AND branch = master
-  - name: tag
-    if: type = push AND branch = master AND tag IS blank
-  - name: deploy
-    if: type = push AND branch = master
+- name: test
+  if: type = pull_request AND branch = master
+- name: tag
+  if: type = push AND branch = master AND tag IS blank
+- name: deploy
+  if: type = push AND branch = master
 
 jobs:
   include:
-    # Run Flutter tests
-    - stage: test
-      name: flutter
-      language: dart
-      addons:
-        apt:
-          sources:
-            # To get correct version of libstdc++6
-            - ubuntu-toolchain-r-test
-      packages:
-        - libstdc++6
-        - fonts-droid
-      before_script:
-        # Install Flutter
-        - git clone https://github.com/flutter/flutter.git -b stable
-        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-        - flutter doctor
-      script:
-        - cd app
-        - flutter test
+  # Run Flutter tests
+  - stage: test
+    name: flutter
+    language: dart
+    addons:
+      apt:
+        sources:
+        # To get correct version of libstdc++6
+        - ubuntu-toolchain-r-test
+    packages:
+    - libstdc++6
+    - fonts-droid
+    before_script:
+    # Install Flutter
+    - git clone https://github.com/flutter/flutter.git -b stable
+    - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+    - flutter doctor
+    script:
+    - cd app
+    - flutter test
 
-    # Tag commit with version
-    - stage: tag
-      name: tag
-      language: minimal
-      before_script:
-        # Calculate tag from previous
-        - export LAST_TRAVIS_TAG=$(git describe --abbrev=0 --tags)
-        - export TRAVIS_TAG=$((LAST_TRAVIS_TAG + 1))
-        # Decrypt secrets file
-        - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
-        - tar xvf secrets.tar
-        # Set up SSH key for GitHub
-        - ssh-add github_deploy_key
-      script:
-        # Push tag to remote
-        - git tag $TRAVIS_TAG
-        - git push git@github.com:${TRAVIS_REPO_SLUG}.git $TRAVIS_BRANCH --tags
+  # Tag commit with version
+  - stage: tag
+    name: tag
+    language: minimal
+    before_script:
+    # Calculate tag from previous
+    - export LAST_TRAVIS_TAG=$(git describe --abbrev=0 --tags)
+    - export TRAVIS_TAG=$((LAST_TRAVIS_TAG + 1))
+    # Decrypt secrets file
+    - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
+    - tar xvf secrets.tar
+    # Set up SSH key for GitHub
+    - ssh-add github_deploy_key
+    script:
+    # Push tag to remote
+    - git tag $TRAVIS_TAG
+    - git push git@github.com:${TRAVIS_REPO_SLUG}.git $TRAVIS_BRANCH --tags
 
-    # Build and deploy APK for Android
-    - stage: deploy
-      name: android
-      language: android
-      jdk: openjdk8
-      android:
-        components:
-          - build-tools-28.0.3
-          - android-28
-      addons:
-        # Deploy APK to S3 bucket
-        artifacts:
-          s3_region: eu-west-1
-          working_dir: build/app/outputs/apk/release
-          paths:
-            - app-release.apk
-          target_paths:
-            - /
-        apt:
-          sources:
-            # To get correct version of libstdc++6
-            - ubuntu-toolchain-r-test
-      packages:
-        - libstdc++6
-        - fonts-droid
-      before_script:
-        # Install Flutter
-        - git clone https://github.com/flutter/flutter.git -b stable
-        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-        - flutter doctor
-        # Decrypt secrets file
-        - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
-        - tar xvf secrets.tar
-        # Confirm that there is a tag set
-        - export TRAVIS_TAG=$(git tag --points-at HEAD)
-        - "[ -n \"$TRAVIS_TAG\" ] && echo $TRAVIS_TAG"
-      script:
-        # Package app for Android using tag
-        - cd app
-        - flutter packages get
-        - flutter build apk --release --build-number=$TRAVIS_TAG
+  # Build and deploy APK for Android and deploy to S3
+  - stage: deploy
+    name: android-s3
+    language: android
+    jdk: openjdk8
+    android:
+      components:
+      - build-tools-28.0.3
+      - android-28
+    addons:
+      # Deploy APK to S3 bucket
+      artifacts:
+        s3_region: eu-west-1
+        working_dir: build/app/outputs/apk/release
+        paths:
+        - app-release.apk
+        target_paths:
+        - /
+      apt:
+        sources:
+        # To get correct version of libstdc++6
+        - ubuntu-toolchain-r-test
+    packages:
+    - libstdc++6
+    - fonts-droid
+    before_script:
+    # Install Flutter
+    - git clone https://github.com/flutter/flutter.git -b stable
+    - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+    - flutter doctor
+    # Decrypt secrets file
+    - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
+    - tar xvf secrets.tar
+    # Confirm that there is a tag set
+    - export TRAVIS_TAG=$(git tag --points-at HEAD)
+    - "[ -n \"$TRAVIS_TAG\" ] && echo $TRAVIS_TAG"
+    script:
+    # Package app for Android using tag
+    - cd app
+    - flutter packages get
+    - flutter build apk --release --build-number=$TRAVIS_TAG
+    # Build and deploy APK for Android and deploy to S3
+  - stage: deploy
+    name: android-playstore
+    language: android
+    jdk: openjdk8
+    android:
+      components:
+      - build-tools-28.0.3
+      - android-28
+    addons:
+      apt:
+        sources:
+        # To get correct version of libstdc++6
+        - ubuntu-toolchain-r-test
+    packages:
+    - libstdc++6
+    - fonts-droid
+    before_script:
+    # Install Flutter
+    - git clone https://github.com/flutter/flutter.git -b stable
+    - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+    - flutter doctor
+    # Decrypt secrets file
+    - openssl aes-256-cbc -K $encrypted_f6bf0014723e_key -iv $encrypted_f6bf0014723e_iv -in secrets.tar.enc -out secrets.tar -d
+    - tar xvf secrets.tar
+    # Confirm that there is a tag set
+    - export TRAVIS_TAG=$(git tag --points-at HEAD)
+    - "[ -n \"$TRAVIS_TAG\" ] && echo $TRAVIS_TAG"
+    # Install Fastlane dependencies
+    - cd app && gem install bundler && cd android && gem install && cd ../..
+    script:
+    - cd app
+    # Package app for Android using tag
+    - flutter packages get
+    - flutter build apk --release --build-number=$TRAVIS_TAG --target-platform=android-arm64
+    - cd android && bundle exec fastlane android alpha
+
