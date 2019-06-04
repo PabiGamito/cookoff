@@ -145,6 +145,7 @@ class AuthorizedMainScreen extends StatelessWidget {
             padding: false,
             child: Container(
               padding: EdgeInsets.only(
+                top: Scalar(context).scale(35),
                 bottom: Scalar(context).scale(15),
               ),
               child: IngredientsSection(
