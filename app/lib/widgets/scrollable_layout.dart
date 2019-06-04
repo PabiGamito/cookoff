@@ -1,15 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+class CardController {
+  ScrollableCard _card;
+
+  CardController({ScrollableCard card}) : _card = card;
+
+  void attachTo(ScrollableCard card) {
+    _card = card;
+  }
+
+  void fullScreen(BuildContext context) {
+    // TODO: Add animated expansion.
+    
+    if (_card == null || _card._state == null || _card._cardIndex == null)
+      return;
+
+    for (var i = 0; i < _card._cardIndex; i++) {
+      _card._state.maximize(context, i);
+    }
+
+    for (var i = _card._cardIndex;
+        i < _card._state.scrollableCards.length;
+        i++) {
+      _card._state.minimize(context, i);
+    }
+  }
+
+  void exitFullScreen() {
+    // TODO: Implement, store some sort of state before going to fullscreen, to be able to go back to on back
+  }
+}
+
 class ScrollableCard {
   double _offset;
   double _lastOffset;
 
-  final double minOffset;
-  final double maxOffset;
+  double minOffset;
+  double maxOffset;
 
-  final bool bounce;
-  final bool scrollable;
+  bool bounce;
+  bool scrollable;
+
+  // Set when card is added to ScrollableLayout
+  int _cardIndex;
+  ScrollableLayoutState _state;
 
   final double Function(BuildContext context, double scrolledAmount) cardOffset;
   final Widget Function(
@@ -26,8 +61,10 @@ class ScrollableCard {
     double startingOffset,
     this.bounce = true,
     this.scrollable = true,
+    CardController controler,
   }) : _offset = startingOffset ?? maxOffset {
     _lastOffset = _offset;
+    controler?.attachTo(this);
   }
 
   void liveScroll(double amount) {
@@ -74,7 +111,13 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
 
   double _scrollStartPos;
 
-  ScrollableLayoutState(this.scrollableCards, this.maxScroll, this.minScroll);
+  ScrollableLayoutState(this.scrollableCards, this.maxScroll, this.minScroll) {
+    for (int i = 0; i < scrollableCards.length; i++) {
+      var _card = scrollableCards[i];
+      _card._state = this;
+      _card._cardIndex = i;
+    }
+  }
 
   int indexOfCardAtScrollStartAt(double pos) {
     double offset = scrollableCards[0]._lastOffset;
@@ -90,6 +133,18 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
     }
 
     return scrollableCards.length - 1;
+  }
+
+  void maximize(BuildContext context, int cardIndex) {
+    setState(() {
+      scrollableCards[cardIndex]._offset = 0;
+    });
+  }
+
+  void minimize(BuildContext context, int cardIndex) {
+    setState(() {
+      scrollableCards[cardIndex]._offset = MediaQuery.of(context).size.height;
+    });
   }
 
   @override
@@ -146,7 +201,7 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
         var _card = scrollableCards[_cardIndex];
 
         // Over limit scrolling, hack to get bounce effect (div by 3 to scale bounce amount)
-        if (_card.bounce) _card.controller.jumpTo(-extraScrollAmount / 3);
+        if (_card.bounce) _card.controller.jumpTo(-extraScrollAmount / 10);
       },
       onVerticalDragEnd: (DragEndDetails details) {
         scrollComplete();

@@ -107,6 +107,8 @@ class AuthorizedMainScreen extends StatelessWidget {
       },
     );
 
+    var card2Controller = CardController();
+
     var card1Fragment = FragmentContainer(
       startingFragment: 'featured',
       fragments: {
@@ -122,9 +124,10 @@ class AuthorizedMainScreen extends StatelessWidget {
                 Color(0xFF65D2EB)),
           ],
           more: true,
-          onMoreTap: (context) => {
-                FragmentNavigator.navigateTo(context, 'ingredients'),
-              },
+          onMoreTap: (context) {
+            FragmentNavigator.navigateTo(context, 'ingredients');
+            card2Controller.fullScreen(context);
+          },
         ),
         'ingredients': IngredientsScreen(),
       },
@@ -155,6 +158,7 @@ class AuthorizedMainScreen extends StatelessWidget {
         });
 
     var card2 = ScrollableCard(
+      controler: card2Controller,
       minOffset: firstCardTitleHeight,
       maxOffset:
           Scalar(context).scale(firstCardTitleHeight + firstCardContentHeight),
@@ -170,8 +174,10 @@ class AuthorizedMainScreen extends StatelessWidget {
           child: ChallengesSection(
             challengeProvider,
             scrollable: fullyExpanded,
-            onAddChallenge: (context) =>
-                card1Fragment.navigateTo('ingredients'),
+            onAddChallenge: (context) {
+              card1Fragment.navigateTo('ingredients');
+              card2Controller.fullScreen(context);
+            },
           ),
         );
       },
