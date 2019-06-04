@@ -30,6 +30,7 @@
 # Fastlane related
 android/fastlane/metadata
 android/fastlane/report.xml
+android/fastlane/README.md
 
 # Android related
 **/android/**/gradle-wrapper.jar
