@@ -36,7 +36,6 @@ class IngredientsScreen extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                   child: IngredientsSection(
                     title: 'Featured',
                     ingredients: <Ingredient>[
@@ -52,7 +51,6 @@ class IngredientsScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                   child: IngredientsSection(
                     title: 'Keep it simple',
                     ingredients: <Ingredient>[
@@ -66,7 +64,6 @@ class IngredientsScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                   child: IngredientsSection(
                     title: 'Healthy eating',
                     ingredients: <Ingredient>[
@@ -80,7 +77,6 @@ class IngredientsScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                   child: IngredientsSection(
                     title: 'Healthiest eating',
                     ingredients: <Ingredient>[
@@ -94,7 +90,6 @@ class IngredientsScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: Scalar(context).scale(15)),
                   child: IngredientsSection(
                     title: 'Most Healthy eating',
                     ingredients: <Ingredient>[
