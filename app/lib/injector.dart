@@ -9,6 +9,11 @@ import 'package:cookoff/providers/ingredient_provider.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/providers/user_provider.dart';
 
+import 'blocs/camera_bloc.dart';
+import 'firebase/auth_firebase_adapter.dart';
+import 'firebase/challenge_firebase_adapter.dart';
+import 'firebase/user_firebase_adapter.dart';
+
 class Injector {
   final AuthProvider authProvider = AuthFirebaseAdapter();
 
@@ -19,4 +24,5 @@ class Injector {
   final IngredientProvider ingredientProvider = LocalIngredientProvider();
 
   final UserProvider userProvider = UserFirebaseAdapter();
+  final CameraControllerProvider cameraProvider = CameraAdapter();
 }
