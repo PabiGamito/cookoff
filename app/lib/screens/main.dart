@@ -143,6 +143,9 @@ class AuthorizedMainScreen extends StatelessWidget {
                           Color(0xFF65D2EB)),
                     ],
                     more: true,
+                    onMoreTap: (context) => {
+                          FragmentNavigator.navigateTo(context, 'ingredients'),
+                        },
                   ),
                   'ingredients': IngredientsScreen(),
                 },
