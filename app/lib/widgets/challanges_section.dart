@@ -5,7 +5,6 @@ import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/countdown.dart';
-import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +14,13 @@ import 'package:rxdart/rxdart.dart';
 class ChallengesSection extends StatelessWidget {
   final ChallengeProvider _challengeProvider;
   final bool _scrollable;
+  final void Function(BuildContext) _onAddChallenge;
 
   ChallengesSection(ChallengeProvider challengeProvider,
-      {bool scrollable = true})
+      {bool scrollable = true, void Function(BuildContext) onAddChallenge})
       : _challengeProvider = challengeProvider,
-        _scrollable = scrollable;
+        _scrollable = scrollable,
+        _onAddChallenge = onAddChallenge ?? ((c) {});
 
   @override
   Widget build(BuildContext context) => Column(
@@ -42,8 +43,7 @@ class ChallengesSection extends StatelessWidget {
                       textAlign: TextAlign.left,
                     ),
                     CircleAddButton(
-                      onTap: () =>
-                          FragmentNavigator.navigateTo(context, 'ingredients'),
+                      onTap: () => _onAddChallenge(context),
                     ),
                   ],
                 ),

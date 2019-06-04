@@ -107,6 +107,29 @@ class AuthorizedMainScreen extends StatelessWidget {
       },
     );
 
+    var card1Fragment = FragmentContainer(
+      startingFragment: 'featured',
+      fragments: {
+        'featured': IngredientsSection(
+          title: 'Start cooking...',
+          titleUnderlineColor: Color(0xFF8EE5B6),
+          ingredients: <Ingredient>[
+            Ingredient(
+                "cheese", "assets/ingredients/cheese.png", Color(0xFF7C54EA)),
+            Ingredient(
+                "orange", "assets/ingredients/orange.png", Color(0xFFD0EB5C)),
+            Ingredient("cauliflower", "assets/ingredients/cauliflower.png",
+                Color(0xFF65D2EB)),
+          ],
+          more: true,
+          onMoreTap: (context) => {
+                FragmentNavigator.navigateTo(context, 'ingredients'),
+              },
+        ),
+        'ingredients': IngredientsScreen(),
+      },
+    );
+
     var card1 = ScrollableCard(
         minOffset: 0,
         maxOffset: Scalar(context).scale(firstCardMaxOffset),
@@ -126,30 +149,7 @@ class AuthorizedMainScreen extends StatelessWidget {
               padding: EdgeInsets.only(
                 bottom: Scalar(context).scale(15),
               ),
-              child: FragmentContainer(
-                startingFragment: 'featured',
-                fragments: {
-                  'featured': IngredientsSection(
-                    title: 'Start cooking...',
-                    titleUnderlineColor: Color(0xFF8EE5B6),
-                    ingredients: <Ingredient>[
-                      Ingredient("cheese", "assets/ingredients/cheese.png",
-                          Color(0xFF7C54EA)),
-                      Ingredient("orange", "assets/ingredients/orange.png",
-                          Color(0xFFD0EB5C)),
-                      Ingredient(
-                          "cauliflower",
-                          "assets/ingredients/cauliflower.png",
-                          Color(0xFF65D2EB)),
-                    ],
-                    more: true,
-                    onMoreTap: (context) => {
-                          FragmentNavigator.navigateTo(context, 'ingredients'),
-                        },
-                  ),
-                  'ingredients': IngredientsScreen(),
-                },
-              ),
+              child: card1Fragment,
             ),
           );
         });
@@ -167,8 +167,12 @@ class AuthorizedMainScreen extends StatelessWidget {
         return RoundedCard(
           padding: false,
           backgroundColor: Color(0xFFF5F5F5),
-          child:
-              ChallengesSection(challengeProvider, scrollable: fullyExpanded),
+          child: ChallengesSection(
+            challengeProvider,
+            scrollable: fullyExpanded,
+            onAddChallenge: (context) =>
+                card1Fragment.navigateTo('ingredients'),
+          ),
         );
       },
     );
@@ -199,8 +203,8 @@ class UnauthorizedMainScreen extends StatelessWidget {
         color: Color(0xFFFFC544),
         child: Center(
           child: BlocBuilder(
-              bloc: LoadingAuthBloc.instance,
-              builder: (BuildContext context, bool loading) => GestureDetector(
+            bloc: LoadingAuthBloc.instance,
+            builder: (BuildContext context, bool loading) => GestureDetector(
                   onTap: () {
                     LoadingAuthBloc.instance.dispatch(true);
                     // disable button while loading
@@ -223,7 +227,9 @@ class UnauthorizedMainScreen extends StatelessWidget {
                         letterSpacing: 2,
                       ),
                     ),
-                  ))),
+                  ),
+                ),
+          ),
         ));
   }
 }

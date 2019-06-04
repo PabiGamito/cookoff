@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 class FragmentContainer extends StatefulWidget {
   final String _startingFragment;
   final Map<String, Widget> _fragments;
+  FragmentContainerState state;
 
   FragmentContainer(
       {@required String startingFragment,
@@ -13,10 +14,16 @@ class FragmentContainer extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return FragmentContainerState(
+    state = FragmentContainerState(
       startingFragment: _startingFragment,
       fragments: _fragments,
     );
+
+    return state;
+  }
+
+  void navigateTo(String fragmentId) {
+    state?.navigateTo(fragmentId);
   }
 }
 
