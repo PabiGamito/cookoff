@@ -16,7 +16,8 @@ class RoundedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.symmetric(
-          vertical: Scalar(context).scale(45),
+          vertical:
+              _padding ? Scalar(context).scale(45) : Scalar(context).scale(0),
           horizontal:
               _padding ? Scalar(context).scale(35) : Scalar(context).scale(0),
         ),

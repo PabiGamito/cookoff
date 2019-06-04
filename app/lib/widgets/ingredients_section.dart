@@ -52,6 +52,7 @@ class IngredientsSection extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(
+              top: Scalar(context).scale(35),
               left: Scalar(context).scale(30),
               right: Scalar(context).scale(30)),
           child: SectionTitle(

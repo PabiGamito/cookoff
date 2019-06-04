@@ -27,6 +27,7 @@ class ChallengesSection extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(
+                top: Scalar(context).scale(30),
                 left: Scalar(context).scale(30),
                 right: Scalar(context).scale(30)),
             child: Column(
