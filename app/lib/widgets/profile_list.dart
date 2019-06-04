@@ -1,7 +1,6 @@
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 // class builds profile icons from a list of a stream of users
 class ProfileList extends StatelessWidget {
@@ -12,20 +11,23 @@ class ProfileList extends StatelessWidget {
   final Function _onTap;
   final double _iconSize;
   final Color _color;
+  final double _borderWidth;
 
   ProfileList(List<Stream<User>> users,
       {Function onTap,
       bool hasMoreIcon = true,
       double iconOffset = 0,
       double iconSize,
-      Color color})
+      Color color,
+      double borderWidth})
       : _onTap = onTap,
         _users = users,
         _iconOffset = iconOffset + iconSize,
         _hasMoreIcon = hasMoreIcon,
         _iconSize = iconSize,
         overallOffset = users.length * iconSize / 2,
-        _color = color;
+        _color = color,
+        _borderWidth = borderWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,9 @@ class ProfileList extends StatelessWidget {
             Positioned(
                 left: _iconOffset * i,
                 child: ProfileIcon(
-                    user: snapshot.data, size: _iconSize, borderWidth: 5)),
+                    user: snapshot.data,
+                    size: _iconSize,
+                    borderWidth: _borderWidth)),
       ));
     }
 

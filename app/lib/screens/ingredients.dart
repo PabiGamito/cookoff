@@ -4,7 +4,6 @@ import 'package:cookoff/widgets/fragment.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/pill_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class IngredientsScreen extends StatelessWidget {
   @override

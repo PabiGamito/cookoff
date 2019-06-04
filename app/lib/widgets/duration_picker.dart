@@ -2,7 +2,6 @@
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class DurationPicker extends StatelessWidget {

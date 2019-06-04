@@ -1,6 +1,5 @@
 import 'package:cookoff/scalar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class PillButton extends StatelessWidget {
   final String _text;

@@ -1,6 +1,5 @@
 import 'package:cookoff/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ProfileIcon extends StatelessWidget {
   // Placeholder for null profile

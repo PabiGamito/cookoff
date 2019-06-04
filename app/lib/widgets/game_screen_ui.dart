@@ -1,6 +1,5 @@
 import 'package:cookoff/scalar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class GameBackButton extends StatelessWidget {
   final Function _popScreen;
@@ -8,9 +7,7 @@ class GameBackButton extends StatelessWidget {
   GameBackButton(Function popScreen) : _popScreen = popScreen;
 
   @override
-  Widget build(BuildContext context) {
-    var mediaSize = MediaQuery.of(context).size;
-    return Container(
+  Widget build(BuildContext context) => Container(
       height: Scalar(context).scale(135),
       padding: EdgeInsets.only(
         top: Scalar(context).scale(35),
@@ -19,19 +16,13 @@ class GameBackButton extends StatelessWidget {
       margin: EdgeInsets.only(left: Scalar(context).scale(20)),
       child: Wrap(children: [
         GestureDetector(
-          onTap: _popScreen,
-          child: Text(
-            "\u{2190}",
-            style: TextStyle(
-              fontSize: Scalar(context).scale(60),
-              fontFamily: "Montserrat",
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ]),
-    );
-  }
+            onTap: _popScreen,
+            child: Text("\u{2190}",
+                style: TextStyle(
+                    fontSize: Scalar(context).scale(60),
+                    fontFamily: "Montserrat",
+                    color: Colors.white)))
+      ]));
 }
 
 class IngredientName extends StatelessWidget {
@@ -40,21 +31,15 @@ class IngredientName extends StatelessWidget {
   IngredientName(String ingredientName) : _ingredientName = ingredientName;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Container(
-        child: Text(
-          "${_ingredientName[0].toUpperCase()}${_ingredientName.substring(1)}",
-          style: TextStyle(
-            fontSize: Scalar(context).scale(50),
-            fontFamily: "Montserrat",
-            color: Colors.white,
-            letterSpacing: 2,
-          ),
-        ),
-      ),
-    );
-  }
+          child: Text(
+              "${_ingredientName[0].toUpperCase()}${_ingredientName.substring(1)}",
+              style: TextStyle(
+                  fontSize: Scalar(context).scale(50),
+                  fontFamily: "Montserrat",
+                  color: Colors.white,
+                  letterSpacing: 2))));
 }
 
 class IngredientIcon extends StatelessWidget {
@@ -68,14 +53,11 @@ class IngredientIcon extends StatelessWidget {
         _margin = margin ?? EdgeInsets.only(bottom: size);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       width: _size,
       height: _size,
       margin: _margin,
-      child: Image.asset(_iconPath),
-    );
-  }
+      child: Image.asset(_iconPath));
 }
 
 class GameStartButton extends StatelessWidget {

@@ -1,9 +1,8 @@
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
+import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/section_title.dart';
-import 'package:flutter/widgets.dart';
-
-import 'ingredients_section.dart';
+import 'package:flutter/material.dart';
 
 class FeaturedSection extends StatelessWidget {
   final String _title;

@@ -6,7 +6,6 @@ import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/titled_section.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FriendsTab extends StatefulWidget {
@@ -75,7 +74,7 @@ class FriendsCard extends StatelessWidget {
           padding: EdgeInsets.only(bottom: Scalar(context).scale(60)),
           child: TitledSection(
               title: 'Add friends...',
-              underlineColor: Colors.lightBlue,
+              underlineColor: Color(0xFF65D2EB),
               child: FriendsList(bloc: _bloc))));
 }
 
@@ -136,7 +135,7 @@ class FriendCard extends StatelessWidget {
                         decoration: new BoxDecoration(
                           shape: BoxShape.circle,
                           color: ticked.contains(_friend.userId)
-                              ? Colors.lightBlueAccent
+                              ? Color(0xFF65D2EB)
                               : Color(0xFFC6C6C6),
                         ),
                         child: Center(
@@ -187,7 +186,7 @@ class FriendsSelectButton extends StatelessWidget {
                 margin:
                     EdgeInsets.symmetric(horizontal: Scalar(context).scale(35)),
                 decoration: new BoxDecoration(
-                    color: Colors.lightBlueAccent,
+                    color: Color(0xFF65D2EB),
                     borderRadius: BorderRadius.all(Radius.circular(8))),
                 child: Center(
                   child: Text(

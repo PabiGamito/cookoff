@@ -2,7 +2,6 @@ import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class TileCarousel extends StatelessWidget {
   final List<Tile> _tiles;

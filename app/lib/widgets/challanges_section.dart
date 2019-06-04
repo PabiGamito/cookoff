@@ -4,15 +4,13 @@ import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
+import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/fragment.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'countdown.dart';
-import 'injector_widget.dart';
 
 class ChallengesSection extends StatelessWidget {
   final ChallengeProvider _challengeProvider;
@@ -98,8 +96,8 @@ class CircleAddButton extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
         onTap: _onTap,
         child: Container(
-          width: Scalar(context).scale(40),
-          height: Scalar(context).scale(40),
+          width: Scalar(context).scale(48),
+          height: Scalar(context).scale(48),
           decoration: BoxDecoration(
             color: Color(0xFF8057E2),
             borderRadius: BorderRadius.circular(Scalar(context).scale(40)),
@@ -196,7 +194,7 @@ class ChallengeItem extends StatelessWidget {
               bottom: Scalar(context).scale(10)),
           height: Scalar(context).scale(100),
           decoration: BoxDecoration(
-            color: Color(0xFF7C54EA),
+            color: bgColor,
             borderRadius:
                 BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
           ),
@@ -229,12 +227,11 @@ class ChallengeInnerContent extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(right: Scalar(context).scale(25)),
-            child: ProfileList(
-              profileListContent(context),
-              iconSize: Scalar(context).scale(45),
-              iconOffset: Scalar(context).scale(-10),
-              hasMoreIcon: false,
-            ),
+            child: ProfileList(profileListContent(context),
+                iconSize: Scalar(context).scale(45),
+                iconOffset: Scalar(context).scale(-10),
+                hasMoreIcon: false,
+                borderWidth: 4),
           ),
         ],
       );

@@ -157,28 +157,27 @@ class _GameScreenState extends State<GameScreen> {
                                   bloc: AuthBloc.instance,
                                   builder: (BuildContext context, User user) =>
                                       ProfileList(
-                                        user.friendsList
-                                            .where((friend) {
-                                              var list = _gameStarted
-                                                  ? _challenge.participants
-                                                  : ticked;
-                                              return list
-                                                  .contains(friend.userId);
-                                            })
-                                            .map(
-                                                (user) => Observable.just(user))
-                                            .toList(),
-                                        iconSize: Scalar(context).scale(55),
-                                        iconOffset: Scalar(context).scale(-10),
-                                        hasMoreIcon: !_gameStarted,
-                                        onTap: () {
-                                          setState(() {
-                                            _displayFriends = true;
-                                            _cardHeight = 0;
-                                          });
-                                        },
-                                        color: _bgColor,
-                                      ))),
+                                          user.friendsList
+                                              .where((friend) {
+                                                var list = _gameStarted
+                                                    ? _challenge.participants
+                                                    : ticked;
+                                                return list
+                                                    .contains(friend.userId);
+                                              })
+                                              .map((user) =>
+                                                  Observable.just(user))
+                                              .toList(),
+                                          iconSize: Scalar(context).scale(55),
+                                          iconOffset:
+                                              Scalar(context).scale(-10),
+                                          hasMoreIcon: !_gameStarted,
+                                          onTap: () {
+                                        setState(() {
+                                          _displayFriends = true;
+                                          _cardHeight = 0;
+                                        });
+                                      }, color: _bgColor, borderWidth: 5))),
                         ),
                       ),
                       Container(

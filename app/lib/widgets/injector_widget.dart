@@ -1,6 +1,5 @@
+import 'package:cookoff/injector.dart';
 import 'package:flutter/widgets.dart';
-
-import '../injector.dart';
 
 class InjectorWidget extends InheritedWidget {
   final Injector injector;

@@ -1,5 +1,4 @@
 import 'package:cookoff/models/ingredient.dart';
-import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
@@ -11,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Challenge provider for challenge section
-    ChallengeProvider challengeProvider =
+    var challengeProvider =
         InjectorWidget.of(context).injector.challengeProvider;
     return Container(
       padding: EdgeInsets.only(top: Scalar(context).scale(40)),

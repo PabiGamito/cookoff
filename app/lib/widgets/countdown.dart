@@ -1,9 +1,7 @@
 import 'dart:async';
 
+import 'package:cookoff/scalar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-import '../scalar.dart';
 
 class Countdown extends StatefulWidget {
   final DateTime _end;

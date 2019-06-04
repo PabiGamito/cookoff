@@ -56,21 +56,19 @@ class HelloMessage extends StatelessWidget {
           Text(
             'HELLO',
             style: TextStyle(
-              fontSize: Scalar(context).scale(22),
-              fontFamily: 'Montserrat',
-              color: Color(0xFFFFFFFF),
-              letterSpacing: 2.0,
-            ),
+                fontSize: Scalar(context).scale(22),
+                fontFamily: 'Montserrat',
+                color: Colors.white,
+                letterSpacing: 4),
             textAlign: TextAlign.left,
           ),
           Text(
             _name,
             style: TextStyle(
-              fontSize: Scalar(context).scale(42),
-              fontFamily: 'Montserrat',
-              color: Color(0xFF333333),
-              height: 0.8,
-            ),
+                fontSize: Scalar(context).scale(40),
+                fontFamily: 'Montserrat',
+                color: Colors.black,
+                height: 0.8),
             textAlign: TextAlign.left,
           )
         ],
