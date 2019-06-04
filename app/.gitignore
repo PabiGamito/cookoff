@@ -28,8 +28,8 @@
 /build/
 
 # Fastlane related
-app/android/fastlane/metadata
-app/android/fastlane/report.xml
+android/fastlane/metadata
+android/fastlane/report.xml
 
 # Android related
 **/android/**/gradle-wrapper.jar
