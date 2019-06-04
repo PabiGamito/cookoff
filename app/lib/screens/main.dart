@@ -186,45 +186,6 @@ class AuthorizedMainScreen extends StatelessWidget {
         ],
       ),
     );
-
-//    return Container(
-//      // Status bar height
-//      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-//      child: ScrollableLayout(
-//        maxOffset: Scalar(context).scale(185),
-//        minOffset: Scalar(context).scale(0),
-//        onTopOverScroll: (d) => {print("TOP OVERFLOW!!!")},
-//        main: Container(
-//          color: Color(0xFFFFC544),
-//          child: Column(
-//            mainAxisSize: MainAxisSize.min,
-//            children: [
-//              Container(
-//                padding: EdgeInsets.only(
-//                    top: Scalar(context).scale(30),
-//                    bottom: Scalar(context).scale(25)),
-//                child: BlocBuilder(
-//                  bloc: AuthBloc.instance,
-//                  builder: (BuildContext context, User user) {
-//                    return HomeHeader(user: user, notificationCount: 3);
-//                  },
-//                ),
-//              ),
-//              Expanded(
-//                child: Container(),
-//              ),
-//            ],
-//          ),
-//        ),
-//        card: FragmentContainer(
-//          startingFragment: 'home',
-//          fragments: {
-//            'home': NewHomeScreen(),
-//            'ingredients': IngredientsScreen(),
-//          },
-//        ),
-//      ),
-//    );
   }
 }
 
