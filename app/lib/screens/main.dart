@@ -1,5 +1,6 @@
-import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/providers/ingredients_provider.dart';
+import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/widgets/auth.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
@@ -44,6 +45,8 @@ class AuthorizedMainScreen extends StatelessWidget {
     ChallengeProvider challengeProvider =
         InjectorWidget.of(context).injector.challengeProvider;
 
+    IngredientProvider ingredientProvider = LocalIngredientProvider();
+
     const double firstCardMaxOffset = 188;
     const double firstCardTitleHeight = 112;
     const double firstCardContentHeight = 148;
@@ -68,7 +71,9 @@ class AuthorizedMainScreen extends StatelessWidget {
                   color: Color(0xFFFFC544),
                   child: RoundedCard(
                     padding: false,
-                    child: IngredientsScreen(),
+                    child: IngredientsScreen(
+                      ingredientProvider: ingredientProvider,
+                    ),
                   ),
                 ),
               ),
@@ -132,16 +137,9 @@ class AuthorizedMainScreen extends StatelessWidget {
                 bottom: Scalar(context).scale(15),
               ),
               child: IngredientsSection(
+                ingredientSection: FeaturedSection(),
                 title: 'Start cooking...',
                 titleUnderlineColor: Color(0xFF8EE5B6),
-                ingredients: <Ingredient>[
-                  Ingredient("cheese", "assets/ingredients/cheese.png",
-                      Color(0xFF7C54EA)),
-                  Ingredient("orange", "assets/ingredients/orange.png",
-                      Color(0xFFD0EB5C)),
-                  Ingredient("cauliflower",
-                      "assets/ingredients/cauliflower.png", Color(0xFF65D2EB)),
-                ],
                 more: true,
                 onMoreTap: _showAllIngredients,
               ),

@@ -61,28 +61,27 @@ class ChallengesSection extends StatelessWidget {
             ),
           ),
           Expanded(
-              child: Container(
-                  padding: EdgeInsets.only(
-                      left: Scalar(context).scale(30),
-                      right: Scalar(context).scale(30)),
-                  child: BlocBuilder(
-                      bloc: AuthBloc.instance,
-                      builder: (BuildContext context, User user) =>
-                          StreamBuilder<Iterable<Challenge>>(
-                              stream: _challengeProvider
-                                  .challengesStream(user.userId),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<Iterable<Challenge>>
-                                      snapshots) {
-                                if (!snapshots.hasData ||
-                                    snapshots.data.length == 0) {
-                                  return NoChallenges();
-                                }
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: Scalar(context).scale(30),
+                  right: Scalar(context).scale(30)),
+              child: BlocBuilder(
+                bloc: AuthBloc.instance,
+                builder: (BuildContext context, User user) => StreamBuilder<
+                        Iterable<Challenge>>(
+                    stream: _challengeProvider.challengesStream(user.userId),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<Iterable<Challenge>> snapshots) {
+                      if (!snapshots.hasData || snapshots.data.length == 0) {
+                        return NoChallenges();
+                      }
 
-                                return ChallengesList(
-                                    challenges: snapshots.data,
-                                    scrollable: _scrollable);
-                              }))))
+                      return ChallengesList(
+                          challenges: snapshots.data, scrollable: _scrollable);
+                    }),
+              ),
+            ),
+          )
         ],
       );
 }
