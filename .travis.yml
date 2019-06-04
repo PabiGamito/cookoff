@@ -117,7 +117,7 @@ jobs:
     - export TRAVIS_TAG=$(git tag --points-at HEAD)
     - "[ -n \"$TRAVIS_TAG\" ] && echo $TRAVIS_TAG"
     # Install Fastlane dependencies
-    - cd app && gem install bundler && cd android && gem install && cd ../..
+    - cd app && gem install bundler && cd android && bundle install && cd ../..
     script:
     - cd app
     # Package app for Android using tag
