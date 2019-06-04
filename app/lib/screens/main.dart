@@ -1,5 +1,6 @@
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/widgets/auth.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
@@ -23,34 +24,16 @@ class MainScreen extends StatelessWidget {
         InjectorWidget.of(context).injector.authProvider;
     UserProvider userProvider =
         InjectorWidget.of(context).injector.userProvider;
-    return StreamBuilder<User>(
-        stream: authProvider.profile,
-        builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          if (!snapshot.hasData) {
-            AuthBloc.instance.dispatch(NullUser());
-            return UnauthorizedMainScreen();
-          }
-          if (snapshot.data == null) {
-            AuthBloc.instance.dispatch(NullUser());
-            return UnauthorizedMainScreen();
-          } else {
-            // User is signed in
-            User user = snapshot.data;
-            // Notify auth bloc
-            AuthBloc.instance.dispatch(user);
-            LoadingAuthBloc.instance.dispatch(false);
-            // Retrieve friends
-            return StreamBuilder<Iterable<User>>(
-                stream: userProvider.friendsStream(user.userId),
-                builder: (BuildContext context,
-                    AsyncSnapshot<Iterable<User>> snapshot) {
-                  // Set friends list and notify auth bloc
-                  AuthBloc.instance
-                      .dispatch(user.copyWithFriendsList(snapshot.data));
-                  return AuthorizedMainScreen();
-                });
-          }
-        });
+    Widget unauthorized = UnauthorizedMainScreen();
+    Widget authorized = AuthorizedMainScreen();
+    return new AuthWidget(
+      authProvider: authProvider,
+      userProvider: userProvider,
+      authorizedScreen: authorized,
+      unauthorizedScreen: unauthorized,
+      authBloc: AuthBloc.instance,
+      loadingBloc: LoadingAuthBloc.instance,
+    );
   }
 }
 
