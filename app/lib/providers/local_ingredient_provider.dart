@@ -9,8 +9,7 @@ import 'ingredients_provider.dart';
 class LocalIngredientProvider extends IngredientProvider {
   @override
   Stream<Iterable<Ingredient>> getAllIngredients() {
-    // TODO: implement getAllIngredients
-    return null;
+    throw UnimplementedError();
   }
 
   Future<Iterable<IngredientSection>> getIngredientSections() async {
