@@ -6,6 +6,7 @@ import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/game/friends_tab.dart';
 import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/game/inspiration_card.dart';
+import 'package:cookoff/widgets/game_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -106,52 +107,4 @@ class _GameScreenState extends State<GameScreen> {
                     },
                     bloc: _bloc))
           ]));
-}
-
-class CameraButton extends StatelessWidget {
-  final Color _bgColor;
-  final GameBloc _bloc;
-
-  CameraButton({Color backgroundColor, GameBloc bloc})
-      : _bgColor = backgroundColor,
-        _bloc = bloc;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder(
-      bloc: _bloc,
-      builder: (BuildContext context, Challenge challenge) => Visibility(
-            visible: challenge.started,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Scaffold(
-                          body: CameraScreen(
-                            backgroundColor: _bgColor,
-                            bloc: _bloc,
-                          ),
-                        ),
-                  ),
-                );
-              },
-              child: Container(
-                height: 60,
-                margin: EdgeInsets.symmetric(
-                    horizontal: Scalar(context).scale(170)),
-                decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Center(
-                  child: Icon(
-                    Icons.photo_camera,
-                    color: Colors.lightBlue,
-                  ),
-                ),
-              ),
-            ),
-          ),
-    );
-  }
 }

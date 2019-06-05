@@ -17,16 +17,16 @@ class PictureFirebaseAdapter implements PictureProvider {
 
   @override
   Future<Challenge> uploadPicture(String path, Challenge challenge) async {
-    // prepare data
-    final file = File(path);
-    final ref = storage.ref().child(basename(file.path));
-    final task = ref.putFile(File(path));
+    // Prepare data
+    var file = File(path);
+    var ref = storage.ref().child(basename(file.path));
+    var task = ref.putFile(File(path));
 
-    // upload
+    // Upload
     await task.onComplete;
 
-    // store upload in database
-    final newChallenge = challenge.copyWithImage(ref.path);
+    // Store upload in database
+    var newChallenge = challenge.copyWithImage(ref.path);
     _challengeProvider.updateChallenge(challenge);
     return newChallenge;
   }
