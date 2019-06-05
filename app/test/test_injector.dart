@@ -27,4 +27,8 @@ class TestInjector implements Injector {
       this.challengeProvider,
       this.ingredientProvider,
       this.userProvider});
+
+  @override
+  // TODO: implement cameraProvider
+   get cameraProvider => null;
 }
