@@ -66,7 +66,7 @@ class AuthorizedMainScreen extends StatelessWidget {
           builder: (context) => Scaffold(
                 body: Container(
                   // Status bar height
-                  margin:
+                  padding:
                       EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   color: Color(0xFFFFC544),
                   child: RoundedCard(
