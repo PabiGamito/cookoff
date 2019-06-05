@@ -115,8 +115,11 @@ class _GameScreenState extends State<GameScreen> {
 
 class CameraButton extends StatelessWidget {
   final Color _bgColor;
+  final GameBloc _bloc;
 
-  CameraButton({Color backgroundColor}) : _bgColor = backgroundColor;
+  CameraButton({Color backgroundColor, GameBloc bloc})
+      : _bgColor = backgroundColor,
+        _bloc = bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +129,10 @@ class CameraButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => Scaffold(
-                  body: CameraScreen(backgroundColor: _bgColor),
+                  body: CameraScreen(
+                    backgroundColor: _bgColor,
+                    bloc: _bloc,
+                  ),
                 ),
           ),
         );
