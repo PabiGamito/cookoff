@@ -80,6 +80,9 @@ class _GameScreenState extends State<GameScreen> {
                     IngredientName(bloc: _bloc),
                     IngredientIcon(bloc: _bloc),
                     GameStartButton(color: widget._color, bloc: _bloc),
+                    CameraButton(
+                      backgroundColor: widget._color,
+                    ),
                     FriendProfiles(
                         color: widget._color,
                         onTap: () {
@@ -104,6 +107,10 @@ class _GameScreenState extends State<GameScreen> {
 }
 
 class CameraButton extends StatelessWidget {
+  final Color _bgColor;
+
+  CameraButton({Color backgroundColor}) : _bgColor = backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -112,7 +119,7 @@ class CameraButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => Scaffold(
-                  body: CameraScreen(),
+                  body: CameraScreen(backgroundColor: _bgColor),
                 ),
           ),
         );
@@ -124,13 +131,9 @@ class CameraButton extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(30))),
         child: Center(
-          child: Text(
-            "Cam",
-            style: TextStyle(
-              fontSize: Scalar(context).scale(22),
-              letterSpacing: 3,
-              color: Colors.blueGrey,
-            ),
+          child: Icon(
+            Icons.photo_camera,
+            color: Colors.lightBlue,
           ),
         ),
       ),

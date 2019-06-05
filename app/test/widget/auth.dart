@@ -43,7 +43,7 @@ void main() {
 
   testWidgets('Main screen renders home screen on user login', (WidgetTester tester) async {
     when(mockAuthProvider.profile).thenAnswer((_) => Observable.just(NullUser()));
-    when(mockUserProvider.friends(argThat(isA<String>()))).thenAnswer((_) => Observable.just([]));
+    when(mockUserProvider.friendsStream(argThat(isA<String>()))).thenAnswer((_) => Observable.just([]));
 
     await tester.pumpWidget(MaterialApp(
       home: InjectorWidget(
