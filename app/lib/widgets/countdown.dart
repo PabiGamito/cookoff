@@ -46,15 +46,7 @@ class _CountdownState extends State<Countdown> {
   void updateTimeText() {
     var _timeLeft = _end.difference(DateTime.now());
 
-    var days = _timeLeft.inDays;
-    var hours = _timeLeft.inHours % hoursInADay;
-    var minutes = _timeLeft.inMinutes % minutesInAnHour;
-    var seconds = _timeLeft.inSeconds % secondsInAMinute;
-
-    _timeText.setDays(days);
-    _timeText.setHours(hours);
-    _timeText.setMinutes(minutes);
-    _timeText.setSeconds(seconds);
+    _timeText = TimeText(duration: _timeLeft);
   }
 
   @override
@@ -82,8 +74,9 @@ class TimeText extends StatelessWidget {
         _showDays = alwaysShowDays {
     if (duration != null) {
       setDays(duration.inDays.round());
-      setHours(duration.inHours.round() % 24);
-      setMinutes(duration.inMinutes.round() % 60);
+      setHours(duration.inHours.round() % hoursInADay);
+      setMinutes(duration.inMinutes.round() % minutesInAnHour);
+      setSeconds(duration.inSeconds.round() % secondsInAMinute);
     }
   }
 
