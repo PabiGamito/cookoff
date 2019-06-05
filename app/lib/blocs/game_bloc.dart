@@ -37,5 +37,10 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
         yield currentState.copyWithParticipant(event.friend);
       }
     }
+
+    if (event is UploadPictureButton) {
+      // TODO: HANNES UPLOAD
+      print("Uploaded image!");
+    }
   }
 }
