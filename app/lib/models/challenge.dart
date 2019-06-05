@@ -13,16 +13,16 @@ class Challenge {
   final DateTime end;
   final List<String> images;
 
-  Challenge._internal(
+  Challenge(
       {this.id,
-      this.owner,
-      this.participants,
-      this.ingredient,
-      this.complete,
-      this.end,
-      this.images});
+        this.owner,
+        this.participants,
+        this.ingredient,
+        this.complete,
+        this.end,
+        this.images});
 
-  Challenge(this.ingredient)
+  Challenge.withIngredient(this.ingredient)
       : id = null,
         owner = null,
         participants = {},
@@ -37,47 +37,59 @@ class Challenge {
 
   bool hasParticipant(String participant) => participants.contains(participant);
 
-  Challenge copyWithId(String id) => Challenge._internal(
+  Challenge copyWithId(String id) => Challenge(
       id: id,
       owner: owner,
       participants: participants,
       ingredient: ingredient,
       complete: complete,
-      end: end);
+      end: end,
+      images: images);
 
-  Challenge copyWithOwner(String owner) => Challenge._internal(
+  Challenge copyWithOwner(String owner) => Challenge(
       id: id,
       owner: owner,
       participants: participants..add(owner),
       ingredient: ingredient,
       complete: complete,
-      end: end);
+      end: end,
+      images: images);
 
-  Challenge copyWithParticipant(String participant) => Challenge._internal(
+  Challenge copyWithParticipant(String participant) => Challenge(
       id: id,
       owner: owner,
       participants: participants..add(participant),
       ingredient: ingredient,
       complete: complete,
-      end: end);
+      end: end,
+      images: images);
 
-  Challenge copyWithoutParticipant(String participant) => Challenge._internal(
+  Challenge copyWithoutParticipant(String participant) => Challenge(
       id: id,
       owner: owner,
       participants: participants.where((p) => p != participant).toSet(),
       ingredient: ingredient,
       complete: complete,
-      end: end);
+      end: end,
+      images: images);
 
-  Challenge copyAsComplete() => Challenge._internal(
+  Challenge copyAsComplete() => Challenge(
       id: id,
       owner: owner,
       participants: participants,
       ingredient: ingredient,
       complete: true,
-      end: end);
+      end: end,
+      images: images);
 
-  void addImage(String path) => images.add(path);
+  Challenge copyWithImage(String path) => Challenge(
+      id: id,
+      owner: owner,
+      participants: participants,
+      ingredient: ingredient,
+      complete: complete,
+      end: end,
+      images: images..add(path));
 
   Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }

@@ -17,7 +17,7 @@ class GameScreen extends StatefulWidget {
   final Color _color;
 
   GameScreen.fromIngredient({String ingredient, Color color})
-      : _challenge = Challenge(ingredient),
+      : _challenge = Challenge.withIngredient(ingredient),
         _color = color;
 
   GameScreen.fromChallenge({Challenge challenge, Color color})

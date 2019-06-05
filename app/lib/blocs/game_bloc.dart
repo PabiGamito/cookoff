@@ -40,8 +40,8 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
     }
 
     if (event is UploadPictureButton) {
-      PictureFirebaseAdapter().uploadPicture(event.file.path, currentState);
-      yield currentState;
+      Challenge newState = await PictureFirebaseAdapter().uploadPicture(event.file.path, currentState);
+      yield newState;
     }
   }
 }

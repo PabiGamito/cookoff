@@ -5,7 +5,7 @@ import 'package:cookoff/models/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  var initialChallenge = Challenge('test_ingredient');
+  var initialChallenge = Challenge.withIngredient('test_ingredient');
   var bloc = GameBloc(initialChallenge);
   var owner = NullUser();
 
