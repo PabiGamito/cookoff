@@ -92,3 +92,5 @@ jobs:
     - flutter build apk --release --build-number=$TRAVIS_TAG
     # Deploy APK to Play Store using Fastlane
     - cd android && bundle exec fastlane android alpha
+    # Go back to root app directory so S3 finds the APK
+    - cd ..
