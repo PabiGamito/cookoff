@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
+import 'package:cookoff/firebase/picture_firebase_adapter.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 
@@ -39,8 +40,7 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
     }
 
     if (event is UploadPictureButton) {
-      // TODO: HANNES UPLOAD
-      print("Uploaded image!");
+      PictureFirebaseAdapter().uploadPicture(event.file.path, currentState);
     }
   }
 }
