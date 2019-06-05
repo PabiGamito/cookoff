@@ -222,7 +222,7 @@ class ChallengeInnerContent extends StatelessWidget {
                     'assets/ingredients/' + _challenge.ingredient + '.png'),
               ),
               Container(
-                child: Countdown(_challenge.end),
+                child: Countdown(end: _challenge.end),
               ),
             ],
           ),

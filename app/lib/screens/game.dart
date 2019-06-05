@@ -74,10 +74,10 @@ class _GameScreenState extends State<GameScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GameHeader(onExit: _popScreen),
+                    GameHeader(onExit: _popScreen, bloc: _bloc),
                     IngredientName(bloc: _bloc),
                     IngredientIcon(bloc: _bloc),
-                    GameStartButton(bloc: _bloc),
+                    GameStartButton(color: widget._color, bloc: _bloc),
                     FriendProfiles(
                         color: widget._color,
                         onTap: () {

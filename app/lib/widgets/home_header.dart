@@ -23,8 +23,8 @@ class HomeHeader extends StatelessWidget {
                     margin: EdgeInsets.all(Scalar(context).scale(10)),
                     child: ProfileIcon(
                       user: _user,
-                      size: Scalar(context).scale(108),
-                      borderWidth: Scalar(context).scale(8),
+                      size: Scalar(context).scale(118),
+                      borderWidth: Scalar(context).scale(7),
                     ),
                   ),
                 ),
@@ -65,7 +65,7 @@ class HelloMessage extends StatelessWidget {
           Text(
             _name,
             style: TextStyle(
-                fontSize: Scalar(context).scale(40),
+                fontSize: Scalar(context).scale(42),
                 fontFamily: 'Montserrat',
                 color: Colors.black,
                 height: 0.8),

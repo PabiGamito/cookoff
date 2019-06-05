@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cookoff/scalar.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 const int hoursInADay = 24;
 const int minutesInAnHour = 60;
@@ -10,7 +11,7 @@ const int secondsInAMinute = 60;
 class Countdown extends StatefulWidget {
   final DateTime _end;
 
-  Countdown(DateTime end) : _end = end;
+  Countdown({@required DateTime end}) : _end = end;
 
   @override
   State<StatefulWidget> createState() => _CountdownState(_end);

@@ -25,7 +25,7 @@ class Challenge {
         owner = null,
         participants = {},
         complete = false,
-        end = null;
+        end = DateTime.now().add(Duration(days: 1));
 
   factory Challenge.fromJson(Map<String, dynamic> json) =>
       _$ChallengeFromJson(json);
