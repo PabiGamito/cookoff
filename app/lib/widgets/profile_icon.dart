@@ -65,3 +65,42 @@ class AddProfileIcon extends StatelessWidget {
     );
   }
 }
+
+class MoreUsersCount extends StatelessWidget {
+  final int _count;
+  final double size;
+  final Color _textColor;
+  final double _textScale;
+
+  MoreUsersCount(
+      {Color textColor,
+      double textScale = 0.5,
+      @required count,
+      @required this.size})
+      : _textColor = textColor ?? Color(0xAA000000),
+        _textScale = textScale,
+        _count = count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: new BoxDecoration(
+        border: Border.all(color: Colors.white, width: 5),
+        shape: BoxShape.circle,
+        color: Colors.white,
+      ),
+      child: Center(
+        child: Text(
+          "+$_count",
+          style: TextStyle(
+            fontFamily: "Montserrat",
+            fontSize: size * _textScale,
+            color: _textColor,
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -140,7 +140,7 @@ class FriendProfiles extends StatelessWidget {
                   iconSize: Scalar(context).scale(55),
                   iconOffset: Scalar(context).scale(-10),
                   onTap: _onTap,
-                  hasMoreIcon: !challenge.started,
+                  addMoreIcon: !challenge.started,
                   color: _color,
                   borderWidth: 5)));
 }

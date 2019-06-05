@@ -239,20 +239,20 @@ class ChallengeInnerContent extends StatelessWidget {
 
                     return ProfileList(
                         users: snapshot.data,
+                        maxUsersShown: 2,
                         iconSize: Scalar(context).scale(45),
                         iconOffset: Scalar(context).scale(-10),
-                        hasMoreIcon: false,
+                        addMoreIcon: false,
                         borderWidth: 4);
                   }))
         ],
       );
 
-  // Returns a list of max 2 users for home screen
+  // Returns a list of users excluding user (self)
   Stream<List<Stream<User>>> profileListContent(BuildContext context) {
     return AuthBloc.instance.state.map((user) {
       return _challenge.participants
           .where((p) => p != user.userId)
-          .take(2)
           .map((p) => InjectorWidget.of(context).injector.userProvider.user(p))
           .toList();
     });
