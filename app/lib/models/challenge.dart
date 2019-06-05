@@ -27,7 +27,7 @@ class Challenge {
         owner = null,
         participants = {},
         complete = false,
-        end = DateTime.now().add(Duration(days: 1));
+        end = DateTime.now().add(Duration(days: 1)),
         images = [];
 
   factory Challenge.fromJson(Map<String, dynamic> json) =>
