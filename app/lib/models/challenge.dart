@@ -11,6 +11,7 @@ class Challenge {
   final String ingredient;
   final bool complete;
   final DateTime end;
+  final List<String> images;
 
   Challenge._internal(
       {this.id,
@@ -18,7 +19,8 @@ class Challenge {
       this.participants,
       this.ingredient,
       this.complete,
-      this.end});
+      this.end,
+      this.images});
 
   Challenge(this.ingredient)
       : id = null,
@@ -26,6 +28,7 @@ class Challenge {
         participants = {},
         complete = false,
         end = DateTime.now().add(Duration(days: 1));
+        images = [];
 
   factory Challenge.fromJson(Map<String, dynamic> json) =>
       _$ChallengeFromJson(json);
@@ -73,6 +76,8 @@ class Challenge {
       ingredient: ingredient,
       complete: true,
       end: end);
+
+  void addImage(String path) => images.add(path);
 
   Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }
