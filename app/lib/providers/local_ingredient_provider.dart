@@ -8,19 +8,21 @@ import 'package:flutter/material.dart';
 import 'ingredients_provider.dart';
 
 class LocalIngredientProvider extends IngredientProvider {
+  List<IngredientSection> sections = [
+    FeaturedSection(),
+    BasicSection(),
+    VegetableSection(),
+    FruitSection(),
+    TreatSection()
+  ];
+
   @override
   Stream<Iterable<Ingredient>> getAllIngredients() {
     throw UnimplementedError();
   }
 
   Future<Iterable<IngredientSection>> getIngredientSections() async {
-    return [
-      FeaturedSection(),
-      BasicSection(),
-      VegetableSection(),
-      FruitSection(),
-      TreatSection()
-    ];
+    return sections;
   }
 
   @override
@@ -174,5 +176,42 @@ class TreatSection extends LocalIngredientSection {
           'honey',
           'jam',
           'jelly',
+        ]);
+}
+
+class VeganSection extends LocalIngredientSection {
+  VeganSection()
+      : super(title: 'Vegan', ingredients: [
+          'flour',
+          'aubergine',
+          'beans',
+          'broccoli',
+          'cabbage',
+          'carrot',
+          'cauliflower',
+          'chives',
+          'salad',
+          'corn',
+          'cucumber',
+          'garlic',
+          'onion',
+          'pumpkin',
+          'radish',
+          'tomato',
+          'pepper',
+          'apple',
+          'banana',
+          'blueberries',
+          'cherries',
+          'grapes',
+          'lemon',
+          'lime',
+          'orange',
+          'peach',
+          'pear',
+          'pomegranate',
+          'raspberry',
+          'strawberry',
+          'watermelon',
         ]);
 }
