@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/ingredientSection.dart';
+import 'package:flutter/material.dart';
 
 import 'ingredients_provider.dart';
 
@@ -32,6 +33,49 @@ const Map<String, Color> ingredientColor = {
   'cheese': Color(0xFF7C54EA),
   'orange': Color(0xFFD0EB5C),
   'cauliflower': Color(0xFF65D2EB),
+  'bacon': Color(0xFF65D2EB),
+  'fish': Color(0xFFEF8EBD),
+  'onion': Color(0xFFE3BF73),
+  'eggs': Colors.greenAccent,
+  'flour': Colors.green,
+  'ham': Colors.amber,
+  'meat': Colors.blue,
+  'sausage': Colors.orange,
+  'baguette': Colors.deepPurpleAccent,
+  'toast': Colors.cyan,
+  'shrimp': Colors.blueAccent,
+  'pickles': Colors.redAccent,
+  'aubergine': Colors.limeAccent,
+  'beans': Colors.pinkAccent,
+  'broccoli': Colors.purpleAccent,
+  'cabbage': Colors.deepPurpleAccent,
+  'carrot': Colors.blueAccent,
+  'chives': Colors.lime,
+  'salad': Colors.orangeAccent,
+  'corn': Colors.cyan,
+  'cucumber': Colors.redAccent,
+  'garlic': Colors.blueGrey,
+  'pumpkin': Colors.purple,
+  'radish': Colors.deepPurple,
+  'tomato': Colors.lightGreenAccent,
+  'pepper': Colors.redAccent,
+  'apple': Colors.greenAccent,
+  'banana': Colors.purple,
+  'blueberries': Colors.deepOrangeAccent,
+  'cherries': Colors.green,
+  'grapes': Colors.limeAccent,
+  'lemon': Colors.deepPurpleAccent,
+  'lime': Colors.redAccent,
+  'peach': Colors.blueAccent,
+  'pear': Colors.pinkAccent,
+  'pomegranate': Colors.limeAccent,
+  'raspberry': Colors.greenAccent,
+  'strawberry': Colors.blueAccent,
+  'watermelon': Colors.limeAccent,
+  'chocolate': Colors.deepOrangeAccent,
+  'honey': Colors.lightBlueAccent,
+  'jam': Colors.lightGreenAccent,
+  'jelly': Colors.greenAccent,
 };
 
 class LocalIngredientSection extends IngredientSection {
@@ -76,7 +120,8 @@ class BasicSection extends LocalIngredientSection {
           'toast',
           'shrimp',
           'pickles',
-          'fish'
+          'fish',
+          'cheese'
         ]);
 }
 
