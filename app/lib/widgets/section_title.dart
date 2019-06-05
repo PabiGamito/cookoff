@@ -23,7 +23,7 @@ class SectionTitle extends StatelessWidget {
             ),
             Container(
                 margin: EdgeInsets.only(top: Scalar(context).scale(10)),
-                width: Scalar(context).scale(45),
+                width: Scalar(context).scale(35),
                 height: Scalar(context).scale(6),
                 decoration: new BoxDecoration(
                   color: _color,

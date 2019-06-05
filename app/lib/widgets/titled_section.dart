@@ -19,27 +19,24 @@ class TitledSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            _title,
-            style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: Scalar(context).scale(25),
-                color: _titleColor),
-            textAlign: TextAlign.left,
-          ),
-          Container(
-              margin: EdgeInsets.only(top: 10, bottom: 35),
-              width: 45,
-              height: 6,
-              decoration: new BoxDecoration(
-                color: _underlineColor,
-                borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.width * 0.03),
-              )),
-          _child
-        ],
-      );
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(_title,
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: Scalar(context).scale(25),
+                    color: _titleColor),
+                textAlign: TextAlign.left),
+            Container(
+                margin: EdgeInsets.only(
+                    top: Scalar(context).scale(10),
+                    bottom: Scalar(context).scale(35)),
+                width: Scalar(context).scale(35),
+                height: Scalar(context).scale(6),
+                decoration: new BoxDecoration(
+                    color: _underlineColor,
+                    borderRadius: BorderRadius.circular(1000))),
+            _child
+          ]);
 }

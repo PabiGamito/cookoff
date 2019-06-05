@@ -24,7 +24,7 @@ class HomeHeader extends StatelessWidget {
                     child: ProfileIcon(
                       user: _user,
                       size: Scalar(context).scale(108),
-                      borderWidth: Scalar(context).scale(7),
+                      borderWidth: Scalar(context).scale(8),
                     ),
                   ),
                 ),

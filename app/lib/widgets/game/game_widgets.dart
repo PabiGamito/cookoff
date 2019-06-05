@@ -30,7 +30,7 @@ class GameBackButton extends StatelessWidget {
         width: Scalar(context).scale(60),
         height: Scalar(context).scale(60),
         decoration: BoxDecoration(
-            color: Color(0x40000000),
+            color: Color(0x50000000),
             borderRadius: BorderRadius.circular(Scalar(context).scale(30))),
         child: Center(
           child: Icon(Icons.keyboard_backspace,
@@ -49,14 +49,21 @@ class IngredientName extends StatelessWidget {
       bloc: _bloc,
       builder: (BuildContext context, Challenge challenge) {
         var ingredient = challenge.ingredient;
-        return Container(
-            child: Text(
-                '${ingredient[0].toUpperCase()}${ingredient.substring(1)}',
-                style: TextStyle(
-                    fontSize: Scalar(context).scale(50),
-                    fontFamily: 'Montserrat',
-                    color: Colors.white,
-                    letterSpacing: 2)));
+        return Column(children: <Widget>[
+          Text('${ingredient[0].toUpperCase()}${ingredient.substring(1)}',
+              style: TextStyle(
+                  fontSize: Scalar(context).scale(45),
+                  fontFamily: 'Montserrat',
+                  color: Colors.white,
+                  letterSpacing: 2)),
+          Container(
+              margin: EdgeInsets.only(top: Scalar(context).scale(15)),
+              width: Scalar(context).scale(45),
+              height: Scalar(context).scale(8),
+              decoration: new BoxDecoration(
+                  color: Color(0x50000000),
+                  borderRadius: BorderRadius.circular(1000))),
+        ]);
       });
 }
 
@@ -69,8 +76,8 @@ class IngredientIcon extends StatelessWidget {
   Widget build(BuildContext context) => BlocBuilder(
       bloc: _bloc,
       builder: (BuildContext context, Challenge challenge) => Container(
-          width: Scalar(context).scale(180),
-          height: Scalar(context).scale(180),
+          width: Scalar(context).scale(160),
+          height: Scalar(context).scale(160),
           child: Image.asset(
               'assets/ingredients/${challenge.ingredient.toLowerCase()}.png')));
 }
@@ -86,10 +93,10 @@ class GameStartButton extends StatelessWidget {
         _bloc.dispatch(GameButton(context));
       },
       child: Container(
-          width: Scalar(context).scale(270),
-          padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(5)),
+          width: Scalar(context).scale(265),
+          padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(6)),
           decoration: BoxDecoration(
-              color: Color(0x60000000),
+              color: Color(0x50000000),
               borderRadius:
                   BorderRadius.all(Radius.circular(Scalar(context).scale(30)))),
           child: Row(
@@ -97,8 +104,8 @@ class GameStartButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  height: Scalar(context).scale(55),
-                  width: Scalar(context).scale(55),
+                  height: Scalar(context).scale(50),
+                  width: Scalar(context).scale(50),
                   margin: EdgeInsets.only(right: Scalar(context).scale(15)),
                   child: Transform.rotate(
                     angle: 1.1,
@@ -107,7 +114,7 @@ class GameStartButton extends StatelessWidget {
                 ),
                 Text("START",
                     style: TextStyle(
-                      fontSize: Scalar(context).scale(24),
+                      fontSize: Scalar(context).scale(23),
                       fontFamily: "Montserrat",
                       color: Colors.white,
                       letterSpacing: 3,
@@ -137,10 +144,10 @@ class FriendProfiles extends StatelessWidget {
                       if (challenge.participants.contains(friend.userId))
                         Stream.fromFuture(Future.value(friend))
                   ],
-                  iconSize: Scalar(context).scale(55),
+                  iconSize: Scalar(context).scale(60),
                   iconOffset: Scalar(context).scale(-10),
                   onTap: _onTap,
                   addMoreIcon: !challenge.started,
                   color: _color,
-                  borderWidth: 5)));
+                  borderWidth: 6)));
 }

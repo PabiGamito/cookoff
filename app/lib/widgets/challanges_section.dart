@@ -49,7 +49,7 @@ class ChallengesSection extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: Scalar(context).scale(10)),
-                  width: Scalar(context).scale(45),
+                  width: Scalar(context).scale(35),
                   height: Scalar(context).scale(6),
                   decoration: new BoxDecoration(
                     color: Color(0xFF8057E2),
@@ -243,18 +243,15 @@ class ChallengeInnerContent extends StatelessWidget {
                         iconSize: Scalar(context).scale(45),
                         iconOffset: Scalar(context).scale(-10),
                         addMoreIcon: false,
-                        borderWidth: 4);
+                        borderWidth: 5);
                   }))
         ],
       );
 
-  // Returns a list of users excluding user (self)
-  Stream<List<Stream<User>>> profileListContent(BuildContext context) {
-    return AuthBloc.instance.state.map((user) {
-      return _challenge.participants
+  // Returns a list of max 2 users for home screen
+  Stream<List<Stream<User>>> profileListContent(BuildContext context) =>
+      AuthBloc.instance.state.map((user) => _challenge.participants
           .where((p) => p != user.userId)
           .map((p) => InjectorWidget.of(context).injector.userProvider.user(p))
-          .toList();
-    });
-  }
+          .toList());
 }

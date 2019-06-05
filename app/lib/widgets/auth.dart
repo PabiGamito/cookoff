@@ -8,20 +8,23 @@ import 'package:flutter/material.dart';
 class AuthWidget extends StatelessWidget {
   const AuthWidget(
       {this.authProvider,
-        this.userProvider,
-        this.authorizedScreen,
-        this.unauthorizedScreen,
-        this.authBloc,
-        this.loadingBloc});
+      this.userProvider,
+      this.authorizedScreen,
+      this.unauthorizedScreen,
+      this.authBloc,
+      this.loadingBloc});
 
   // data providers
   final AuthProvider authProvider;
   final UserProvider userProvider;
+
   // render screens conditionally depending on sign-in status
   final Widget authorizedScreen;
   final Widget unauthorizedScreen;
+
   // bloc to hold user model
   final AuthBloc authBloc;
+
   // bloc to hold loading status
   final LoadingAuthBloc loadingBloc;
 
@@ -49,8 +52,7 @@ class AuthWidget extends StatelessWidget {
                 builder: (BuildContext context,
                     AsyncSnapshot<Iterable<User>> snapshot) {
                   // Set friends list and notify auth bloc
-                  authBloc
-                      .dispatch(user.copyWithFriendsList(snapshot.data));
+                  authBloc.dispatch(user.copyWithFriendsList(snapshot.data));
                   return authorizedScreen;
                 });
           }

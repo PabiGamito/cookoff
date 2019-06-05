@@ -156,14 +156,13 @@ class FriendsSelectButton extends StatelessWidget {
   const FriendsSelectButton({Function onTap}) : _onTap = onTap;
 
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          IgnorePointer(
+  Widget build(BuildContext context) =>
+      Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+        IgnorePointer(
             child: Container(
-              height: 35,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
+                height: Scalar(context).scale(35),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   stops: [0, 0.4, 1],
@@ -172,36 +171,26 @@ class FriendsSelectButton extends StatelessWidget {
                     Color(0x80FFFFFF),
                     Color(0xFFFFFFFF),
                   ],
-                ),
-              ),
-            ),
-          ),
-          Container(
+                )))),
+        Container(
             color: Colors.white,
             padding: EdgeInsets.only(bottom: Scalar(context).scale(35)),
             child: GestureDetector(
-              onTap: _onTap,
-              child: Container(
-                height: 60,
-                margin:
-                    EdgeInsets.symmetric(horizontal: Scalar(context).scale(35)),
-                decoration: new BoxDecoration(
-                    color: Color(0xFF65D2EB),
-                    borderRadius: BorderRadius.all(Radius.circular(8))),
-                child: Center(
-                  child: Text(
-                    "SELECT",
-                    style: TextStyle(
-                      fontSize: Scalar(context).scale(22),
-                      fontFamily: "Montserrat",
-                      letterSpacing: 3,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
+                onTap: _onTap,
+                child: Container(
+                    height: 60,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: Scalar(context).scale(35)),
+                    decoration: new BoxDecoration(
+                        color: Color(0xFF65D2EB),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Center(
+                        child: Text("SELECT",
+                            style: TextStyle(
+                              fontSize: Scalar(context).scale(22),
+                              fontFamily: "Montserrat",
+                              letterSpacing: 3,
+                              color: Colors.white,
+                            ))))))
+      ]);
 }

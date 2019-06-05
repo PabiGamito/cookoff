@@ -30,7 +30,7 @@ class AuthFirebaseAdapter implements AuthProvider {
   // Add user to users in firestore if user doesn't exist
 
   Future _registerUser(FirebaseUser user) async {
-    if(!await _firestore
+    if (!await _firestore
         .collection(friendsCollection)
         .document(user.uid)
         .get()

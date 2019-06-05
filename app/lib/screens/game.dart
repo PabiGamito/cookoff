@@ -90,14 +90,13 @@ class _GameScreenState extends State<GameScreen> {
             ),
             InspirationCard(),
             Visibility(
-              visible: _friendsTabOpen,
-              child: FriendsTab(
-                  onClose: () {
-                    setState(() {
-                      _friendsTabOpen = false;
-                    });
-                  },
-                  bloc: _bloc),
-            )
+                visible: _friendsTabOpen,
+                child: FriendsTab(
+                    onClose: () {
+                      setState(() {
+                        _friendsTabOpen = false;
+                      });
+                    },
+                    bloc: _bloc))
           ]));
 }
