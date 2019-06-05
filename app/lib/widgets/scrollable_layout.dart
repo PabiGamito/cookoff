@@ -25,7 +25,6 @@ class ScrollableCard {
   int _cardIndex;
   ScrollableLayoutState _state;
 
-  final double Function(BuildContext context, double scrolledAmount) cardOffset;
   final Widget Function(
           BuildContext context, double scrolledAmount, bool fullyExpanded)
       cardBuilder;
@@ -33,7 +32,6 @@ class ScrollableCard {
   final ScrollController controller = ScrollController();
 
   ScrollableCard({
-    @required this.cardOffset,
     @required this.cardBuilder,
     @required this.minOffset,
     @required this.maxOffset,
@@ -179,8 +177,8 @@ class ScrollableLayoutState extends State<ScrollableLayout> {
 
         var _card = scrollableCards[_cardIndex];
 
-        // Over limit scrolling, hack to get bounce effect (div by 3 to scale bounce amount)
-        if (_card.bounce) _card.controller.jumpTo(-extraScrollAmount / 10);
+        // Over limit scrolling, hack to get bounce effect (scaled bounce amount)
+        if (_card.bounce) _card.controller.jumpTo(-extraScrollAmount / 5);
       },
       onVerticalDragEnd: (DragEndDetails details) {
         scrollComplete();

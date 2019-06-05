@@ -64,7 +64,6 @@ class AuthorizedMainScreen extends StatelessWidget {
       minOffset: 0,
       maxOffset: 0,
       startingOffset: 0,
-      cardOffset: (context, scrolledAmount) => 0,
       cardBuilder: (context, scrolledAmount, fullyExpanded) {
         return Container(
           height: MediaQuery.of(context).size.height,
@@ -93,14 +92,6 @@ class AuthorizedMainScreen extends StatelessWidget {
         minOffset: 0,
         maxOffset: Scaler(context).scale(firstCardMaxOffset),
         startingOffset: Scaler(context).scale(firstCardMaxOffset),
-        cardOffset: (context, scrolledAmount) {
-          if (scrolledAmount > -Scaler(context).scale(firstCardContentHeight)) {
-            return Scaler(context).scale(firstCardMaxOffset);
-          }
-          return Scaler(context)
-                  .scale(firstCardMaxOffset + firstCardContentHeight) +
-              scrolledAmount;
-        },
         cardBuilder: (context, scrolledAmount, fullyExpanded) {
           return RoundedCard(
             padding: false,
@@ -127,9 +118,6 @@ class AuthorizedMainScreen extends StatelessWidget {
           Scaler(context).scale(firstCardTitleHeight + firstCardContentHeight),
       startingOffset:
           Scaler(context).scale(firstCardTitleHeight + firstCardContentHeight),
-      cardOffset: (context, scrolledAmount) {
-        return Scaler(context).scale(secondCardMaxOffset) + scrolledAmount;
-      },
       cardBuilder: (context, scrolledAmount, fullyExpanded) {
         return RoundedCard(
           padding: false,
