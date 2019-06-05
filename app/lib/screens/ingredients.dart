@@ -39,6 +39,7 @@ class IngredientsScreen extends StatelessWidget {
         ),
         Expanded(
           child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: StreamBuilder<Iterable<IngredientSection>>(
               stream: _ingredientProvider.ingredientSections(),
               builder: (BuildContext context,
