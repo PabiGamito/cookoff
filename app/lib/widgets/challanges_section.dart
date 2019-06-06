@@ -1,4 +1,3 @@
-import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/user.dart';
@@ -8,8 +7,8 @@ import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChallengesSection extends StatelessWidget {
   final ChallengeProvider _challengeProvider;
@@ -23,68 +22,60 @@ class ChallengesSection extends StatelessWidget {
         _onAddChallenge = onAddChallenge ?? ((c) {});
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-                top: Scalar(context).scale(30),
-                left: Scalar(context).scale(30),
-                right: Scalar(context).scale(30)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'My challenges',
-                      style: TextStyle(
-                          fontSize: Scalar(context).scale(25),
-                          fontFamily: 'Montserrat'),
-                      textAlign: TextAlign.left,
-                    ),
-                    CircleAddButton(
-                      onTap: () => _onAddChallenge(context),
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: Scalar(context).scale(10)),
-                  width: Scalar(context).scale(35),
-                  height: Scalar(context).scale(6),
-                  decoration: new BoxDecoration(
-                    color: Color(0xFF8057E2),
-                    borderRadius: BorderRadius.circular(
-                        MediaQuery.of(context).size.width * 0.03),
+  Widget build(BuildContext context) => Column(children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+              top: Scalar(context).scale(30),
+              left: Scalar(context).scale(30),
+              right: Scalar(context).scale(30)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'My challenges',
+                    style: TextStyle(
+                        fontSize: Scalar(context).scale(25),
+                        fontFamily: 'Montserrat'),
+                    textAlign: TextAlign.left,
                   ),
-                )
-              ],
-            ),
+                  CircleAddButton(
+                    onTap: () => _onAddChallenge(context),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: Scalar(context).scale(10)),
+                width: Scalar(context).scale(35),
+                height: Scalar(context).scale(6),
+                decoration: new BoxDecoration(
+                  color: Color(0xFF8057E2),
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width * 0.03),
+                ),
+              )
+            ],
           ),
-          Expanded(
+        ),
+        Expanded(
             child: Container(
-              padding: EdgeInsets.only(
-                  left: Scalar(context).scale(30),
-                  right: Scalar(context).scale(30)),
-              child: BlocBuilder(
-                bloc: AuthBloc.instance,
-                builder: (BuildContext context, User user) => StreamBuilder<
-                        Iterable<Challenge>>(
-                    stream: _challengeProvider.challengesStream(user.userId),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<Iterable<Challenge>> snapshots) {
-                      if (!snapshots.hasData || snapshots.data.length == 0) {
+                padding: EdgeInsets.only(
+                    left: Scalar(context).scale(30),
+                    right: Scalar(context).scale(30)),
+                child: StreamBuilder<Iterable<Challenge>>(
+                    stream: _challengeProvider
+                        .challengesStream(UserWidget.of(context).user.id),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData || snapshot.data.length == 0) {
                         return NoChallenges();
                       }
 
                       return ChallengesList(
-                          challenges: snapshots.data, scrollable: _scrollable);
-                    }),
-              ),
-            ),
-          )
-        ],
-      );
+                          challenges: snapshot.data, scrollable: _scrollable);
+                    })))
+      ]);
 }
 
 class CircleAddButton extends StatelessWidget {
@@ -182,8 +173,8 @@ class ChallengeItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Scaffold(
-                  body: GameScreen.fromChallenge(challenge: _challenge)),
+              builder: (context) =>
+                  Scaffold(body: GameScreen(challenge: _challenge)),
             ),
           );
         },
@@ -245,31 +236,24 @@ class ChallengeInnerContent extends StatelessWidget {
           ),
           Container(
               padding: EdgeInsets.only(right: Scalar(context).scale(25)),
-              child: StreamBuilder<List<Stream<User>>>(
-                  stream: profileListContent(context),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Stream<User>>> snapshot) {
-                    if (!snapshot.hasData) {
-                      // Users haven't finished loading yet
-                      return Container();
-                    }
-
-                    return ProfileList(
-                        color: _ingredient.color,
-                        users: snapshot.data,
-                        maxUsersShown: 2,
-                        iconSize: Scalar(context).scale(45),
-                        iconOffset: Scalar(context).scale(-10),
-                        addMoreIcon: false,
-                        borderWidth: 5);
-                  }))
+              child: ProfileList(
+                  color: _ingredient.color,
+                  users: profileListContent(context),
+                  maxUsersShown: 2,
+                  iconSize: Scalar(context).scale(45),
+                  iconOffset: Scalar(context).scale(-10),
+                  addMoreIcon: false,
+                  borderWidth: 5))
         ],
       );
 
   // Returns a list of max 2 users for home screen
-  Stream<List<Stream<User>>> profileListContent(BuildContext context) =>
-      AuthBloc.instance.state.map((user) => _challenge.participants
-          .where((p) => p != user.userId)
-          .map((p) => InjectorWidget.of(context).injector.userProvider.user(p))
-          .toList());
+  List<Stream<User>> profileListContent(BuildContext context) =>
+      _challenge.participants
+          .where((participant) => participant != UserWidget.of(context).user.id)
+          .map((participant) => InjectorWidget.of(context)
+              .injector
+              .userProvider
+              .userStream(participant))
+          .toList();
 }

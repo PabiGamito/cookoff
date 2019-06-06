@@ -41,13 +41,11 @@ class IngredientsSection extends StatelessWidget {
       onTap: _onMoreTap,
     );
 
-    List<Tile> tiles = _ingredientSection.ingredients
-        .map((ingredient) => IngredientTile(ingredient) as Tile)
-        .toList();
-
-    if (_more) {
-      tiles.add(moreTile);
-    }
+    var tiles = [
+      for (var ingredient in _ingredientSection.ingredients)
+        IngredientTile(ingredient),
+      if (_more) moreTile
+    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

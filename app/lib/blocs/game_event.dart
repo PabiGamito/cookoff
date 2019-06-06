@@ -1,17 +1,10 @@
 import 'dart:io';
 
-import 'package:cookoff/models/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class GameEvent extends Equatable {
   GameEvent([List props = const []]) : super(props);
-}
-
-class SetOwner extends GameEvent {
-  final User owner;
-
-  SetOwner(this.owner) : super([owner]);
 }
 
 class GameButton extends GameEvent {

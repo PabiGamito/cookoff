@@ -1,12 +1,14 @@
+import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 
 class TileCarousel extends StatelessWidget {
-  final List<Tile> _tiles;
+  final List<Widget> _tiles;
 
-  TileCarousel({@required List<Tile> tiles}) : _tiles = tiles;
+  TileCarousel({@required List<Widget> tiles}) : _tiles = tiles;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -78,15 +80,24 @@ class Tile extends StatelessWidget {
   }
 }
 
-class IngredientTile extends Tile {
-  IngredientTile(Ingredient ingredient)
-      : super(
-            iconPath: ingredient.imgPath,
-            bgColor: ingredient.color,
-            onTap: (context) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Scaffold(
-                        body: GameScreen.fromIngredient(
-                            ingredient: ingredient.name)))));
+class IngredientTile extends StatelessWidget {
+  final Ingredient _ingredient;
+
+  IngredientTile(Ingredient ingredient) : _ingredient = ingredient;
+
+  @override
+  Widget build(BuildContext context) => Tile(
+      iconPath: _ingredient.imgPath,
+      bgColor: _ingredient.color,
+      onTap: (context) => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Scaffold(
+                  body: GameScreen(
+                      challenge: Challenge(
+                          owner: UserWidget.of(context).user.id,
+                          ingredient: _ingredient.name,
+                          end: DateTime.now().add(
+                            Duration(days: 1),
+                          )))))));
 }

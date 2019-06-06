@@ -4,7 +4,7 @@ import 'package:cookoff/models/user.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:flutter/material.dart';
 
-// class builds profile icons from a list of a stream of users
+// Builds profile icons from a list of a stream of users
 class ProfileList extends StatelessWidget {
   final List<Stream<User>> _users;
   final int _maxUsersShown;
@@ -44,13 +44,18 @@ class ProfileList extends StatelessWidget {
     for (int i = 0; i < _usersToShow; i++) {
       iconBuilders.add(StreamBuilder<User>(
         stream: _users[i],
-        builder: (BuildContext context, AsyncSnapshot<User> snapshot) =>
-            Positioned(
-                left: _iconOffset * i,
-                child: ProfileIcon(
-                    user: snapshot.data,
-                    size: _iconSize,
-                    borderWidth: _borderWidth)),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+
+          return Positioned(
+              left: _iconOffset * i,
+              child: ProfileIcon(
+                  user: snapshot.data,
+                  size: _iconSize,
+                  borderWidth: _borderWidth));
+        },
       ));
     }
 

@@ -3,15 +3,13 @@ import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
 
 class ChallengeFirebaseAdapter implements ChallengeProvider {
-  Firestore _firestore;
+  static const String _collection = 'challenges';
 
-  static final String collection = 'challenges';
-
-  ChallengeFirebaseAdapter(Firestore firestore) : _firestore = firestore;
+  static final Firestore _firestore = Firestore.instance;
 
   @override
   Stream<Iterable<Challenge>> challengesStream(String user) => _firestore
-      .collection(collection)
+      .collection(_collection)
       .where('participants', arrayContains: user)
       .snapshots()
       .map((snapshot) => snapshot.documents.map((document) =>
@@ -19,18 +17,19 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
 
   @override
   Future<Challenge> addChallenge(Challenge challenge) async {
-    var reference =
-        await _firestore.collection(collection).add(challenge.toJson());
+    var reference = await _firestore
+        .collection(_collection)
+        .add(challenge.toJson()..remove('id'));
     return challenge.copyWithId(reference.documentID);
   }
 
   @override
   Future deleteChallenge(Challenge challenge) async =>
-      await _firestore.collection(collection).document(challenge.id).delete();
+      await _firestore.collection(_collection).document(challenge.id).delete();
 
   @override
   Future updateChallenge(Challenge challenge) async => await _firestore
-      .collection(collection)
+      .collection(_collection)
       .document(challenge.id)
-      .updateData(challenge.toJson());
+      .updateData(challenge.toJson().remove('id'));
 }

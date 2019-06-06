@@ -1,6 +1,4 @@
-import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/blocs/game_bloc.dart';
-import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
@@ -15,10 +13,7 @@ import 'package:flutter/services.dart';
 class GameScreen extends StatefulWidget {
   final Challenge _challenge;
 
-  GameScreen.fromIngredient({String ingredient})
-      : _challenge = Challenge.withIngredient(ingredient);
-
-  GameScreen.fromChallenge({Challenge challenge}) : _challenge = challenge;
+  GameScreen({Challenge challenge}) : _challenge = challenge;
 
   @override
   State<StatefulWidget> createState() => _GameScreenState(_challenge);
@@ -28,9 +23,7 @@ class _GameScreenState extends State<GameScreen> {
   final GameBloc _bloc;
   bool _friendsTabOpen = false;
 
-  _GameScreenState(Challenge challenge) : _bloc = GameBloc(challenge) {
-    AuthBloc.instance.state.listen((user) => _bloc.dispatch(SetOwner(user)));
-  }
+  _GameScreenState(Challenge challenge) : _bloc = GameBloc(challenge);
 
   _popScreen() {
     // Close the friends tab on back press
@@ -48,67 +41,72 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => StreamBuilder<Ingredient>(
-      stream: InjectorWidget.of(context)
-          .injector
-          .ingredientProvider
-          .ingredientStream(widget._challenge.ingredient),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Container();
-        }
+  Widget build(BuildContext context) {
+    return StreamBuilder<Ingredient>(
+        stream: InjectorWidget.of(context)
+            .injector
+            .ingredientProvider
+            .ingredientStream(widget._challenge.ingredient),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
 
-        var ingredient = snapshot.data;
+          var ingredient = snapshot.data;
 
-        // Set status bar color on Android to match header
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: ingredient.color,
-        ));
+          // Set status bar color on Android to match header
+          SystemChrome.setSystemUIOverlayStyle(
+              SystemUiOverlayStyle.dark.copyWith(
+            statusBarColor: ingredient.color,
+          ));
 
-        return WillPopScope(
-            onWillPop: () {
-              _popScreen();
-            },
-            child: Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: <Widget>[
-                  Container(color: ingredient.color),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Scalar(context).scale(60),
-                        horizontal: Scalar(context).scale(35)),
-                    margin: EdgeInsets.only(bottom: Scalar(context).scale(130)),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GameHeader(onExit: _popScreen, bloc: _bloc),
-                          IngredientName(ingredient: ingredient),
-                          IngredientIcon(ingredient: ingredient),
-                          GameStartButton(color: ingredient.color, bloc: _bloc),
-                          CameraButton(
-                            backgroundColor: ingredient.color,
-                            bloc: _bloc,
-                          ),
-                          FriendProfiles(
-                              color: ingredient.color,
-                              onTap: () {
-                                setState(() {
-                                  _friendsTabOpen = true;
-                                });
-                              },
-                              bloc: _bloc)
-                        ]),
-                  ),
-                  InspirationCard(),
-                  Visibility(
-                      visible: _friendsTabOpen,
-                      child: FriendsTab(
-                          onClose: () {
-                            setState(() {
-                              _friendsTabOpen = false;
-                            });
-                          },
-                          bloc: _bloc))
-                ]));
-      });
+          return WillPopScope(
+              onWillPop: () {
+                _popScreen();
+              },
+              child: Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: <Widget>[
+                    Container(color: ingredient.color),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: Scalar(context).scale(60),
+                          horizontal: Scalar(context).scale(35)),
+                      margin:
+                          EdgeInsets.only(bottom: Scalar(context).scale(130)),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GameHeader(onExit: _popScreen, bloc: _bloc),
+                            IngredientName(ingredient: ingredient),
+                            IngredientIcon(ingredient: ingredient),
+                            GameStartButton(
+                                color: ingredient.color, bloc: _bloc),
+                            CameraButton(
+                              backgroundColor: ingredient.color,
+                              bloc: _bloc,
+                            ),
+                            FriendProfiles(
+                                color: ingredient.color,
+                                onTap: () {
+                                  setState(() {
+                                    _friendsTabOpen = true;
+                                  });
+                                },
+                                bloc: _bloc)
+                          ]),
+                    ),
+                    InspirationCard(),
+                    Visibility(
+                        visible: _friendsTabOpen,
+                        child: FriendsTab(
+                            onClose: () {
+                              setState(() {
+                                _friendsTabOpen = false;
+                              });
+                            },
+                            bloc: _bloc))
+                  ]));
+        });
+  }
 }

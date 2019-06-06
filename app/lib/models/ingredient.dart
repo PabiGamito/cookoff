@@ -1,8 +1,9 @@
 import 'dart:ui';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class Ingredient {
+class Ingredient extends Equatable {
   final String name;
   final String imgPath;
   final Color color;

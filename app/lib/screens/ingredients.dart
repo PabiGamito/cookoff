@@ -40,8 +40,7 @@ class IngredientsScreen extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               child: StreamBuilder<Iterable<IngredientSection>>(
                   stream: _ingredientProvider.ingredientSectionsStream(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<Iterable<IngredientSection>> snapshots) {
+                  builder: (context, snapshots) {
                     if (!snapshots.hasData) {
                       return Container();
                     }

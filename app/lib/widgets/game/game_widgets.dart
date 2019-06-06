@@ -1,11 +1,10 @@
-import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
-import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/countdown.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +25,9 @@ class GameHeader extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           GameBackButton(onTap: _onExit),
-          BlocBuilder(
+          BlocBuilder<GameEvent, Challenge>(
               bloc: _bloc,
-              builder: (BuildContext context, Challenge challenge) {
+              builder: (context, challenge) {
                 if (challenge.end == null) {
                   return Container();
                 } else {
@@ -163,22 +162,21 @@ class FriendProfiles extends StatelessWidget {
         _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder(
-      bloc: AuthBloc.instance,
-      builder: (BuildContext context, User user) => BlocBuilder(
-          bloc: _bloc,
-          builder: (BuildContext context, Challenge challenge) => ProfileList(
-                  users: [
-                    Stream.fromFuture(Future.value(user)),
-                    for (var friend in user.friendsList)
-                      if (challenge.participants.contains(friend.userId))
-                        Stream.fromFuture(Future.value(friend))
-                  ],
-                  maxUsersShown: 4,
-                  iconSize: Scalar(context).scale(60),
-                  iconOffset: Scalar(context).scale(-10),
-                  onTap: _onTap,
-                  addMoreIcon: !challenge.started,
-                  color: _color,
-                  borderWidth: 6)));
+  Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
+      bloc: _bloc,
+      builder: (context, challenge) => ProfileList(
+              users: [
+                for (var participant in challenge.participants)
+                  InjectorWidget.of(context)
+                      .injector
+                      .userProvider
+                      .userStream(participant)
+              ],
+              maxUsersShown: 4,
+              iconSize: Scalar(context).scale(60),
+              iconOffset: Scalar(context).scale(-10),
+              onTap: _onTap,
+              addMoreIcon: !challenge.started,
+              color: _color,
+              borderWidth: 6));
 }

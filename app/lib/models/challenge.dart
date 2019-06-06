@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 
 part 'challenge.g.dart';
 
@@ -15,20 +16,13 @@ class Challenge {
 
   Challenge(
       {this.id,
-      this.owner,
-      this.participants,
-      this.ingredient,
-      this.complete,
-      this.end,
-      this.images});
-
-  Challenge.withIngredient(this.ingredient)
-      : id = null,
-        owner = null,
-        participants = {},
-        complete = false,
-        end = DateTime.now().add(Duration(days: 1)),
-        images = [];
+      @required this.owner,
+      Set<String> participants,
+      @required this.ingredient,
+      this.complete = false,
+      @required this.end,
+      this.images = const []})
+      : participants = participants ?? {owner};
 
   factory Challenge.fromJson(Map<String, dynamic> json) =>
       _$ChallengeFromJson(json);
@@ -46,19 +40,10 @@ class Challenge {
       end: end,
       images: images);
 
-  Challenge copyWithOwner(String owner) => Challenge(
-      id: id,
-      owner: owner,
-      participants: participants..add(owner),
-      ingredient: ingredient,
-      complete: complete,
-      end: end,
-      images: images);
-
   Challenge copyWithParticipant(String participant) => Challenge(
       id: id,
       owner: owner,
-      participants: participants..add(participant),
+      participants: {...participants, participant},
       ingredient: ingredient,
       complete: complete,
       end: end,
@@ -89,7 +74,7 @@ class Challenge {
       ingredient: ingredient,
       complete: complete,
       end: end,
-      images: images..add(path));
+      images: [...images, path]);
 
   Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }

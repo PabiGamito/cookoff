@@ -1,39 +1,26 @@
 import 'package:cookoff/providers/local_ingredient_provider.dart';
-import 'package:cookoff/widgets/auth.dart';
+import 'package:cookoff/widgets/auth_builder.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/scrollable_layout.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/auth_bloc.dart';
-import '../models/user.dart';
 import '../providers/auth_provider.dart';
-import '../providers/user_provider.dart';
 import '../scalar.dart';
 import '../widgets/injector_widget.dart';
 import 'ingredients.dart';
 
 class MainScreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    AuthProvider authProvider =
-        InjectorWidget.of(context).injector.authProvider;
-    UserProvider userProvider =
-        InjectorWidget.of(context).injector.userProvider;
-    Widget unauthorized = UnauthorizedMainScreen();
-    Widget authorized = AuthorizedMainScreen();
-    return new AuthWidget(
-      authProvider: authProvider,
-      userProvider: userProvider,
-      authorizedScreen: authorized,
-      unauthorizedScreen: unauthorized,
-      authBloc: AuthBloc.instance,
-      loadingBloc: LoadingAuthBloc.instance,
-    );
-  }
+  Widget build(BuildContext context) => new AuthBuilder(
+      authorizedScreen: AuthorizedMainScreen(),
+      unauthorizedScreen: UnauthorizedMainScreen(),
+      loadingBloc: LoadingAuthBloc.instance);
 }
 
 class AuthorizedMainScreen extends StatelessWidget {
@@ -87,16 +74,11 @@ class AuthorizedMainScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: EdgeInsets.only(
-                    top: Scalar(context).scale(30),
-                    bottom: Scalar(context).scale(25)),
-                child: BlocBuilder(
-                  bloc: AuthBloc.instance,
-                  builder: (BuildContext context, User user) {
-                    return HomeHeader(user: user, notificationCount: 0);
-                  },
-                ),
-              ),
+                  padding: EdgeInsets.only(
+                      top: Scalar(context).scale(30),
+                      bottom: Scalar(context).scale(25)),
+                  child: HomeHeader(
+                      user: UserWidget.of(context).user, notificationCount: 0)),
               Expanded(
                 child: Container(),
               ),
@@ -186,9 +168,9 @@ class UnauthorizedMainScreen extends StatelessWidget {
     return Container(
         color: Colors.amber,
         child: Center(
-          child: BlocBuilder(
+          child: BlocBuilder<bool, bool>(
             bloc: LoadingAuthBloc.instance,
-            builder: (BuildContext context, bool loading) => GestureDetector(
+            builder: (context, loading) => GestureDetector(
                   onTap: () {
                     LoadingAuthBloc.instance.dispatch(true);
                     // disable button while loading

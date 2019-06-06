@@ -15,9 +15,9 @@ class CameraButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocBuilder<GameEvent, Challenge>(
       bloc: _bloc,
-      builder: (BuildContext context, Challenge challenge) => Visibility(
+      builder: (context, challenge) => Visibility(
             visible: challenge.started,
             child: GestureDetector(
               onTap: () {

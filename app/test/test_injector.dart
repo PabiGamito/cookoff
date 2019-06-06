@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookoff/injector.dart';
 import 'package:cookoff/providers/auth_provider.dart';
 import 'package:cookoff/providers/camera_provider.dart';
@@ -17,9 +16,6 @@ class TestInjector implements Injector {
   final ChallengeProvider challengeProvider;
 
   @override
-  final Firestore firestore;
-
-  @override
   final IngredientProvider ingredientProvider;
 
   @override
@@ -29,7 +25,6 @@ class TestInjector implements Injector {
       {this.authProvider,
       this.cameraProvider,
       this.challengeProvider,
-      this.firestore,
       this.ingredientProvider,
       this.userProvider});
 }

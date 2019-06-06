@@ -11,12 +11,6 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
 
   @override
   Stream<Challenge> mapEventToState(GameEvent event) async* {
-    if (event is SetOwner) {
-      if (!currentState.started) {
-        yield currentState.copyWithOwner(event.owner.userId);
-      }
-    }
-
     if (event is GameButton) {
       if (!currentState.started) {
         yield await InjectorWidget.of(event.context)

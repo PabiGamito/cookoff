@@ -1,12 +1,13 @@
-import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/titled_section.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -57,9 +58,9 @@ class _FriendsTabState extends State<FriendsTab> {
                   child: Container(
                       height: MediaQuery.of(context).size.height -
                           Scalar(context).scale(500))),
-              FriendsCard(bloc: widget._bloc),
+              FriendsCard(bloc: widget._bloc)
             ]),
-        FriendsSelectButton(onTap: widget._onClose),
+        FriendsSelectButton(onTap: widget._onClose)
       ]);
 }
 
@@ -84,12 +85,23 @@ class FriendsList extends StatelessWidget {
   FriendsList({GameBloc bloc}) : _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder(
-      bloc: AuthBloc.instance,
-      builder: (BuildContext context, User user) => Column(children: [
-            for (var friend in user.friendsList)
-              new FriendCard(bloc: _bloc, friend: friend),
-          ]));
+  Widget build(BuildContext context) {
+    var injector = InjectorWidget.of(context).injector;
+    var user = UserWidget.of(context).user;
+
+    return Column(children: [
+      for (var friend in user.friends)
+        StreamBuilder<User>(
+            stream: injector.userProvider.userStream(friend),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return FriendCard(bloc: _bloc, friend: snapshot.data);
+              } else {
+                return Container();
+              }
+            })
+    ]);
+  }
 }
 
 class FriendCard extends StatelessWidget {
@@ -104,37 +116,35 @@ class FriendCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        margin: EdgeInsets.only(bottom: Scalar(context).scale(25)),
-        child: GestureDetector(
+      margin: EdgeInsets.only(bottom: Scalar(context).scale(25)),
+      child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: () => _bloc.dispatch(FriendButton(_friend.userId)),
+          onTap: () => _bloc.dispatch(FriendButton(_friend.id)),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(children: [
-                Container(
-                    padding: EdgeInsets.only(right: Scalar(context).scale(20)),
-                    child: ProfileIcon(
-                        user: _friend,
-                        size: Scalar(context).scale(55),
-                        borderWidth: 0)),
-                Text(
-                  _friend.name,
-                  style: TextStyle(
-                    fontSize: Scalar(context).scale(20),
-                    fontFamily: "Montserrat",
-                  ),
-                ),
-              ]),
-              BlocBuilder(
-                  bloc: _bloc,
-                  builder: (BuildContext context, Challenge challenge) =>
-                      Container(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(children: [
+                  Container(
+                      padding:
+                          EdgeInsets.only(right: Scalar(context).scale(20)),
+                      child: ProfileIcon(
+                          user: _friend,
+                          size: Scalar(context).scale(55),
+                          borderWidth: 0)),
+                  Text(_friend.name,
+                      style: TextStyle(
+                        fontSize: Scalar(context).scale(20),
+                        fontFamily: "Montserrat",
+                      ))
+                ]),
+                BlocBuilder<GameEvent, Challenge>(
+                    bloc: _bloc,
+                    builder: (context, challenge) => Container(
                         width: Scalar(context).scale(45),
                         height: Scalar(context).scale(45),
                         decoration: new BoxDecoration(
                           shape: BoxShape.circle,
-                          color: challenge.participants.contains(_friend.userId)
+                          color: challenge.participants.contains(_friend.id)
                               ? Color(0xFF65D2EB)
                               : Color(0xFFC6C6C6),
                         ),
@@ -142,12 +152,8 @@ class FriendCard extends StatelessWidget {
                           child: Icon(Icons.check,
                               color: Colors.white,
                               size: Scalar(context).scale(20)),
-                        ),
-                      )),
-            ],
-          ),
-        ),
-      );
+                        )))
+              ])));
 }
 
 class FriendsSelectButton extends StatelessWidget {
@@ -187,10 +193,9 @@ class FriendsSelectButton extends StatelessWidget {
                     child: Center(
                         child: Text("SELECT",
                             style: TextStyle(
-                              fontSize: Scalar(context).scale(22),
-                              fontFamily: "Montserrat",
-                              letterSpacing: 3,
-                              color: Colors.white,
-                            ))))))
+                                fontSize: Scalar(context).scale(22),
+                                fontFamily: "Montserrat",
+                                letterSpacing: 3,
+                                color: Colors.white))))))
       ]);
 }

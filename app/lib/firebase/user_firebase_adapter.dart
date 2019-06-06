@@ -1,30 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/user_provider.dart';
-import 'package:rxdart/rxdart.dart';
 
 class UserFirebaseAdapter implements UserProvider {
-  Firestore _firestore = Firestore.instance;
-  static const String usersCollection = "users";
+  static const String _collection = 'users';
+
+  static final Firestore _firestore = Firestore.instance;
 
   @override
-  Observable<Iterable<User>> friendsStream(String uid) {
-    return Observable(_firestore
-        .collection(usersCollection)
-        .where("friends", arrayContains: uid)
-        .snapshots()
-        .map((snapshot) => snapshot.documents
-            .map((document) =>
-                User.fromJson(document.data..['userId'] = document.documentID))
-            .toList()));
-  }
-
-  @override
-  Observable<User> user(String uid) {
-    return Observable(_firestore
-        .collection(usersCollection)
-        .document(uid)
-        .snapshots()
-        .map((snapshot) => User.fromJson(snapshot.data)));
-  }
+  Stream<User> userStream(String id) => _firestore
+      .collection(_collection)
+      .document(id)
+      .snapshots()
+      .map((snapshot) =>
+          User.fromJson(snapshot.data..['id'] = snapshot.documentID));
 }
