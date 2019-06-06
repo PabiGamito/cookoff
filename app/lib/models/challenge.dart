@@ -76,7 +76,5 @@ class Challenge {
       end: end,
       images: [...images, path]);
 
-  void addImage(String path) => images.add(path);
-
   Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }
