@@ -109,13 +109,6 @@ class _CardState extends State<Card> {
 
         if (_controller.position.maxScrollExtent <= 0 &&
             _newHeight - _startBounceHeight > 0) {
-//          _controller.jumpTo(_newHeight - _startBounceHeight);
-//
-//          setState(() {
-//            _bounceHeight = _newHeight - _startBounceHeight;
-//            _height = MediaQuery.of(context).size.height;
-//          });
-
           return;
         }
 
