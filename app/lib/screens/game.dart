@@ -5,6 +5,7 @@ import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/game/friends_tab.dart';
 import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/game/inspiration_card.dart';
+import 'package:cookoff/widgets/game_button.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,10 +20,10 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  final GameBloc _bloc;
   bool _friendsTabOpen = false;
-  Challenge _challenge;
 
-  _GameScreenState(Challenge challenge) : _challenge = challenge;
+  _GameScreenState(Challenge challenge) : _bloc = GameBloc(challenge);
 
   _popScreen() {
     // Close the friends tab on back press
@@ -41,8 +42,6 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var bloc = GameBloc(
-        _challenge, InjectorWidget.of(context).injector.pictureProvider);
     return StreamBuilder<Ingredient>(
         stream: InjectorWidget.of(context)
             .injector
@@ -78,11 +77,15 @@ class _GameScreenState extends State<GameScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GameHeader(onExit: _popScreen, bloc: bloc),
+                            GameHeader(onExit: _popScreen, bloc: _bloc),
                             IngredientName(ingredient: ingredient),
                             IngredientIcon(ingredient: ingredient),
-                            GameScreenButton(
-                                color: ingredient.color, bloc: bloc),
+                            GameStartButton(
+                                color: ingredient.color, bloc: _bloc),
+                            CameraButton(
+                              backgroundColor: ingredient.color,
+                              bloc: _bloc,
+                            ),
                             FriendProfiles(
                                 color: ingredient.color,
                                 onTap: () {
@@ -90,7 +93,7 @@ class _GameScreenState extends State<GameScreen> {
                                     _friendsTabOpen = true;
                                   });
                                 },
-                                bloc: bloc)
+                                bloc: _bloc)
                           ]),
                     ),
                     InspirationCard(),
@@ -102,7 +105,7 @@ class _GameScreenState extends State<GameScreen> {
                                 _friendsTabOpen = false;
                               });
                             },
-                            bloc: bloc))
+                            bloc: _bloc))
                   ]));
         });
   }

@@ -18,10 +18,6 @@ class Injector {
 
   final UserProvider userProvider = UserFirebaseAdapter();
 
-  PictureProvider pictureProvider;
-
-  Injector() {
-    pictureProvider = PictureFirebaseAdapter(challengeProvider: challengeProvider);
-  }
+  final PictureProvider pictureProvider = PictureFirebaseAdapter();
 
 }

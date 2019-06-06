@@ -7,9 +7,8 @@ import 'package:cookoff/widgets/injector_widget.dart';
 
 class GameBloc extends Bloc<GameEvent, Challenge> {
   final Challenge initialState;
-  final PictureProvider pictureProvider;
 
-  GameBloc(this.initialState, this.pictureProvider);
+  GameBloc(this.initialState);
 
   @override
   Stream<Challenge> mapEventToState(GameEvent event) async* {
@@ -36,7 +35,7 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
     }
 
     if (event is UploadPictureButton) {
-      yield await pictureProvider
+      yield await PictureFirebaseAdapter()
           .uploadPicture(event.file.path, currentState);
     }
   }
