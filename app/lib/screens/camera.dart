@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/scalar.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -31,8 +33,10 @@ class CameraScreenState extends State<CameraScreen> {
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var compressedImage = await FlutterNativeImage.compressImage(image.path, quality: 50, percentage: 50);
+    image.delete();
     setState(() {
-      _image = image;
+      _image = compressedImage;
     });
   }
 
@@ -62,7 +66,8 @@ class CameraScreenState extends State<CameraScreen> {
           ? Container()
           : FloatingActionButton(
               onPressed: () {
-                _bloc.dispatch(UploadPictureButton(_image));
+                _bloc.dispatch(UploadPictureButton(_image,
+                    InjectorWidget.of(context).injector.pictureProvider));
                 Navigator.pop(context);
               },
               tooltip: 'Upload your image',

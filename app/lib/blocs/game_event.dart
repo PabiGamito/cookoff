@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cookoff/providers/picture_provider.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
@@ -21,6 +22,7 @@ class FriendButton extends GameEvent {
 
 class UploadPictureButton extends GameEvent {
   final File file;
+  final PictureProvider uploader;
 
-  UploadPictureButton(this.file) : super([file]);
+  UploadPictureButton(this.file, this.uploader) : super([file, uploader]);
 }

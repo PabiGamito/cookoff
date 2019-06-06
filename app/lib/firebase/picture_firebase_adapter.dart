@@ -27,7 +27,7 @@ class PictureFirebaseAdapter implements PictureProvider {
   Future<Challenge> uploadPicture(String path, Challenge challenge) async {
     // Prepare data
     var file = File(path);
-    var ref = _storage.ref().child(basename(file.path));
+    var ref = _storage.ref().child(challenge.id).child(basename(file.path));
     var task = ref.putFile(File(path));
 
     // Upload
@@ -37,6 +37,7 @@ class PictureFirebaseAdapter implements PictureProvider {
     // Store upload in database
     var newChallenge = challenge.copyWithImage(downloadUrl);
     _challengeProvider.updateChallenge(newChallenge);
+    file.delete();
     return newChallenge;
   }
 }
