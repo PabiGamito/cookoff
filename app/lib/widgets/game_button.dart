@@ -36,10 +36,12 @@ class CameraButton extends StatelessWidget {
               child: Container(
                 height: 60,
                 margin: EdgeInsets.symmetric(
-                    horizontal: Scalar(context).scale(170)),
+                  horizontal: Scaler(context).scale(170),
+                ),
                 decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                ),
                 child: Center(
                   child: Icon(
                     Icons.photo_camera,

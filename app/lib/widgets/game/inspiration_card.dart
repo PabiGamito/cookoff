@@ -1,15 +1,34 @@
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/titled_section.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class InspirationCard extends StatelessWidget {
+  final BuildContext parentContext;
+
+  const InspirationCard({Key key, this.parentContext}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
+      minHeight: Scaler(context).scale(130),
+      onClickOut: (details) {
+        print("CLICKED! ${details.globalPosition}");
+        final renderObj = parentContext.findRenderObject();
+        if (renderObj is RenderBox) {
+          final hitTestResult = HitTestResult();
+          print(renderObj);
+          if (renderObj.hitTest(hitTestResult,
+              position: details.globalPosition)) {
+            // a descendant of `renderObj` got tapped
+            print(hitTestResult.path);
+          }
+        }
+      },
       child: RoundedCard(
         child: Container(
-          padding: EdgeInsets.only(bottom: Scalar(context).scale(60)),
+          padding: EdgeInsets.only(bottom: Scaler(context).scale(60)),
           child: TitledSection(
             title: 'Some inspiration',
             underlineColor: Color(0xFF65D2EB),
@@ -37,10 +56,19 @@ class InspirationCard extends StatelessWidget {
 class Card extends StatefulWidget {
   final Function _onClose;
   final Widget _child;
+  final double _minHeight; // Also initial height
 
-  const Card({Function onClose, Widget child})
+  final void Function(TapDownDetails) _onClickOut;
+
+  const Card(
+      {Function onClose,
+      Widget child,
+      double minHeight,
+      void Function(TapDownDetails) onClickOut})
       : _onClose = onClose,
-        _child = child;
+        _child = child,
+        _onClickOut = onClickOut,
+        _minHeight = minHeight ?? 100;
 
   @override
   _CardState createState() => _CardState();
@@ -67,7 +95,7 @@ class _CardState extends State<Card> {
       Stack(alignment: AlignmentDirectional.bottomEnd, children: <Widget>[
         Container(
           height: MediaQuery.of(context).size.height,
-          color: Color(0x80000000),
+          color: Color(0x00000000), // Clear background
         ),
         Container(height: _height, color: Colors.white),
         ListView(
@@ -76,11 +104,13 @@ class _CardState extends State<Card> {
             padding: EdgeInsets.zero,
             children: [
               GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: widget._onClose,
-                  child: Container(
-                      height: MediaQuery.of(context).size.height -
-                          Scalar(context).scale(500))),
+                behavior: HitTestBehavior.translucent,
+                onTapDown: widget._onClickOut,
+                child: Container(
+                  height: MediaQuery.of(context).size.height -
+                      Scaler(context).scale(widget._minHeight),
+                ),
+              ),
               widget._child,
             ]),
         FadedBottom(),
@@ -93,7 +123,7 @@ class FadedBottom extends StatelessWidget {
       Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
         IgnorePointer(
           child: Container(
-            height: Scalar(context).scale(35),
+            height: Scaler(context).scale(35),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,

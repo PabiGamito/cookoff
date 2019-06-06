@@ -25,9 +25,9 @@ class ChallengesSection extends StatelessWidget {
   Widget build(BuildContext context) => Column(children: <Widget>[
         Container(
           padding: EdgeInsets.only(
-              top: Scalar(context).scale(30),
-              left: Scalar(context).scale(30),
-              right: Scalar(context).scale(30)),
+              top: Scaler(context).scale(30),
+              left: Scaler(context).scale(30),
+              right: Scaler(context).scale(30)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,7 +37,7 @@ class ChallengesSection extends StatelessWidget {
                   Text(
                     'My challenges',
                     style: TextStyle(
-                        fontSize: Scalar(context).scale(25),
+                        fontSize: Scaler(context).scale(25),
                         fontFamily: 'Montserrat'),
                     textAlign: TextAlign.left,
                   ),
@@ -47,9 +47,9 @@ class ChallengesSection extends StatelessWidget {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: Scalar(context).scale(10)),
-                width: Scalar(context).scale(35),
-                height: Scalar(context).scale(6),
+                margin: EdgeInsets.only(top: Scaler(context).scale(10)),
+                width: Scaler(context).scale(35),
+                height: Scaler(context).scale(6),
                 decoration: new BoxDecoration(
                   color: Color(0xFF8057E2),
                   borderRadius: BorderRadius.circular(
@@ -62,8 +62,8 @@ class ChallengesSection extends StatelessWidget {
         Expanded(
             child: Container(
                 padding: EdgeInsets.only(
-                    left: Scalar(context).scale(30),
-                    right: Scalar(context).scale(30)),
+                    left: Scaler(context).scale(30),
+                    right: Scaler(context).scale(30)),
                 child: StreamBuilder<Iterable<Challenge>>(
                     stream: _challengeProvider
                         .challengesStream(UserWidget.of(context).user.id),
@@ -87,18 +87,18 @@ class CircleAddButton extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
         onTap: _onTap,
         child: Container(
-          width: Scalar(context).scale(48),
-          height: Scalar(context).scale(48),
+          width: Scaler(context).scale(48),
+          height: Scaler(context).scale(48),
           decoration: BoxDecoration(
             color: Color(0xFF8057E2),
-            borderRadius: BorderRadius.circular(Scalar(context).scale(40)),
+            borderRadius: BorderRadius.circular(Scaler(context).scale(40)),
           ),
           child: Center(
             child: Text(
               '+',
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: Scalar(context).scale(30),
+                  fontSize: Scaler(context).scale(30),
                   fontFamily: 'Montserrat'),
             ),
           ),
@@ -112,8 +112,8 @@ class NoChallenges extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            width: Scalar(context).scale(100),
-            height: Scalar(context).scale(100),
+            width: Scaler(context).scale(100),
+            height: Scaler(context).scale(100),
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 image: new AssetImage(
@@ -124,11 +124,11 @@ class NoChallenges extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: Scalar(context).scale(25)),
+            padding: EdgeInsets.only(top: Scaler(context).scale(25)),
             child: Text(
               'NO CURRENT\nCHALLENGES',
               style: TextStyle(
-                  fontSize: Scalar(context).scale(21),
+                  fontSize: Scaler(context).scale(21),
                   fontFamily: 'Montserrat',
                   color: Color(0xFFC1C1C1),
                   letterSpacing: 2.0),
@@ -153,10 +153,10 @@ class ChallengesList extends StatelessWidget {
           ? const BouncingScrollPhysics()
           : const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.only(
-        top: Scalar(context).scale(15),
-        bottom: Scalar(context).scale(15),
-        left: Scalar(context).scale(0),
-        right: Scalar(context).scale(0),
+        top: Scaler(context).scale(15),
+        bottom: Scaler(context).scale(15),
+        left: Scaler(context).scale(0),
+        right: Scaler(context).scale(0),
       ),
       children:
           _challenges.map((challenge) => ChallengeItem(challenge)).toList());
@@ -193,9 +193,9 @@ class ChallengeItem extends StatelessWidget {
 
               return Container(
                 margin: EdgeInsets.only(
-                    top: Scalar(context).scale(10),
-                    bottom: Scalar(context).scale(10)),
-                height: Scalar(context).scale(100),
+                    top: Scaler(context).scale(10),
+                    bottom: Scaler(context).scale(10)),
+                height: Scaler(context).scale(100),
                 decoration: BoxDecoration(
                   color: ingredient.color,
                   borderRadius: BorderRadius.circular(
@@ -225,7 +225,7 @@ class ChallengeInnerContent extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(Scalar(context).scale(25)),
+                padding: EdgeInsets.all(Scaler(context).scale(25)),
                 child: Image.asset(
                     'assets/ingredients/' + _challenge.ingredient + '.png'),
               ),
@@ -235,15 +235,16 @@ class ChallengeInnerContent extends StatelessWidget {
             ],
           ),
           Container(
-              padding: EdgeInsets.only(right: Scalar(context).scale(25)),
-              child: ProfileList(
-                  color: _ingredient.color,
-                  users: profileListContent(context),
-                  maxUsersShown: 2,
-                  iconSize: Scalar(context).scale(45),
-                  iconOffset: Scalar(context).scale(-10),
-                  addMoreIcon: false,
-                  borderWidth: 5))
+            padding: EdgeInsets.only(right: Scaler(context).scale(25)),
+            child: ProfileList(
+                color: _ingredient.color,
+                users: profileListContent(context),
+                maxUsersShown: 2,
+                iconSize: Scaler(context).scale(45),
+                iconOffset: Scaler(context).scale(-10),
+                addMoreIcon: false,
+                borderWidth: 5),
+          )
         ],
       );
 

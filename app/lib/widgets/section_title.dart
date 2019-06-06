@@ -22,9 +22,9 @@ class SectionTitle extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
             Container(
-                margin: EdgeInsets.only(top: Scalar(context).scale(10)),
-                width: Scalar(context).scale(35),
-                height: Scalar(context).scale(6),
+                margin: EdgeInsets.only(top: Scaler(context).scale(10)),
+                width: Scaler(context).scale(35),
+                height: Scaler(context).scale(6),
                 decoration: new BoxDecoration(
                   color: _color,
                   borderRadius: BorderRadius.circular(

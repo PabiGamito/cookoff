@@ -35,7 +35,7 @@ class IngredientsSection extends StatelessWidget {
           style: TextStyle(
               color: Color(0xFF5F5F5F),
               fontFamily: 'Montserrat',
-              fontSize: Scalar(context).scale(56)),
+              fontSize: Scaler(context).scale(56)),
         ),
       ),
       onTap: _onMoreTap,
@@ -52,13 +52,13 @@ class IngredientsSection extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(
-            left: Scalar(context).scale(30),
-            right: Scalar(context).scale(30),
+            left: Scaler(context).scale(30),
+            right: Scaler(context).scale(30),
           ),
           child: SectionTitle(
             title: _title ?? _ingredientSection.title,
             color: _titleUnderlineColor,
-            fontSize: Scalar(context).scale(25),
+            fontSize: Scaler(context).scale(25),
           ),
         ),
         TileCarousel(

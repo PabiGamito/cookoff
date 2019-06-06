@@ -17,15 +17,15 @@ class RoundedCard extends StatelessWidget {
     return Container(
         padding: EdgeInsets.symmetric(
           vertical:
-              _padding ? Scalar(context).scale(45) : Scalar(context).scale(0),
+              _padding ? Scaler(context).scale(45) : Scaler(context).scale(0),
           horizontal:
-              _padding ? Scalar(context).scale(35) : Scalar(context).scale(0),
+              _padding ? Scaler(context).scale(35) : Scaler(context).scale(0),
         ),
         decoration: new BoxDecoration(
             color: _backgroundColor,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(Scalar(context).scale(38)),
-              topRight: Radius.circular(Scalar(context).scale(38)),
+              topLeft: Radius.circular(Scaler(context).scale(38)),
+              topRight: Radius.circular(Scaler(context).scale(38)),
             )),
         child: _child);
   }

@@ -35,13 +35,13 @@ class DurationPicker extends StatelessWidget {
           width: mediaSize.width * 0.4,
           padding: EdgeInsets.only(
             left: mediaSize.width * 0.04,
-            top: Scalar(context).scale(5),
-            bottom: Scalar(context).scale(5),
+            top: Scaler(context).scale(5),
+            bottom: Scaler(context).scale(5),
           ),
           decoration: BoxDecoration(
             color: Color.lerp(_bgColor, Colors.black45, 0.3),
             borderRadius:
-                BorderRadius.all(Radius.circular(Scalar(context).scale(5))),
+                BorderRadius.all(Radius.circular(Scaler(context).scale(5))),
           ),
           child: Center(
             child: TimeText(

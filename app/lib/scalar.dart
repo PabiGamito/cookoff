@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class Scalar {
+class Scaler {
   static const _smallHeight = 450;
   static const _largeHeight = 890;
 
@@ -13,7 +13,7 @@ class Scalar {
 
   final double _scalar;
 
-  Scalar(BuildContext context)
+  Scaler(BuildContext context)
       : _scalar = _gradient * MediaQuery.of(context).size.height + _intercept;
 
   double scale(double value) => value * _scalar;

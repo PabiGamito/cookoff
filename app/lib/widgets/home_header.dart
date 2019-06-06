@@ -20,23 +20,23 @@ class HomeHeader extends StatelessWidget {
               children: [
                 Positioned(
                   child: Container(
-                    margin: EdgeInsets.all(Scalar(context).scale(10)),
+                    margin: EdgeInsets.all(Scaler(context).scale(10)),
                     child: ProfileIcon(
                       user: _user,
-                      size: Scalar(context).scale(118),
-                      borderWidth: Scalar(context).scale(7),
+                      size: Scaler(context).scale(118),
+                      borderWidth: Scaler(context).scale(7),
                     ),
                   ),
                 ),
                 if (_notificationCount > 0)
                   Positioned(
-                      top: Scalar(context).scale(3),
-                      right: Scalar(context).scale(8),
+                      top: Scaler(context).scale(3),
+                      right: Scaler(context).scale(8),
                       child: NotificationBadge(_notificationCount))
               ],
             ),
             Container(
-              margin: EdgeInsets.only(left: Scalar(context).scale(20)),
+              margin: EdgeInsets.only(left: Scaler(context).scale(20)),
               child: HelloMessage(_user.firstName),
             ),
           ],
@@ -56,7 +56,7 @@ class HelloMessage extends StatelessWidget {
           Text(
             'HELLO',
             style: TextStyle(
-                fontSize: Scalar(context).scale(22),
+                fontSize: Scaler(context).scale(22),
                 fontFamily: 'Montserrat',
                 color: Colors.white,
                 letterSpacing: 4),
@@ -65,7 +65,7 @@ class HelloMessage extends StatelessWidget {
           Text(
             _name,
             style: TextStyle(
-                fontSize: Scalar(context).scale(42),
+                fontSize: Scaler(context).scale(42),
                 fontFamily: 'Montserrat',
                 color: Colors.black,
                 height: 0.8),
@@ -83,8 +83,8 @@ class NotificationBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: Scalar(context).scale(40),
-        height: Scalar(context).scale(40),
+        width: Scaler(context).scale(40),
+        height: Scaler(context).scale(40),
         decoration: BoxDecoration(
           color: Color(0xFFE5505E),
           borderRadius: BorderRadius.circular(40),
@@ -94,7 +94,7 @@ class NotificationBadge extends StatelessWidget {
             _notificationCount.toString(),
             style: TextStyle(
                 color: Colors.white,
-                fontSize: Scalar(context).scale(18),
+                fontSize: Scaler(context).scale(18),
                 fontFamily: 'Montserrat'),
           ),
         ),

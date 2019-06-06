@@ -80,18 +80,18 @@ class CameraBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Scalar(context).scale(135),
+      height: Scaler(context).scale(135),
       padding: EdgeInsets.only(
-        top: Scalar(context).scale(35),
-        bottom: Scalar(context).scale(18),
+        top: Scaler(context).scale(35),
+        bottom: Scaler(context).scale(18),
       ),
-      margin: EdgeInsets.only(left: Scalar(context).scale(20)),
+      margin: EdgeInsets.only(left: Scaler(context).scale(20)),
       child: Wrap(children: [
         GestureDetector(
           onTap: _popScreen,
           child: Icon(
             Icons.clear,
-            size: Scalar(context).scale(40),
+            size: Scaler(context).scale(40),
             color: Colors.white,
           ),
         ),
@@ -109,17 +109,17 @@ class AddNewPictureButton extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
       onTap: _onTap,
       child: Container(
-          height: Scalar(context).scale(70),
-          width: Scalar(context).scale(250),
-          padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(5)),
+          height: Scaler(context).scale(70),
+          width: Scaler(context).scale(250),
+          padding: EdgeInsets.symmetric(vertical: Scaler(context).scale(5)),
           decoration: BoxDecoration(
               color: Color(0x60000000),
               borderRadius:
-                  BorderRadius.all(Radius.circular(Scalar(context).scale(30)))),
+                  BorderRadius.all(Radius.circular(Scaler(context).scale(30)))),
           child: Center(
               child: Text("Add Picture",
                   style: TextStyle(
-                    fontSize: Scalar(context).scale(24),
+                    fontSize: Scaler(context).scale(24),
                     fontFamily: "Montserrat",
                     color: Colors.white,
                     letterSpacing: 3,

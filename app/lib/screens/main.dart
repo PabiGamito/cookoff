@@ -74,11 +74,12 @@ class AuthorizedMainScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                  padding: EdgeInsets.only(
-                      top: Scalar(context).scale(30),
-                      bottom: Scalar(context).scale(25)),
-                  child: HomeHeader(
-                      user: UserWidget.of(context).user, notificationCount: 0)),
+                padding: EdgeInsets.only(
+                    top: Scaler(context).scale(30),
+                    bottom: Scaler(context).scale(25)),
+                child: HomeHeader(
+                    user: UserWidget.of(context).user, notificationCount: 0),
+              ),
               Expanded(
                 child: Container(),
               ),
@@ -90,13 +91,13 @@ class AuthorizedMainScreen extends StatelessWidget {
 
     var featuredIngredientsCard = ScrollableCard(
         minOffset: 0,
-        maxOffset: Scalar(context).scale(firstCardMaxOffset),
-        startingOffset: Scalar(context).scale(firstCardMaxOffset),
+        maxOffset: Scaler(context).scale(firstCardMaxOffset),
+        startingOffset: Scaler(context).scale(firstCardMaxOffset),
         cardOffset: (context, scrolledAmount) {
-          if (scrolledAmount > -Scalar(context).scale(firstCardContentHeight)) {
-            return Scalar(context).scale(firstCardMaxOffset);
+          if (scrolledAmount > -Scaler(context).scale(firstCardContentHeight)) {
+            return Scaler(context).scale(firstCardMaxOffset);
           }
-          return Scalar(context)
+          return Scaler(context)
                   .scale(firstCardMaxOffset + firstCardContentHeight) +
               scrolledAmount;
         },
@@ -105,8 +106,8 @@ class AuthorizedMainScreen extends StatelessWidget {
             padding: false,
             child: Container(
               padding: EdgeInsets.only(
-                top: Scalar(context).scale(35),
-                bottom: Scalar(context).scale(15),
+                top: Scaler(context).scale(35),
+                bottom: Scaler(context).scale(15),
               ),
               child: IngredientsSection(
                 ingredientSection: FeaturedSection(),
@@ -123,11 +124,11 @@ class AuthorizedMainScreen extends StatelessWidget {
       controler: challengesCardController,
       minOffset: firstCardTitleHeight,
       maxOffset:
-          Scalar(context).scale(firstCardTitleHeight + firstCardContentHeight),
+          Scaler(context).scale(firstCardTitleHeight + firstCardContentHeight),
       startingOffset:
-          Scalar(context).scale(firstCardTitleHeight + firstCardContentHeight),
+          Scaler(context).scale(firstCardTitleHeight + firstCardContentHeight),
       cardOffset: (context, scrolledAmount) {
-        return Scalar(context).scale(secondCardMaxOffset) + scrolledAmount;
+        return Scaler(context).scale(secondCardMaxOffset) + scrolledAmount;
       },
       cardBuilder: (context, scrolledAmount, fullyExpanded) {
         return RoundedCard(
@@ -147,7 +148,7 @@ class AuthorizedMainScreen extends StatelessWidget {
       color: Colors.amber,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: ScrollableLayout(
-        minScroll: Scalar(context).scale(minScrollAmount),
+        minScroll: Scaler(context).scale(minScrollAmount),
         maxScroll: 0,
         scrollableCards: [
           headerCard,

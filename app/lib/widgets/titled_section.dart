@@ -25,15 +25,15 @@ class TitledSection extends StatelessWidget {
             Text(_title,
                 style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontSize: Scalar(context).scale(25),
+                    fontSize: Scaler(context).scale(25),
                     color: _titleColor),
                 textAlign: TextAlign.left),
             Container(
                 margin: EdgeInsets.only(
-                    top: Scalar(context).scale(10),
-                    bottom: Scalar(context).scale(35)),
-                width: Scalar(context).scale(35),
-                height: Scalar(context).scale(6),
+                    top: Scaler(context).scale(10),
+                    bottom: Scaler(context).scale(35)),
+                width: Scaler(context).scale(35),
+                height: Scaler(context).scale(6),
                 decoration: new BoxDecoration(
                     color: _underlineColor,
                     borderRadius: BorderRadius.circular(1000))),

@@ -49,10 +49,10 @@ class GameBackButton extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
       onTap: _onTap,
       child: Container(
-        width: Scalar(context).scale(100),
-        height: Scalar(context).scale(60),
+        width: Scaler(context).scale(100),
+        height: Scaler(context).scale(60),
         child: Icon(Icons.keyboard_backspace,
-            color: Colors.white, size: Scalar(context).scale(40)),
+            color: Colors.white, size: Scaler(context).scale(40)),
       ));
 }
 
@@ -65,10 +65,10 @@ class GameTimeButton extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
       onTap: _onTap,
       child: Container(
-        width: Scalar(context).scale(100),
-        height: Scalar(context).scale(60),
+        width: Scaler(context).scale(100),
+        height: Scaler(context).scale(60),
         child: Icon(Icons.timer,
-            color: Colors.white, size: Scalar(context).scale(32)),
+            color: Colors.white, size: Scaler(context).scale(32)),
       ));
 }
 
@@ -82,14 +82,14 @@ class IngredientName extends StatelessWidget {
         Text(
             '${_ingredient.name[0].toUpperCase()}${_ingredient.name.substring(1)}',
             style: TextStyle(
-                fontSize: Scalar(context).scale(45),
+                fontSize: Scaler(context).scale(45),
                 fontFamily: 'Montserrat',
                 color: Colors.white,
                 letterSpacing: 2)),
         Container(
-            margin: EdgeInsets.only(top: Scalar(context).scale(15)),
-            width: Scalar(context).scale(45),
-            height: Scalar(context).scale(8),
+            margin: EdgeInsets.only(top: Scaler(context).scale(15)),
+            width: Scaler(context).scale(45),
+            height: Scaler(context).scale(8),
             decoration: new BoxDecoration(
                 color: Color(0x50000000),
                 borderRadius: BorderRadius.circular(1000))),
@@ -103,8 +103,8 @@ class IngredientIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      width: Scalar(context).scale(160),
-      height: Scalar(context).scale(160),
+      width: Scaler(context).scale(160),
+      height: Scaler(context).scale(160),
       child: Image.asset(_ingredient.imgPath));
 }
 
@@ -147,9 +147,9 @@ class GameStartButton extends StatelessWidget {
         bloc: _bloc,
         text: "START",
         icon: Container(
-          height: Scalar(context).scale(50),
-          width: Scalar(context).scale(50),
-          margin: EdgeInsets.only(right: Scalar(context).scale(15)),
+          height: Scaler(context).scale(50),
+          width: Scaler(context).scale(50),
+          margin: EdgeInsets.only(right: Scaler(context).scale(15)),
           child: Transform.rotate(
             angle: 1.1,
             child: Image.asset("assets/icons/rocket.png", color: _color),
@@ -175,13 +175,13 @@ class GameSubmitButton extends StatelessWidget {
         bloc: _bloc,
         text: "SUBMIT",
         icon: Container(
-          height: Scalar(context).scale(50),
-          width: Scalar(context).scale(50),
-          margin: EdgeInsets.only(right: Scalar(context).scale(15)),
+          height: Scaler(context).scale(50),
+          width: Scaler(context).scale(50),
+          margin: EdgeInsets.only(right: Scaler(context).scale(15)),
           child: Icon(
             Icons.add_a_photo,
             color: _color,
-            size: Scalar(context).scale(35),
+            size: Scaler(context).scale(35),
           ),
         ),
         onTap: () {
@@ -219,12 +219,12 @@ class _GameScreenButton extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
       onTap: _onTap,
       child: Container(
-          width: Scalar(context).scale(265),
-          padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(6)),
+          width: Scaler(context).scale(265),
+          padding: EdgeInsets.symmetric(vertical: Scaler(context).scale(6)),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius:
-                  BorderRadius.all(Radius.circular(Scalar(context).scale(30)))),
+                  BorderRadius.all(Radius.circular(Scaler(context).scale(30)))),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -232,7 +232,7 @@ class _GameScreenButton extends StatelessWidget {
                 _icon,
                 Text(_text,
                     style: TextStyle(
-                      fontSize: Scalar(context).scale(23),
+                      fontSize: Scaler(context).scale(23),
                       fontFamily: "Montserrat",
                       color: _color,
                       letterSpacing: 3,
@@ -252,20 +252,21 @@ class FriendProfiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
-      bloc: _bloc,
-      builder: (context, challenge) => ProfileList(
-              users: [
-                for (var participant in challenge.participants)
-                  InjectorWidget.of(context)
-                      .injector
-                      .userProvider
-                      .userStream(participant)
-              ],
-              maxUsersShown: 4,
-              iconSize: Scalar(context).scale(60),
-              iconOffset: Scalar(context).scale(-10),
-              onTap: _onTap,
-              addMoreIcon: !challenge.started,
-              color: _color,
-              borderWidth: 6));
+        bloc: _bloc,
+        builder: (context, challenge) => ProfileList(
+                users: [
+                  for (var participant in challenge.participants)
+                    InjectorWidget.of(context)
+                        .injector
+                        .userProvider
+                        .userStream(participant)
+                ],
+                maxUsersShown: 4,
+                iconSize: Scaler(context).scale(60),
+                iconOffset: Scaler(context).scale(-10),
+                onTap: _onTap,
+                addMoreIcon: !challenge.started,
+                color: _color,
+                borderWidth: 6),
+      );
 }

@@ -15,20 +15,20 @@ class PillButton extends StatelessWidget {
         child: Container(
           child: Container(
             padding: EdgeInsets.only(
-              top: Scalar(context).scale(15),
-              bottom: Scalar(context).scale(15),
-              left: Scalar(context).scale(50),
-              right: Scalar(context).scale(50),
+              top: Scaler(context).scale(15),
+              bottom: Scaler(context).scale(15),
+              left: Scaler(context).scale(50),
+              right: Scaler(context).scale(50),
             ),
             decoration: new BoxDecoration(
               color: Color(0xFF8057E2),
-              borderRadius: BorderRadius.circular(Scalar(context).scale(50)),
+              borderRadius: BorderRadius.circular(Scaler(context).scale(50)),
             ),
             child: Center(
               child: Text(
                 _text,
                 style: TextStyle(
-                  fontSize: Scalar(context).scale(16),
+                  fontSize: Scaler(context).scale(16),
                   fontFamily: "Montserrat",
                   color: Colors.white,
                   letterSpacing: 2,

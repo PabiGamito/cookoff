@@ -70,10 +70,10 @@ class _GameScreenState extends State<GameScreen> {
                     Container(color: ingredient.color),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          vertical: Scalar(context).scale(60),
-                          horizontal: Scalar(context).scale(35)),
+                          vertical: Scaler(context).scale(60),
+                          horizontal: Scaler(context).scale(35)),
                       margin:
-                          EdgeInsets.only(bottom: Scalar(context).scale(130)),
+                          EdgeInsets.only(bottom: Scaler(context).scale(130)),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -96,7 +96,9 @@ class _GameScreenState extends State<GameScreen> {
                                 bloc: _bloc)
                           ]),
                     ),
-                    InspirationCard(),
+                    InspirationCard(
+                      parentContext: context,
+                    ),
                     Visibility(
                         visible: _friendsTabOpen,
                         child: FriendsTab(

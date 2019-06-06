@@ -118,7 +118,7 @@ class TimeText extends StatelessWidget {
         'Done',
         style: TextStyle(
             color: Colors.white,
-            fontSize: Scalar(context).scale(24),
+            fontSize: Scaler(context).scale(24),
             fontFamily: 'Montserrat'),
       );
     }
@@ -132,7 +132,7 @@ class TimeText extends StatelessWidget {
             _valueToString(_values[i]),
             style: TextStyle(
                 color: Colors.white,
-                fontSize: Scalar(context).scale(24),
+                fontSize: Scaler(context).scale(24),
                 fontFamily: 'Montserrat'),
           ),
         );
@@ -141,7 +141,7 @@ class TimeText extends StatelessWidget {
             _units[i].toString() + " ",
             style: TextStyle(
                 color: Colors.white,
-                fontSize: Scalar(context).scale(16),
+                fontSize: Scaler(context).scale(16),
                 fontFamily: 'Montserrat'),
           ),
         );
