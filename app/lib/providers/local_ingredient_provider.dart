@@ -17,25 +17,22 @@ class LocalIngredientProvider extends IngredientProvider {
   ];
 
   @override
-  Stream<Iterable<Ingredient>> getAllIngredients() {
+  Stream<Iterable<Ingredient>> ingredientsStream() {
     throw UnimplementedError();
   }
 
-  Future<Iterable<IngredientSection>> getIngredientSections() async {
-    return sections;
-  }
+  Future<Iterable<IngredientSection>> getIngredientSections() async => sections;
 
   @override
-  Stream<Iterable<IngredientSection>> ingredientSections() {
-    return Stream.fromFuture(getIngredientSections());
-  }
+  Stream<Iterable<IngredientSection>> ingredientSectionsStream() =>
+      Stream.fromFuture(getIngredientSections());
 
   @override
-  Stream<Ingredient> getIngredientById(String id) =>
+  Stream<Ingredient> ingredientStream(String ingredient) =>
       Stream.fromFuture(Future.value(Ingredient(
-          id,
-          'assets/ingredients/$id.png',
-          ingredientColor[id] ?? Colors.blueGrey)));
+          ingredient,
+          'assets/ingredients/$ingredient.png',
+          ingredientColor[ingredient] ?? Colors.blueGrey)));
 }
 
 const Map<String, Color> ingredientColor = {

@@ -10,13 +10,12 @@ class IngredientsScreen extends StatelessWidget {
 
   final void Function(BuildContext) _onBackPress;
 
-  IngredientsScreen(
-      {void Function(BuildContext) onBackPress,
-      @required IngredientProvider ingredientProvider})
+  IngredientsScreen({void Function(BuildContext) onBackPress,
+    @required IngredientProvider ingredientProvider})
       : _onBackPress = onBackPress ??
-            ((context) {
-              Navigator.of(context).pop();
-            }),
+      ((context) {
+        Navigator.of(context).pop();
+      }),
         _ingredientProvider = ingredientProvider;
 
   @override
@@ -41,7 +40,7 @@ class IngredientsScreen extends StatelessWidget {
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: StreamBuilder<Iterable<IngredientSection>>(
-              stream: _ingredientProvider.ingredientSections(),
+              stream: _ingredientProvider.ingredientSectionsStream(),
               builder: (BuildContext context,
                   AsyncSnapshot<Iterable<IngredientSection>> snapshots) {
                 if (!snapshots.hasData) {
@@ -51,10 +50,11 @@ class IngredientsScreen extends StatelessWidget {
                 return Column(
                   children: snapshots.data
                       .map(
-                        (ingredientSection) => IngredientsSection(
-                              ingredientSection: ingredientSection,
-                            ),
-                      )
+                        (ingredientSection) =>
+                        IngredientsSection(
+                          ingredientSection: ingredientSection,
+                        ),
+                  )
                       .toList(),
                 );
               },

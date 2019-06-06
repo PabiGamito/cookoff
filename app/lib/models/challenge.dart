@@ -15,12 +15,12 @@ class Challenge {
 
   Challenge(
       {this.id,
-        this.owner,
-        this.participants,
-        this.ingredient,
-        this.complete,
-        this.end,
-        this.images});
+      this.owner,
+      this.participants,
+      this.ingredient,
+      this.complete,
+      this.end,
+      this.images});
 
   Challenge.withIngredient(this.ingredient)
       : id = null,

@@ -193,8 +193,7 @@ class ChallengeItem extends StatelessWidget {
           );
         },
         child: StreamBuilder<Ingredient>(
-            stream:
-                _ingredientProvider.getIngredientById(_challenge.ingredient),
+            stream: _ingredientProvider.ingredientStream(_challenge.ingredient),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 // Loading...

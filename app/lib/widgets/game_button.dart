@@ -18,37 +18,37 @@ class CameraButton extends StatelessWidget {
     return BlocBuilder(
       bloc: _bloc,
       builder: (BuildContext context, Challenge challenge) => Visibility(
-        visible: challenge.started,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Scaffold(
-                  body: CameraScreen(
-                    backgroundColor: _bgColor,
-                    bloc: _bloc,
+            visible: challenge.started,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                          body: CameraScreen(
+                            backgroundColor: _bgColor,
+                            bloc: _bloc,
+                          ),
+                        ),
+                  ),
+                );
+              },
+              child: Container(
+                height: 60,
+                margin: EdgeInsets.symmetric(
+                    horizontal: Scalar(context).scale(170)),
+                decoration: new BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Center(
+                  child: Icon(
+                    Icons.photo_camera,
+                    color: Colors.lightBlue,
                   ),
                 ),
               ),
-            );
-          },
-          child: Container(
-            height: 60,
-            margin: EdgeInsets.symmetric(
-                horizontal: Scalar(context).scale(170)),
-            decoration: new BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            child: Center(
-              child: Icon(
-                Icons.photo_camera,
-                color: Colors.lightBlue,
-              ),
             ),
           ),
-        ),
-      ),
     );
   }
 }
