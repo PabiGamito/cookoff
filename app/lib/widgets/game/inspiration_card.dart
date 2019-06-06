@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/titled_section.dart';
@@ -35,12 +37,12 @@ class InspirationCard extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: 250,
+                  height: 100,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.red,
                 ),
                 Container(
-                  height: 250,
+                  height: 100,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.blue,
                 ),
@@ -71,50 +73,101 @@ class Card extends StatefulWidget {
         _minHeight = minHeight ?? 100;
 
   @override
-  _CardState createState() => _CardState();
+  _CardState createState() => _CardState(minHeight: _minHeight);
 }
 
 class _CardState extends State<Card> {
   final ScrollController _controller = ScrollController();
+  double _lastHeight = 0;
   double _height = 0;
+  double _startBounceHeight = 0;
 
-  _CardState() {
-    _controller.addListener(() {
-      setState(() {
-        if (_controller.hasClients && _controller.offset > 0) {
-          _height = _controller.offset;
-        } else {
-          _height = 0;
-        }
-      });
-    });
+  double _startScrollPos;
+  double _bounceHeight = 0;
+
+  _CardState({double minHeight}) {
+    _lastHeight = minHeight;
+    _height = minHeight;
+    _startBounceHeight = _height;
+  }
+
+  bool fullHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height <= _height;
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Stack(alignment: AlignmentDirectional.bottomEnd, children: <Widget>[
-        Container(
-          height: MediaQuery.of(context).size.height,
-          color: Color(0x00000000), // Clear background
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onVerticalDragStart: (details) {
+        _startScrollPos = details.globalPosition.dy;
+      },
+      onVerticalDragUpdate: (details) {
+        var _scrolledAmount = details.globalPosition.dy - _startScrollPos;
+        var _newHeight = _lastHeight - _scrolledAmount;
+
+        if (_controller.position.maxScrollExtent <= 0 &&
+            _newHeight - _startBounceHeight > 0) {
+//          _controller.jumpTo(_newHeight - _startBounceHeight);
+//
+//          setState(() {
+//            _bounceHeight = _newHeight - _startBounceHeight;
+//            _height = MediaQuery.of(context).size.height;
+//          });
+
+          return;
+        }
+
+        _startBounceHeight = _height;
+
+        setState(() {
+          _bounceHeight = 0;
+        });
+
+        if (_newHeight > MediaQuery.of(context).size.height) {
+          _controller.jumpTo(_newHeight - MediaQuery.of(context).size.height);
+        }
+
+        if (_newHeight < widget._minHeight) {
+          _controller.jumpTo(_newHeight - widget._minHeight);
+          _newHeight = widget._minHeight;
+        }
+
+        setState(() {
+          var _maxHeight = _controller.position.maxScrollExtent +
+              MediaQuery.of(context).size.height;
+          _height = min(_maxHeight, _newHeight);
+        });
+      },
+      onVerticalDragEnd: (details) {
+        setState(() {
+          _bounceHeight = 0;
+        });
+
+        _lastHeight = _height;
+      },
+      child: Container(
+        height: _height,
+        child: Stack(
+          alignment: AlignmentDirectional.bottomEnd,
+          children: <Widget>[
+            if (_height >= MediaQuery.of(context).size.height)
+              Container(
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.white),
+//            Container(height: _bounceHeight, color: Colors.white),
+            ListView(
+                padding: EdgeInsets.zero,
+                controller: _controller,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  widget._child,
+                ]),
+            FadedBottom(),
+          ],
         ),
-        Container(height: _height, color: Colors.white),
-        ListView(
-            controller: _controller,
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.zero,
-            children: [
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTapDown: widget._onClickOut,
-                child: Container(
-                  height: MediaQuery.of(context).size.height -
-                      Scaler(context).scale(widget._minHeight),
-                ),
-              ),
-              widget._child,
-            ]),
-        FadedBottom(),
-      ]);
+      ),
+    );
+  }
 }
 
 class FadedBottom extends StatelessWidget {
