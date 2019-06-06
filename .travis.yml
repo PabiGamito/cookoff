@@ -56,6 +56,7 @@ jobs:
       components:
       - build-tools-28.0.3
       - android-28
+      - android-27
     addons:
       # Deploy APK to S3 bucket
       artifacts:
