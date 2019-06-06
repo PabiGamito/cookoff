@@ -39,7 +39,7 @@ class ProfileList extends StatelessWidget {
   Widget build(BuildContext context) {
     var _usersToShow = min(_maxUsersShown, _users.length);
 
-    // convert list of stream of users into streamBuilders
+    // Convert list of stream of users into streamBuilders
     List<StreamBuilder<User>> iconBuilders = [];
     for (int i = 0; i < _usersToShow; i++) {
       iconBuilders.add(StreamBuilder(
@@ -54,7 +54,7 @@ class ProfileList extends StatelessWidget {
       ));
     }
 
-    // render streamBuilders
+    // Render streamBuilders
     return Container(
       height: _iconSize,
       width: _iconSize +
@@ -76,7 +76,9 @@ class ProfileList extends StatelessWidget {
           Positioned(
             left: _iconOffset * _usersToShow,
             child: MoreUsersCount(
-                size: _iconSize, count: _users.length - _usersToShow),
+                textColor: _color,
+                size: _iconSize,
+                count: _users.length - _usersToShow),
           )
       ]),
     );

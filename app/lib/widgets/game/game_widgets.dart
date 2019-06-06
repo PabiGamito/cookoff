@@ -180,6 +180,7 @@ class FriendProfiles extends StatelessWidget {
                       if (challenge.participants.contains(friend.userId))
                         Stream.fromFuture(Future.value(friend))
                   ],
+                  maxUsersShown: 4,
                   iconSize: Scalar(context).scale(60),
                   iconOffset: Scalar(context).scale(-10),
                   onTap: _onTap,

@@ -74,7 +74,7 @@ class MoreUsersCount extends StatelessWidget {
 
   MoreUsersCount(
       {Color textColor,
-      double textScale = 0.5,
+      double textScale = 0.4,
       @required count,
       @required this.size})
       : _textColor = textColor ?? Color(0xAA000000),
