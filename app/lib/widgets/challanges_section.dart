@@ -235,16 +235,12 @@ class ChallengeInnerContent extends StatelessWidget {
             ],
           ),
           Container(
-            padding: EdgeInsets.only(right: Scaler(context).scale(25)),
-            child: ProfileList(
-                color: _ingredient.color,
-                users: profileListContent(context),
-                maxUsersShown: 2,
-                iconSize: Scaler(context).scale(45),
-                iconOffset: Scaler(context).scale(-10),
-                addMoreIcon: false,
-                borderWidth: 5),
-          )
+              padding: EdgeInsets.only(right: Scaler(context).scale(25)),
+              child: ProfileList(
+                  users: profileListContent(context),
+                  size: Scaler(context).scale(45),
+                  color: _ingredient.color,
+                  maxIcons: 2))
         ],
       );
 

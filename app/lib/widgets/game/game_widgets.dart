@@ -252,21 +252,17 @@ class FriendProfiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
-        bloc: _bloc,
-        builder: (context, challenge) => ProfileList(
-                users: [
-                  for (var participant in challenge.participants)
-                    InjectorWidget.of(context)
-                        .injector
-                        .userProvider
-                        .userStream(participant)
-                ],
-                maxUsersShown: 4,
-                iconSize: Scaler(context).scale(60),
-                iconOffset: Scaler(context).scale(-10),
-                onTap: _onTap,
-                addMoreIcon: !challenge.started,
-                color: _color,
-                borderWidth: 6),
-      );
+      bloc: _bloc,
+      builder: (context, challenge) => ProfileList(
+              users: [
+                for (var participant in challenge.participants)
+                  InjectorWidget.of(context)
+                      .injector
+                      .userProvider
+                      .userStream(participant)
+              ],
+              size: Scaler(context).scale(60),
+              color: _color,
+              maxIcons: 4,
+              onAddMore: challenge.started ? null : _onTap));
 }

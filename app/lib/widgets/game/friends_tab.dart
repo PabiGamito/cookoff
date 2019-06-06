@@ -131,38 +131,30 @@ class FriendCard extends StatelessWidget {
                       child: ProfileIcon(
                           user: _friend,
                           size: Scaler(context).scale(55),
-                          borderWidth: 0)),
-                  Text(
-                    _friend.name,
-                    style: TextStyle(
-                      fontSize: Scaler(context).scale(20),
-                      fontFamily: "Montserrat",
-                    ),
-                  )
-                ],
-              ),
-              BlocBuilder<GameEvent, Challenge>(
-                bloc: _bloc,
-                builder: (context, challenge) => Container(
-                      width: Scaler(context).scale(45),
-                      height: Scaler(context).scale(45),
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: challenge.participants.contains(_friend.id)
-                            ? Color(0xFF65D2EB)
-                            : Color(0xFFC6C6C6),
-                      ),
-                      child: Center(
-                        child: Icon(Icons.check,
-                            color: Colors.white,
-                            size: Scaler(context).scale(20)),
-                      ),
-                    ),
-              ),
-            ],
-          ),
-        ),
-      );
+                          border: false)),
+                  Text(_friend.name,
+                      style: TextStyle(
+                        fontSize: Scaler(context).scale(20),
+                        fontFamily: "Montserrat",
+                      ))
+                ]),
+                BlocBuilder<GameEvent, Challenge>(
+                    bloc: _bloc,
+                    builder: (context, challenge) => Container(
+                        width: Scaler(context).scale(45),
+                        height: Scaler(context).scale(45),
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: challenge.participants.contains(_friend.id)
+                              ? Color(0xFF65D2EB)
+                              : Color(0xFFC6C6C6),
+                        ),
+                        child: Center(
+                          child: Icon(Icons.check,
+                              color: Colors.white,
+                              size: Scaler(context).scale(20)),
+                        )))
+              ])));
 }
 
 class FriendsSelectButton extends StatelessWidget {

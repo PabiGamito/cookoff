@@ -13,35 +13,27 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Stack(
-              children: [
-                Positioned(
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+            Stack(children: [
+              Positioned(
                   child: Container(
-                    margin: EdgeInsets.all(Scaler(context).scale(10)),
-                    child: ProfileIcon(
-                      user: _user,
-                      size: Scaler(context).scale(118),
-                      borderWidth: Scaler(context).scale(7),
-                    ),
-                  ),
-                ),
-                if (_notificationCount > 0)
-                  Positioned(
-                      top: Scaler(context).scale(3),
-                      right: Scaler(context).scale(8),
-                      child: NotificationBadge(_notificationCount))
-              ],
-            ),
+                margin: EdgeInsets.all(Scaler(context).scale(10)),
+                child:
+                    ProfileIcon(user: _user, size: Scaler(context).scale(118)),
+              )),
+              if (_notificationCount > 0)
+                Positioned(
+                    top: Scaler(context).scale(3),
+                    right: Scaler(context).scale(8),
+                    child: NotificationBadge(_notificationCount))
+            ]),
             Container(
               margin: EdgeInsets.only(left: Scaler(context).scale(20)),
               child: HelloMessage(_user.firstName),
-            ),
-          ],
-        ),
-      );
+            )
+          ]));
 }
 
 class HelloMessage extends StatelessWidget {

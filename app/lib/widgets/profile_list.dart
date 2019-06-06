@@ -1,91 +1,64 @@
-import 'dart:math';
-
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
-// Builds profile icons from a list of a stream of users
+// Builds profile icons from a list of user streams
 class ProfileList extends StatelessWidget {
-  final List<Stream<User>> _users;
-  final int _maxUsersShown;
-  final bool _addMoreIcon;
-  final double _iconOffset;
-  final double overallOffset;
-  final Function _onTap;
-  final double _iconSize;
-  final Color _color;
-  final double _borderWidth;
+  static const double _offsetScale = 0.2;
 
-  ProfileList(
+  final List<Stream<User>> _users;
+  final double _size;
+  final Color _color;
+  final int _maxIcons;
+  final Function _onAddMore;
+
+  const ProfileList(
       {@required List<Stream<User>> users,
-      int maxUsersShown,
-      Function onTap,
-      bool addMoreIcon = true,
-      double iconOffset = 0,
-      double iconSize,
-      Color color,
-      double borderWidth})
-      : _onTap = onTap,
-        _users = users,
-        _maxUsersShown = maxUsersShown ?? users.length,
-        _iconOffset = iconOffset + iconSize,
-        _addMoreIcon = addMoreIcon,
-        _iconSize = iconSize,
-        overallOffset = users.length * iconSize / 2,
+      @required double size,
+      @required Color color,
+      @required int maxIcons,
+      Function onAddMore})
+      : _users = users,
+        _size = size,
         _color = color,
-        _borderWidth = borderWidth;
+        _maxIcons = maxIcons,
+        _onAddMore = onAddMore;
 
   @override
   Widget build(BuildContext context) {
-    var _usersToShow = min(_maxUsersShown, _users.length);
+    var offset = _size * _offsetScale;
 
-    // Convert list of stream of users into streamBuilders
-    List<StreamBuilder<User>> iconBuilders = [];
-    for (int i = 0; i < _usersToShow; i++) {
-      iconBuilders.add(StreamBuilder<User>(
-        stream: _users[i],
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
+    var users = _users.take(_maxIcons);
+    var hiddenUsers = _users.length - users.length;
 
-          return Positioned(
-              left: _iconOffset * i,
-              child: ProfileIcon(
-                  user: snapshot.data,
-                  size: _iconSize,
-                  borderWidth: _borderWidth));
-        },
-      ));
-    }
+    var widgets = [
+      for (var user in users)
+        StreamBuilder<User>(
+            stream: user,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ProfileIcon(user: snapshot.data, size: _size);
+              } else {
+                return Container();
+              }
+            }),
+      if (hiddenUsers > 0)
+        MoreProfileIcon(count: hiddenUsers, size: _size, color: _color),
+      if (_onAddMore != null) AddProfileIcon(size: _size, color: _color)
+    ];
 
-    // Render streamBuilders
-    return Container(
-      height: _iconSize,
-      width: _iconSize +
-          _iconOffset *
-              (_usersToShow -
-                  1 +
-                  (_addMoreIcon || _usersToShow < _users.length ? 1 : 0)),
-      child: Stack(children: [
-        ...iconBuilders,
-        if (_addMoreIcon)
-          Positioned(
-            left: _iconOffset * _usersToShow,
-            child: GestureDetector(
-              onTap: _onTap,
-              child: AddProfileIcon(_iconSize, textColor: _color),
-            ),
-          ),
-        if (_usersToShow < _users.length)
-          Positioned(
-            left: _iconOffset * _usersToShow,
-            child: MoreUsersCount(
-                textColor: _color,
-                size: _iconSize,
-                count: _users.length - _usersToShow),
-          )
-      ]),
+    return GestureDetector(
+      onTap: _onAddMore ?? () {},
+      child: Container(
+        width: (_size - offset) * (widgets.length - 1) + _size,
+        height: _size,
+        child: Stack(children: [
+          for (var i = 0; i < widgets.length; i++)
+            Positioned(
+                left: (_size - offset) * i, width: _size, child: widgets[i])
+        ]),
+      ),
     );
   }
 }
