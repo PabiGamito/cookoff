@@ -32,24 +32,24 @@ class LocalIngredientProvider extends IngredientProvider {
 }
 
 const Map<String, Color> ingredientColor = {
-  'cheese': Color(0xFF7C54EA),
+  'cheese': Colors.redAccent,
   'orange': Color(0xFFD0EB5C),
   'cauliflower': Color(0xFF65D2EB),
   'bacon': Color(0xFF65D2EB),
   'fish': Color(0xFFEF8EBD),
   'onion': Color(0xFFE3BF73),
-  'eggs': Colors.greenAccent,
+  'eggs': Colors.indigoAccent,
   'flour': Colors.green,
   'ham': Colors.amber,
   'meat': Colors.blue,
   'sausage': Colors.orange,
-  'baguette': Colors.deepPurpleAccent,
+  'baguette': Colors.blueGrey,
   'toast': Colors.cyan,
-  'shrimp': Colors.blueAccent,
+  'shrimp': Colors.indigo,
   'pickles': Colors.redAccent,
-  'aubergine': Colors.limeAccent,
+  'aubergine': Colors.amber,
   'beans': Colors.pinkAccent,
-  'broccoli': Colors.purpleAccent,
+  'broccoli': Colors.deepOrangeAccent,
   'cabbage': Colors.deepPurpleAccent,
   'carrot': Colors.blueAccent,
   'chives': Colors.lime,
@@ -59,7 +59,7 @@ const Map<String, Color> ingredientColor = {
   'garlic': Colors.blueGrey,
   'pumpkin': Colors.purple,
   'radish': Colors.deepPurple,
-  'tomato': Colors.lightGreenAccent,
+  'tomato': Colors.greenAccent,
   'pepper': Colors.redAccent,
   'apple': Colors.greenAccent,
   'banana': Colors.purple,
@@ -72,7 +72,7 @@ const Map<String, Color> ingredientColor = {
   'pear': Colors.pinkAccent,
   'pomegranate': Colors.limeAccent,
   'raspberry': Colors.greenAccent,
-  'strawberry': Colors.blueAccent,
+  'strawberry': Colors.amber,
   'watermelon': Colors.limeAccent,
   'chocolate': Colors.deepOrangeAccent,
   'honey': Colors.lightBlueAccent,
@@ -104,8 +104,10 @@ class FeaturedSection extends LocalIngredientSection {
   FeaturedSection()
       : super(title: 'Featured', ingredients: [
           'cheese',
-          'orange',
-          'cauliflower',
+          'shrimp',
+          'jelly',
+          'strawberry',
+          'garlic',
         ]);
 }
 
@@ -123,7 +125,7 @@ class BasicSection extends LocalIngredientSection {
           'shrimp',
           'pickles',
           'fish',
-          'cheese'
+          'cheese',
         ]);
 }
 

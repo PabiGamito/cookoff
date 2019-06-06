@@ -10,7 +10,7 @@ void main() {
 
   // Set status bar color on android to match header
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-    statusBarColor: Color(0xFFFFC544),
+    statusBarColor: Colors.amber,
   ));
 
   runApp(injector);

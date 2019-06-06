@@ -9,9 +9,6 @@ import 'package:cookoff/widgets/game/inspiration_card.dart';
 import 'package:cookoff/widgets/game_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'camera.dart';
 
 class GameScreen extends StatefulWidget {
   final Challenge _challenge;
@@ -46,7 +43,7 @@ class _GameScreenState extends State<GameScreen> {
 
     // Set status bar color on Android to match header
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: Color(0xFFFFC544),
+      statusBarColor: Colors.amber,
     ));
 
     Navigator.pop(context);

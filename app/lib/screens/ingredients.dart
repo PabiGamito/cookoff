@@ -45,9 +45,7 @@ class IngredientsScreen extends StatelessWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<Iterable<IngredientSection>> snapshots) {
                 if (!snapshots.hasData) {
-                  return Container(
-                    child: Text('LOADING...'),
-                  );
+                  return Container();
                 }
 
                 return Column(

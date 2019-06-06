@@ -68,7 +68,7 @@ class AuthorizedMainScreen extends StatelessWidget {
                   // Status bar height
                   padding:
                       EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                  color: Color(0xFFFFC544),
+                  color: Colors.amber,
                   child: RoundedCard(
                     padding: false,
                     child: IngredientsScreen(
@@ -92,7 +92,7 @@ class AuthorizedMainScreen extends StatelessWidget {
         return Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Color(0xFFFFC544),
+          color: Colors.amber,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -172,7 +172,7 @@ class AuthorizedMainScreen extends StatelessWidget {
 
     return Container(
       // Status bar height
-      color: Color(0xFFFFC544),
+      color: Colors.amber,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: ScrollableLayout(
         minScroll: Scalar(context).scale(minScrollAmount),
@@ -194,7 +194,7 @@ class UnauthorizedMainScreen extends StatelessWidget {
     AuthProvider authProvider =
         InjectorWidget.of(context).injector.authProvider;
     return Container(
-        color: Color(0xFFFFC544),
+        color: Colors.amber,
         child: Center(
           child: BlocBuilder(
             bloc: LoadingAuthBloc.instance,
