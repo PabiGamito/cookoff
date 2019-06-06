@@ -1,53 +1,55 @@
 import 'dart:math';
 
+import 'package:cookoff/models/ingredient.dart';
+import 'package:cookoff/providers/picture_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/titled_section.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class InspirationCard extends StatelessWidget {
-  final BuildContext parentContext;
+import '../../injector.dart';
 
-  const InspirationCard({Key key, this.parentContext}) : super(key: key);
+class InspirationCard extends StatelessWidget {
+  final Ingredient _ingredient;
+  final PictureProvider _pictureProvider;
+
+  InspirationCard({Key key, Ingredient ingredient})
+      : _pictureProvider = Injector().pictureProvider,
+        _ingredient = ingredient,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       minHeight: Scaler(context).scale(130),
-      onClickOut: (details) {
-        print("CLICKED! ${details.globalPosition}");
-        final renderObj = parentContext.findRenderObject();
-        if (renderObj is RenderBox) {
-          final hitTestResult = HitTestResult();
-          print(renderObj);
-          if (renderObj.hitTest(hitTestResult,
-              position: details.globalPosition)) {
-            // a descendant of `renderObj` got tapped
-            print(hitTestResult.path);
-          }
-        }
-      },
       child: RoundedCard(
         child: Container(
           padding: EdgeInsets.only(bottom: Scaler(context).scale(60)),
           child: TitledSection(
             title: 'Some inspiration',
             underlineColor: Color(0xFF65D2EB),
-            child: Column(
-              children: [
-                Container(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.red,
-                ),
-                Container(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.blue,
-                ),
-              ],
-            ),
+            child: StreamBuilder<Iterable<String>>(
+                stream: _pictureProvider.picturesStream(_ingredient.name),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  }
+
+                  return Column(
+                    children: snapshot.data
+                        .map((url) => ClipRRect(
+                              borderRadius: new BorderRadius.circular(
+                                  Scaler(context).scale(20)),
+                              child: Image.network(
+                                url,
+                                height: MediaQuery.of(context).size.width,
+                                width: MediaQuery.of(context).size.width,
+                              ),
+                            ))
+                        .toList(),
+                  );
+                }),
           ),
         ),
       ),

@@ -97,7 +97,7 @@ class _GameScreenState extends State<GameScreen> {
                           ]),
                     ),
                     InspirationCard(
-                      parentContext: context,
+                      ingredient: _challenge.ingredient,
                     ),
                     Visibility(
                         visible: _friendsTabOpen,
