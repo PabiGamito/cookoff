@@ -14,7 +14,7 @@ class InspirationCard extends StatelessWidget {
   final Ingredient _ingredient;
   final PictureProvider _pictureProvider;
 
-  InspirationCard({Key key, Ingredient ingredient})
+  InspirationCard({Key key, @required Ingredient ingredient})
       : _pictureProvider = Injector().pictureProvider,
         _ingredient = ingredient,
         super(key: key);
