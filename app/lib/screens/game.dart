@@ -99,7 +99,7 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                     StreamBuilder<Ingredient>(
                         stream: LocalIngredientProvider()
-                            .ingredientStream(_challenge.ingredient),
+                            .ingredientStream(widget._challenge.ingredient),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return Container();
