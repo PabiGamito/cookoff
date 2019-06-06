@@ -1,4 +1,4 @@
-import 'package:cookoff/models/ingredientSection.dart';
+import 'package:cookoff/models/ingredient_section.dart';
 import 'package:cookoff/providers/ingredients_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';

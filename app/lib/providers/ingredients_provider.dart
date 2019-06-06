@@ -1,5 +1,5 @@
 import 'package:cookoff/models/ingredient.dart';
-import 'package:cookoff/models/ingredientSection.dart';
+import 'package:cookoff/models/ingredient_section.dart';
 
 abstract class IngredientProvider {
   Stream<Iterable<IngredientSection>> ingredientSections();

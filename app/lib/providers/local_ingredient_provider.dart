@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:cookoff/models/ingredient.dart';
-import 'package:cookoff/models/ingredientSection.dart';
+import 'package:cookoff/models/ingredient_section.dart';
 import 'package:flutter/material.dart';
 
 import 'ingredients_provider.dart';
