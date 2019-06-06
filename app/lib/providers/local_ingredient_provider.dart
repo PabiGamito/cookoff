@@ -30,15 +30,12 @@ class LocalIngredientProvider extends IngredientProvider {
     return Stream.fromFuture(getIngredientSections());
   }
 
-  Future<Ingredient> futureIngredientById(String name) async {
-    return Ingredient(name, 'assets/ingredients/$name.png',
-        ingredientColor[name] ?? Color(0xFF7C54EA));
-  }
-
   @override
-  Stream<Ingredient> getIngredientById(String id) {
-    return Stream.fromFuture(futureIngredientById(id));
-  }
+  Stream<Ingredient> getIngredientById(String id) =>
+      Stream.fromFuture(Future.value(Ingredient(
+          id,
+          'assets/ingredients/$id.png',
+          ingredientColor[id] ?? Colors.blueGrey)));
 }
 
 const Map<String, Color> ingredientColor = {
