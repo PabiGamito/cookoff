@@ -3,6 +3,7 @@ import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
+import 'package:cookoff/screens/camera.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
@@ -116,39 +117,61 @@ class GameStartButton extends StatelessWidget {
         _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-      onTap: () {
-        _bloc.dispatch(GameButton(context));
-      },
-      child: Container(
-          width: Scalar(context).scale(265),
-          padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(6)),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius:
-                  BorderRadius.all(Radius.circular(Scalar(context).scale(30)))),
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  height: Scalar(context).scale(50),
-                  width: Scalar(context).scale(50),
-                  margin: EdgeInsets.only(right: Scalar(context).scale(15)),
-                  child: Transform.rotate(
-                    angle: 1.1,
-                    child:
-                        Image.asset("assets/icons/rocket.png", color: _color),
-                  ),
+  Widget build(BuildContext context) => BlocBuilder(
+      bloc: _bloc,
+      builder: (BuildContext context, Challenge challenge) => GestureDetector(
+          onTap: () {
+            if (!challenge.started) {
+              _bloc.dispatch(GameButton(context));
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                        body: CameraScreen(
+                          backgroundColor: _color,
+                          bloc: _bloc,
+                        ),
+                      ),
                 ),
-                Text("START",
-                    style: TextStyle(
-                      fontSize: Scalar(context).scale(23),
-                      fontFamily: "Montserrat",
-                      color: _color,
-                      letterSpacing: 3,
-                    ))
-              ])));
+              );
+            }
+          },
+          child: Container(
+              width: Scalar(context).scale(265),
+              padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(6)),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(Scalar(context).scale(30)))),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: Scalar(context).scale(50),
+                      width: Scalar(context).scale(50),
+                      margin: EdgeInsets.only(right: Scalar(context).scale(15)),
+                      child: Transform.rotate(
+                        angle: challenge.started ? 0 : 1.1,
+                        child: challenge.started
+                            ? Icon(
+                                Icons.add_a_photo,
+                                color: _color,
+                                size: Scalar(context).scale(35),
+                              )
+                            : Image.asset("assets/icons/rocket.png",
+                                color: _color),
+                      ),
+                    ),
+                    Text(challenge.started ? "SUBMIT" : "START",
+                        style: TextStyle(
+                          fontSize: Scalar(context).scale(23),
+                          fontFamily: "Montserrat",
+                          color: _color,
+                          letterSpacing: 3,
+                        ))
+                  ]))));
 }
 
 class FriendProfiles extends StatelessWidget {

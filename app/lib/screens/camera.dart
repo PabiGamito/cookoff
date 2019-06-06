@@ -29,15 +29,8 @@ class CameraScreenState extends State<CameraScreen> {
 
   CameraScreenState(this.bgColor, this._bloc);
 
-  @override
-  void dispose() {
-    // Make sure to dispose of the controller when the Widget is disposed
-    super.dispose();
-  }
-
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
-
     setState(() {
       _image = image;
     });
