@@ -21,8 +21,8 @@ class Challenge {
       @required this.ingredient,
       this.complete = false,
       @required this.end,
-      this.images = const []})
-      : participants = participants ?? {owner};
+      List<String> images})
+      : participants = participants ?? {owner}, images = images ?? [];
 
   factory Challenge.fromJson(Map<String, dynamic> json) =>
       _$ChallengeFromJson(json);

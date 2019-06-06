@@ -35,9 +35,10 @@ class PictureFirebaseAdapter implements PictureProvider {
     // Upload
     await task.onComplete;
 
+    String downloadUrl = await ref.getDownloadURL();
     // Store upload in database
-    var newChallenge = challenge.copyWithImage(ref.path);
-    _challengeProvider.updateChallenge(challenge);
+    var newChallenge = challenge.copyWithImage(downloadUrl);
+    _challengeProvider.updateChallenge(newChallenge);
     return newChallenge;
   }
 }
