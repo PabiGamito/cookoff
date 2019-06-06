@@ -1,5 +1,3 @@
-import 'package:cookoff/providers/challenge_provider.dart';
-import 'package:cookoff/providers/ingredients_provider.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/widgets/auth.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
@@ -41,11 +39,9 @@ class MainScreen extends StatelessWidget {
 class AuthorizedMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Challenge provider for challenge section
-    ChallengeProvider challengeProvider =
-        InjectorWidget.of(context).injector.challengeProvider;
-
-    IngredientProvider ingredientProvider = LocalIngredientProvider();
+    var injector = InjectorWidget.of(context).injector;
+    var challengeProvider = injector.challengeProvider;
+    var ingredientProvider = injector.ingredientProvider;
 
     const double firstCardMaxOffset = 188;
     const double firstCardTitleHeight = 112;
@@ -61,24 +57,18 @@ class AuthorizedMainScreen extends StatelessWidget {
 
     var _showAllIngredients = (context) {
       Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Scaffold(
-                body: Container(
-                  // Status bar height
-                  padding:
-                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                  color: Colors.amber,
-                  child: RoundedCard(
-                    padding: false,
-                    child: IngredientsScreen(
-                      ingredientProvider: ingredientProvider,
-                    ),
-                  ),
-                ),
-              ),
-        ),
-      );
+          context,
+          MaterialPageRoute(
+              builder: (context) => Scaffold(
+                  body: Container(
+                      // Status bar height
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top),
+                      color: Colors.amber,
+                      child: RoundedCard(
+                          padding: false,
+                          child: IngredientsScreen(
+                              ingredientProvider: ingredientProvider))))));
     };
 
     var headerCard = ScrollableCard(

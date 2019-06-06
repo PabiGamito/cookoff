@@ -3,9 +3,8 @@ import 'dart:ui';
 
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/ingredient_section.dart';
+import 'package:cookoff/providers/ingredient_provider.dart';
 import 'package:flutter/material.dart';
-
-import 'ingredients_provider.dart';
 
 class LocalIngredientProvider extends IngredientProvider {
   List<IngredientSection> sections = [

@@ -2,6 +2,7 @@ import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/models/challenge.dart';
+import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/countdown.dart';
@@ -72,46 +73,39 @@ class GameTimeButton extends StatelessWidget {
 }
 
 class IngredientName extends StatelessWidget {
-  final GameBloc _bloc;
+  final Ingredient _ingredient;
 
-  IngredientName({GameBloc bloc}) : _bloc = bloc;
+  IngredientName({Ingredient ingredient}) : _ingredient = ingredient;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder(
-      bloc: _bloc,
-      builder: (BuildContext context, Challenge challenge) {
-        var ingredient = challenge.ingredient;
-        return Column(children: <Widget>[
-          Text('${ingredient[0].toUpperCase()}${ingredient.substring(1)}',
-              style: TextStyle(
-                  fontSize: Scalar(context).scale(45),
-                  fontFamily: 'Montserrat',
-                  color: Colors.white,
-                  letterSpacing: 2)),
-          Container(
-              margin: EdgeInsets.only(top: Scalar(context).scale(15)),
-              width: Scalar(context).scale(45),
-              height: Scalar(context).scale(8),
-              decoration: new BoxDecoration(
-                  color: Color(0x50000000),
-                  borderRadius: BorderRadius.circular(1000))),
-        ]);
-      });
+  Widget build(BuildContext context) => Column(children: <Widget>[
+        Text(
+            '${_ingredient.name[0].toUpperCase()}${_ingredient.name.substring(1)}',
+            style: TextStyle(
+                fontSize: Scalar(context).scale(45),
+                fontFamily: 'Montserrat',
+                color: Colors.white,
+                letterSpacing: 2)),
+        Container(
+            margin: EdgeInsets.only(top: Scalar(context).scale(15)),
+            width: Scalar(context).scale(45),
+            height: Scalar(context).scale(8),
+            decoration: new BoxDecoration(
+                color: Color(0x50000000),
+                borderRadius: BorderRadius.circular(1000))),
+      ]);
 }
 
 class IngredientIcon extends StatelessWidget {
-  final GameBloc _bloc;
+  final Ingredient _ingredient;
 
-  IngredientIcon({GameBloc bloc}) : _bloc = bloc;
+  IngredientIcon({Ingredient ingredient}) : _ingredient = ingredient;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder(
-      bloc: _bloc,
-      builder: (BuildContext context, Challenge challenge) => Container(
-          width: Scalar(context).scale(160),
-          height: Scalar(context).scale(160),
-          child: Image.asset(
-              'assets/ingredients/${challenge.ingredient.toLowerCase()}.png')));
+  Widget build(BuildContext context) => Container(
+      width: Scalar(context).scale(160),
+      height: Scalar(context).scale(160),
+      child: Image.asset(_ingredient.imgPath));
 }
 
 class GameStartButton extends StatelessWidget {

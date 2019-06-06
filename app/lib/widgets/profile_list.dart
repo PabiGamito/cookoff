@@ -42,7 +42,7 @@ class ProfileList extends StatelessWidget {
     // Convert list of stream of users into streamBuilders
     List<StreamBuilder<User>> iconBuilders = [];
     for (int i = 0; i < _usersToShow; i++) {
-      iconBuilders.add(StreamBuilder(
+      iconBuilders.add(StreamBuilder<User>(
         stream: _users[i],
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) =>
             Positioned(

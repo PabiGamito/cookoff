@@ -9,3 +9,7 @@ class Ingredient {
 
   Ingredient(this.name, this.imgPath, this.color);
 }
+
+class NullIngredient extends Ingredient {
+  NullIngredient() : super('', '', Colors.white);
+}

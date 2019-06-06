@@ -3,8 +3,6 @@ import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
-import 'package:cookoff/providers/ingredients_provider.dart';
-import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/countdown.dart';
@@ -175,8 +173,6 @@ class ChallengesList extends StatelessWidget {
 
 class ChallengeItem extends StatelessWidget {
   final Challenge _challenge;
-  final Color bgColor = Color(0xFF7C54EA);
-  final IngredientProvider _ingredientProvider = LocalIngredientProvider();
 
   ChallengeItem(Challenge challenge) : _challenge = challenge;
 
@@ -187,13 +183,15 @@ class ChallengeItem extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => Scaffold(
-                  body: GameScreen.fromChallenge(
-                      challenge: _challenge, color: bgColor)),
+                  body: GameScreen.fromChallenge(challenge: _challenge)),
             ),
           );
         },
         child: StreamBuilder<Ingredient>(
-            stream: _ingredientProvider.ingredientStream(_challenge.ingredient),
+            stream: InjectorWidget.of(context)
+                .injector
+                .ingredientProvider
+                .ingredientStream(_challenge.ingredient),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 // Loading...
@@ -247,7 +245,7 @@ class ChallengeInnerContent extends StatelessWidget {
           ),
           Container(
               padding: EdgeInsets.only(right: Scalar(context).scale(25)),
-              child: StreamBuilder(
+              child: StreamBuilder<List<Stream<User>>>(
                   stream: profileListContent(context),
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Stream<User>>> snapshot) {

@@ -1,5 +1,5 @@
 import 'package:cookoff/models/ingredient_section.dart';
-import 'package:cookoff/providers/ingredients_provider.dart';
+import 'package:cookoff/providers/ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/pill_button.dart';
@@ -10,58 +10,49 @@ class IngredientsScreen extends StatelessWidget {
 
   final void Function(BuildContext) _onBackPress;
 
-  IngredientsScreen({void Function(BuildContext) onBackPress,
-    @required IngredientProvider ingredientProvider})
+  IngredientsScreen(
+      {void Function(BuildContext) onBackPress,
+      @required IngredientProvider ingredientProvider})
       : _onBackPress = onBackPress ??
-      ((context) {
-        Navigator.of(context).pop();
-      }),
+            ((context) {
+              Navigator.of(context).pop();
+            }),
         _ingredientProvider = ingredientProvider;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          padding: EdgeInsets.only(
-              top: Scalar(context).scale(30),
-              bottom: Scalar(context).scale(30),
-              left: Scalar(context).scale(20),
-              right: Scalar(context).scale(20)),
-          child: PillButton(
-            "BACK TO CHALLENGES",
-            onTap: () {
-              _onBackPress(context);
-            },
-          ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Container(
+        padding: EdgeInsets.only(
+            top: Scalar(context).scale(30),
+            bottom: Scalar(context).scale(30),
+            left: Scalar(context).scale(20),
+            right: Scalar(context).scale(20)),
+        child: PillButton(
+          "BACK TO CHALLENGES",
+          onTap: () {
+            _onBackPress(context);
+          },
         ),
-        Expanded(
+      ),
+      Expanded(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: StreamBuilder<Iterable<IngredientSection>>(
-              stream: _ingredientProvider.ingredientSectionsStream(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<Iterable<IngredientSection>> snapshots) {
-                if (!snapshots.hasData) {
-                  return Container();
-                }
+              physics: BouncingScrollPhysics(),
+              child: StreamBuilder<Iterable<IngredientSection>>(
+                  stream: _ingredientProvider.ingredientSectionsStream(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<Iterable<IngredientSection>> snapshots) {
+                    if (!snapshots.hasData) {
+                      return Container();
+                    }
 
-                return Column(
-                  children: snapshots.data
-                      .map(
-                        (ingredientSection) =>
-                        IngredientsSection(
-                          ingredientSection: ingredientSection,
-                        ),
-                  )
-                      .toList(),
-                );
-              },
-            ),
-          ),
-        ),
-      ],
-    );
+                    return Column(
+                        children: snapshots.data
+                            .map((ingredientSection) => IngredientsSection(
+                                  ingredientSection: ingredientSection,
+                                ))
+                            .toList());
+                  })))
+    ]);
   }
 }

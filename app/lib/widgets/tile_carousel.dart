@@ -88,6 +88,5 @@ class IngredientTile extends Tile {
                 MaterialPageRoute(
                     builder: (context) => Scaffold(
                         body: GameScreen.fromIngredient(
-                            ingredient: ingredient.name,
-                            color: ingredient.color)))));
+                            ingredient: ingredient.name)))));
 }
