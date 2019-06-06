@@ -108,6 +108,31 @@ class IngredientIcon extends StatelessWidget {
       child: Image.asset(_ingredient.imgPath));
 }
 
+class GameScreenButton extends StatelessWidget {
+  final Color _color;
+  final GameBloc _bloc;
+
+  GameScreenButton({Color color, GameBloc bloc})
+      : _color = color,
+        _bloc = bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder(
+        bloc: _bloc,
+        builder: (BuildContext context, Challenge challenge) =>
+            challenge.started
+                ? GameSubmitButton(
+                    color: _color,
+                    bloc: _bloc,
+                  )
+                : GameStartButton(
+                    color: _color,
+                    bloc: _bloc,
+                  ));
+  }
+}
+
 class GameStartButton extends StatelessWidget {
   final Color _color;
   final GameBloc _bloc;
@@ -117,61 +142,102 @@ class GameStartButton extends StatelessWidget {
         _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder(
-      bloc: _bloc,
-      builder: (BuildContext context, Challenge challenge) => GestureDetector(
-          onTap: () {
-            if (!challenge.started) {
-              _bloc.dispatch(GameButton(context));
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Scaffold(
-                        body: CameraScreen(
-                          backgroundColor: _color,
-                          bloc: _bloc,
-                        ),
-                      ),
-                ),
-              );
-            }
-          },
-          child: Container(
-              width: Scalar(context).scale(265),
-              padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(6)),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(Scalar(context).scale(30)))),
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: Scalar(context).scale(50),
-                      width: Scalar(context).scale(50),
-                      margin: EdgeInsets.only(right: Scalar(context).scale(15)),
-                      child: Transform.rotate(
-                        angle: challenge.started ? 0 : 1.1,
-                        child: challenge.started
-                            ? Icon(
-                                Icons.add_a_photo,
-                                color: _color,
-                                size: Scalar(context).scale(35),
-                              )
-                            : Image.asset("assets/icons/rocket.png",
-                                color: _color),
-                      ),
+  Widget build(BuildContext context) => _GameScreenButton(
+        color: _color,
+        bloc: _bloc,
+        text: "START",
+        icon: Container(
+          height: Scalar(context).scale(50),
+          width: Scalar(context).scale(50),
+          margin: EdgeInsets.only(right: Scalar(context).scale(15)),
+          child: Transform.rotate(
+            angle: 1.1,
+            child: Image.asset("assets/icons/rocket.png", color: _color),
+          ),
+        ),
+        onTap: () {
+          _bloc.dispatch(GameButton(context));
+        },
+      );
+}
+
+class GameSubmitButton extends StatelessWidget {
+  final Color _color;
+  final GameBloc _bloc;
+
+  GameSubmitButton({Color color, GameBloc bloc})
+      : _color = color,
+        _bloc = bloc;
+
+  @override
+  Widget build(BuildContext context) => _GameScreenButton(
+        color: _color,
+        bloc: _bloc,
+        text: "SUBMIT",
+        icon: Container(
+          height: Scalar(context).scale(50),
+          width: Scalar(context).scale(50),
+          margin: EdgeInsets.only(right: Scalar(context).scale(15)),
+          child: Icon(
+            Icons.add_a_photo,
+            color: _color,
+            size: Scalar(context).scale(35),
+          ),
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Scaffold(
+                    body: CameraScreen(
+                      backgroundColor: _color,
+                      bloc: _bloc,
                     ),
-                    Text(challenge.started ? "SUBMIT" : "START",
-                        style: TextStyle(
-                          fontSize: Scalar(context).scale(23),
-                          fontFamily: "Montserrat",
-                          color: _color,
-                          letterSpacing: 3,
-                        ))
-                  ]))));
+                  ),
+            ),
+          );
+        },
+      );
+}
+
+class _GameScreenButton extends StatelessWidget {
+  final Color _color;
+  final GameBloc _bloc;
+  final Function _onTap;
+  final String _text;
+  final Widget _icon;
+
+  _GameScreenButton(
+      {Color color, GameBloc bloc, Function onTap, String text, Widget icon})
+      : _color = color,
+        _bloc = bloc,
+        _onTap = onTap,
+        _text = text,
+        _icon = icon;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+      onTap: _onTap,
+      child: Container(
+          width: Scalar(context).scale(265),
+          padding: EdgeInsets.symmetric(vertical: Scalar(context).scale(6)),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius:
+                  BorderRadius.all(Radius.circular(Scalar(context).scale(30)))),
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _icon,
+                Text(_text,
+                    style: TextStyle(
+                      fontSize: Scalar(context).scale(23),
+                      fontFamily: "Montserrat",
+                      color: _color,
+                      letterSpacing: 3,
+                    ))
+              ])));
 }
 
 class FriendProfiles extends StatelessWidget {

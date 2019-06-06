@@ -76,7 +76,8 @@ class _GameScreenState extends State<GameScreen> {
                           GameHeader(onExit: _popScreen, bloc: _bloc),
                           IngredientName(ingredient: ingredient),
                           IngredientIcon(ingredient: ingredient),
-                          GameStartButton(color: ingredient.color, bloc: _bloc),
+                          GameScreenButton(
+                              color: ingredient.color, bloc: _bloc),
                           FriendProfiles(
                               color: ingredient.color,
                               onTap: () {
