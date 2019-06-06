@@ -29,11 +29,9 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
 
   @override
   Future updateChallenge(Challenge challenge) async {
-    print("HERE");
-    print(challenge.toJson());
     await _firestore
-      .collection(_collection)
-      .document(challenge.id)
-      .updateData(challenge.toJson()..remove('id'));
+        .collection(_collection)
+        .document(challenge.id)
+        .updateData(challenge.toJson()..remove('id'));
   }
 }
