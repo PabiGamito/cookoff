@@ -27,9 +27,11 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSCameraUsageDescription</key>
-    <string>Allow Cookoff to use the camera to take pictures of the dish you've made?</string>
+    <string>Allow Cookoff to use the camera to take pictures of the dish that you've made?</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Allow Cookoff to use the camera to take pictures of the dish you've made?</string>
+    <string>Allow Cookoff to use the camera to take pictures of the dish that you've made?</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Allow Cookoff to use the pictures on your phone of the dish that you've made?</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
