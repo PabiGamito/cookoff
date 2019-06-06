@@ -25,7 +25,6 @@ class InspirationCard extends StatelessWidget {
       minHeight: Scaler(context).scale(130),
       child: RoundedCard(
         child: Container(
-          padding: EdgeInsets.only(bottom: Scaler(context).scale(60)),
           child: TitledSection(
             title: 'Some inspiration',
             underlineColor: Color(0xFF65D2EB),
@@ -38,15 +37,18 @@ class InspirationCard extends StatelessWidget {
 
                   return Column(
                     children: snapshot.data
-                        .map((url) => ClipRRect(
-                              borderRadius: new BorderRadius.circular(
-                                  Scaler(context).scale(20)),
-                              child: Image.network(
-                                url,
-                                height: MediaQuery.of(context).size.width,
+                        .map(
+                          (url) => Container(
                                 width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.width,
+                                decoration: new BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        Scaler(context).scale(25)),
+                                    image: new DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: new NetworkImage(url))),
                               ),
-                            ))
+                        )
                         .toList(),
                   );
                 }),
