@@ -149,7 +149,6 @@ class _CardState extends State<Card> {
               Container(
                   height: MediaQuery.of(context).size.height,
                   color: Colors.white),
-//            Container(height: _bounceHeight, color: Colors.white),
             ListView(
                 padding: EdgeInsets.zero,
                 controller: _controller,
