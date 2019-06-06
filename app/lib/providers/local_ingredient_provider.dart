@@ -12,7 +12,8 @@ class LocalIngredientProvider extends IngredientProvider {
     BasicSection(),
     VegetableSection(),
     FruitSection(),
-    TreatSection()
+    TreatSection(),
+    VeganSection()
   ];
 
   @override
