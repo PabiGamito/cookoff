@@ -5,4 +5,6 @@ abstract class IngredientProvider {
   Stream<Iterable<IngredientSection>> ingredientSections();
 
   Stream<Iterable<Ingredient>> getAllIngredients();
+
+  Stream<Ingredient> getIngredientById(String id);
 }

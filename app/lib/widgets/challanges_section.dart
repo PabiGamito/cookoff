@@ -1,7 +1,10 @@
 import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/models/challenge.dart';
+import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/challenge_provider.dart';
+import 'package:cookoff/providers/ingredients_provider.dart';
+import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/countdown.dart';
@@ -173,6 +176,7 @@ class ChallengesList extends StatelessWidget {
 class ChallengeItem extends StatelessWidget {
   final Challenge _challenge;
   final Color bgColor = Color(0xFF7C54EA);
+  final IngredientProvider _ingredientProvider = LocalIngredientProvider();
 
   ChallengeItem(Challenge challenge) : _challenge = challenge;
 
@@ -188,25 +192,42 @@ class ChallengeItem extends StatelessWidget {
             ),
           );
         },
-        child: Container(
-          margin: EdgeInsets.only(
-              top: Scalar(context).scale(10),
-              bottom: Scalar(context).scale(10)),
-          height: Scalar(context).scale(100),
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
-          ),
-          child: ChallengeInnerContent(_challenge),
-        ),
+        child: StreamBuilder<Ingredient>(
+            stream:
+                _ingredientProvider.getIngredientById(_challenge.ingredient),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                // Loading...
+                return Container();
+              }
+
+              var ingredient = snapshot.data;
+
+              return Container(
+                margin: EdgeInsets.only(
+                    top: Scalar(context).scale(10),
+                    bottom: Scalar(context).scale(10)),
+                height: Scalar(context).scale(100),
+                decoration: BoxDecoration(
+                  color: ingredient.color,
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width * 0.03),
+                ),
+                child: ChallengeInnerContent(
+                    challenge: _challenge, ingredient: ingredient),
+              );
+            }),
       );
 }
 
 class ChallengeInnerContent extends StatelessWidget {
   final Challenge _challenge;
+  final Ingredient _ingredient;
 
-  ChallengeInnerContent(Challenge challenge) : _challenge = challenge;
+  ChallengeInnerContent(
+      {@required Challenge challenge, @required Ingredient ingredient})
+      : _challenge = challenge,
+        _ingredient = ingredient;
 
   @override
   Widget build(BuildContext context) => Row(
@@ -237,6 +258,7 @@ class ChallengeInnerContent extends StatelessWidget {
                     }
 
                     return ProfileList(
+                        color: _ingredient.color,
                         users: snapshot.data,
                         maxUsersShown: 2,
                         iconSize: Scalar(context).scale(45),

@@ -29,6 +29,16 @@ class LocalIngredientProvider extends IngredientProvider {
   Stream<Iterable<IngredientSection>> ingredientSections() {
     return Stream.fromFuture(getIngredientSections());
   }
+
+  Future<Ingredient> futureIngredientById(String name) async {
+    return Ingredient(name, 'assets/ingredients/$name.png',
+        ingredientColor[name] ?? Color(0xFF7C54EA));
+  }
+
+  @override
+  Stream<Ingredient> getIngredientById(String id) {
+    return Stream.fromFuture(futureIngredientById(id));
+  }
 }
 
 const Map<String, Color> ingredientColor = {
@@ -81,23 +91,14 @@ const Map<String, Color> ingredientColor = {
 };
 
 class LocalIngredientSection extends IngredientSection {
-  final Iterable<Ingredient> _ingredients;
-
   LocalIngredientSection({String title, Iterable<String> ingredients})
-      : _ingredients = ingredients.map((name) => Ingredient(
-            name,
-            'assets/ingredients/$name.png',
-            ingredientColor[name] ?? Color(0xFF7C54EA))),
-        super(title);
-
-  Future<Iterable<Ingredient>> futureIngredients() async {
-    return _ingredients;
-  }
-
-  @override
-  Stream<Iterable<Ingredient>> getIngredients() {
-    return Stream.fromFuture(futureIngredients());
-  }
+      : super(
+            title,
+            ingredients.map((name) => Ingredient(
+                  name,
+                  'assets/ingredients/$name.png',
+                  ingredientColor[name] ?? Color(0xFF7C54EA),
+                )));
 }
 
 class FeaturedSection extends LocalIngredientSection {

@@ -82,12 +82,12 @@ class IngredientTile extends Tile {
   IngredientTile(Ingredient ingredient)
       : super(
             iconPath: ingredient.imgPath,
-            bgColor: ingredient.bgColor,
+            bgColor: ingredient.color,
             onTap: (context) => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => Scaffold(
                         body: GameScreen.fromIngredient(
                             ingredient: ingredient.name,
-                            color: ingredient.bgColor)))));
+                            color: ingredient.color)))));
 }

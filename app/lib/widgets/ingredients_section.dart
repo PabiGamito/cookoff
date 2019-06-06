@@ -1,4 +1,3 @@
-import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/ingredient_section.dart';
 import 'package:flutter/widgets.dart';
 
@@ -42,6 +41,14 @@ class IngredientsSection extends StatelessWidget {
       onTap: _onMoreTap,
     );
 
+    List<Tile> tiles = _ingredientSection.ingredients
+        .map((ingredient) => IngredientTile(ingredient) as Tile)
+        .toList();
+
+    if (_more) {
+      tiles.add(moreTile);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -56,26 +63,9 @@ class IngredientsSection extends StatelessWidget {
             fontSize: Scalar(context).scale(25),
           ),
         ),
-        StreamBuilder<Iterable<Ingredient>>(
-            stream: _ingredientSection.getIngredients(),
-            builder: (BuildContext context,
-                AsyncSnapshot<Iterable<Ingredient>> snapshots) {
-              if (!snapshots.hasData) {
-                return Container();
-              }
-
-              List<Tile> tiles = snapshots.data
-                  .map((ingredient) => IngredientTile(ingredient) as Tile)
-                  .toList();
-
-              if (_more) {
-                tiles.add(moreTile);
-              }
-
-              return TileCarousel(
-                tiles: tiles,
-              );
-            }),
+        TileCarousel(
+          tiles: tiles,
+        ),
       ],
     );
   }

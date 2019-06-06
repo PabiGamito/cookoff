@@ -2,8 +2,7 @@ import 'ingredient.dart';
 
 abstract class IngredientSection {
   final String title;
+  final Iterable<Ingredient> ingredients;
 
-  IngredientSection(this.title);
-
-  Stream<Iterable<Ingredient>> getIngredients();
+  IngredientSection(this.title, this.ingredients);
 }
