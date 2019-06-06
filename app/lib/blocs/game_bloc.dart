@@ -2,12 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/firebase/picture_firebase_adapter.dart';
 import 'package:cookoff/models/challenge.dart';
+import 'package:cookoff/providers/picture_provider.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 
 class GameBloc extends Bloc<GameEvent, Challenge> {
   final Challenge initialState;
+  final PictureProvider pictureProvider;
 
-  GameBloc(this.initialState);
+  GameBloc(this.initialState, this.pictureProvider);
 
   @override
   Stream<Challenge> mapEventToState(GameEvent event) async* {
@@ -34,7 +36,7 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
     }
 
     if (event is UploadPictureButton) {
-      yield await PictureFirebaseAdapter()
+      yield await pictureProvider
           .uploadPicture(event.file.path, currentState);
     }
   }
