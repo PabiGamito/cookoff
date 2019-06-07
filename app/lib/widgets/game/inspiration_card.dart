@@ -39,13 +39,15 @@ class InspirationCard extends StatelessWidget {
                     children: snapshot.data
                         .map(
                           (url) => Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: Scaler(context).scale(10)),
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.width,
                                 decoration: new BoxDecoration(
                                     borderRadius: BorderRadius.circular(
                                         Scaler(context).scale(25)),
                                     image: new DecorationImage(
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                         image: new NetworkImage(url))),
                               ),
                         )
