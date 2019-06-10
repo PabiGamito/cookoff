@@ -1,17 +1,18 @@
 import 'dart:io';
 
+import 'package:cookoff/models/user.dart';
+import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/providers/picture_provider.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/widgets.dart';
 
 abstract class GameEvent extends Equatable {
   GameEvent([List props = const []]) : super(props);
 }
 
 class GameButton extends GameEvent {
-  final BuildContext context;
+  final ChallengeProvider challengeProvider;
 
-  GameButton(this.context) : super([context]);
+  GameButton(this.challengeProvider) : super([challengeProvider]);
 }
 
 class FriendButton extends GameEvent {
@@ -25,4 +26,12 @@ class UploadPictureButton extends GameEvent {
   final PictureProvider uploader;
 
   UploadPictureButton(this.file, this.uploader) : super([file, uploader]);
+}
+
+class FinishChallengeButton extends GameEvent {
+  final User user;
+  final ChallengeProvider challengeProvider;
+
+  FinishChallengeButton(this.user, this.challengeProvider)
+      : super([user, challengeProvider]);
 }

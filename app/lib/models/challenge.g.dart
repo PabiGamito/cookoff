@@ -15,7 +15,10 @@ Challenge _$ChallengeFromJson(Map json) {
       ingredient: json['ingredient'] as String,
       complete: json['complete'] as bool,
       end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
-      images: (json['images'] as List)?.map((e) => e as String)?.toList());
+      images: (json['images'] as List)?.map((e) => e as String)?.toList(),
+      finishedParticipants: (json['finishedParticipants'] as List)
+          ?.map((e) => e as String)
+          ?.toSet());
 }
 
 Map<String, dynamic> _$ChallengeToJson(Challenge instance) {
@@ -30,6 +33,7 @@ Map<String, dynamic> _$ChallengeToJson(Challenge instance) {
   writeNotNull('id', instance.id);
   val['owner'] = instance.owner;
   val['participants'] = instance.participants?.toList();
+  val['finishedParticipants'] = instance.finishedParticipants?.toList();
   val['ingredient'] = instance.ingredient;
   val['complete'] = instance.complete;
   val['end'] = instance.end?.toIso8601String();

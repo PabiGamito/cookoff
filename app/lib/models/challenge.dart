@@ -9,6 +9,7 @@ class Challenge {
   final String id;
   final String owner;
   final Set<String> participants;
+  final Set<String> finishedParticipants;
   final String ingredient;
   final bool complete;
   final DateTime end;
@@ -21,8 +22,39 @@ class Challenge {
       @required this.ingredient,
       this.complete = false,
       @required this.end,
-      List<String> images})
-      : participants = participants ?? {owner}, images = images ?? [];
+        List<String> images,
+        Set<String> finishedParticipants})
+      : participants = participants ?? {
+    owner
+  }
+
+  ,
+
+  images
+
+  =
+
+  images
+
+  ??
+
+  [
+
+  ]
+
+  ,
+
+  finishedParticipants
+
+  =
+
+  finishedParticipants
+
+  ??
+
+  [
+
+  ];
 
   factory Challenge.fromJson(Map<String, dynamic> json) =>
       _$ChallengeFromJson(json);
@@ -35,6 +67,7 @@ class Challenge {
       id: id,
       owner: owner,
       participants: participants,
+      finishedParticipants: finishedParticipants,
       ingredient: ingredient,
       complete: complete,
       end: end,
@@ -53,6 +86,7 @@ class Challenge {
       id: id,
       owner: owner,
       participants: participants.where((p) => p != participant).toSet(),
+      finishedParticipants: finishedParticipants,
       ingredient: ingredient,
       complete: complete,
       end: end,
@@ -62,6 +96,7 @@ class Challenge {
       id: id,
       owner: owner,
       participants: participants,
+      finishedParticipants: finishedParticipants,
       ingredient: ingredient,
       complete: true,
       end: end,
@@ -71,10 +106,24 @@ class Challenge {
       id: id,
       owner: owner,
       participants: participants,
+      finishedParticipants: finishedParticipants,
       ingredient: ingredient,
       complete: complete,
       end: end,
       images: [...images, path]);
+
+  Challenge copyWithParticipantFinished(String participant) =>
+      Challenge(
+          id: id,
+          owner: owner,
+          participants: participants,
+          finishedParticipants: {
+      ...finishedParticipants, participant
+      },
+          ingredient: ingredient,
+          complete: finishedParticipants.length == participants.length,
+          end: end,
+          images: images);
 
   Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }

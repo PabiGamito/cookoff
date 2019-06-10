@@ -156,7 +156,11 @@ class GameStartButton extends StatelessWidget {
           ),
         ),
         onTap: () {
-          _bloc.dispatch(GameButton(context));
+          _bloc.dispatch(GameButton(
+              InjectorWidget
+                  .of(context)
+                  .injector
+                  .challengeProvider));
         },
       );
 }

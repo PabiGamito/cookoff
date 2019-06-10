@@ -14,9 +14,7 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
   Stream<Challenge> mapEventToState(GameEvent event) async* {
     if (event is GameButton) {
       if (!currentState.started) {
-        yield await InjectorWidget.of(event.context)
-            .injector
-            .challengeProvider
+        yield await event.challengeProvider
             .addChallenge(currentState);
       } else {
         // TODO: mark user as finished
