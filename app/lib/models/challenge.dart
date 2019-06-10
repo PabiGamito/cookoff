@@ -26,7 +26,7 @@ class Challenge {
       Set<String> finishedParticipants})
       : participants = participants ?? {owner},
         images = images ?? [],
-        finishedParticipants = finishedParticipants ?? [];
+        finishedParticipants = finishedParticipants ?? {};
 
   factory Challenge.fromJson(Map<String, dynamic> json) =>
       _$ChallengeFromJson(json);
