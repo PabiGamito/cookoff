@@ -59,9 +59,10 @@ class TimeText extends StatelessWidget {
   final bool _showMinutes;
   final bool _showHours;
   final bool _showDays;
+  final bool _isFinished;
 
-  List<int> _values = [0, 0, 0, 0];
-  List<String> _units = ['d', 'h', 'm', 's'];
+  final List<int> _values = [0, 0, 0, 0];
+  final List<String> _units = ['d', 'h', 'm', 's'];
 
   TimeText(
       {bool alwaysShowSeconds = false,
@@ -72,7 +73,8 @@ class TimeText extends StatelessWidget {
       : _showSeconds = alwaysShowSeconds,
         _showMinutes = alwaysShowMinutes,
         _showHours = alwaysShowHours,
-        _showDays = alwaysShowDays {
+        _showDays = alwaysShowDays,
+        _isFinished = duration?.isNegative {
     if (duration != null) {
       setDays(duration.inDays.round());
       setHours(duration.inHours.round() % hoursInADay);
@@ -113,7 +115,7 @@ class TimeText extends StatelessWidget {
     List<Widget> text = [];
     List<bool> showUnits = [_showDays, _showHours, _showMinutes, _showSeconds];
 
-    if (_values.last < 0) {
+    if (_isFinished) {
       return Text(
         'Done',
         style: TextStyle(
