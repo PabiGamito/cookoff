@@ -136,7 +136,7 @@ class GameScreenButton extends StatelessWidget {
         bloc: _bloc,
         builder: (BuildContext context, Challenge challenge) {
           var user = UserWidget.of(context).user;
-          if (challenge.userHasFinished(user)) {
+          if (challenge.userHasFinished(user) || challenge.complete) {
             return GameScreenBrowseButton(
               color: _color,
               bloc: _bloc,
