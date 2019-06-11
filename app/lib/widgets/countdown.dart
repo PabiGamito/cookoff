@@ -10,19 +10,22 @@ const int secondsInAMinute = 60;
 
 class Countdown extends StatefulWidget {
   final DateTime _end;
+  // Call this function when timer is negative
+  final Function _callback;
 
-  Countdown({@required DateTime end}) : _end = end;
+  Countdown({@required DateTime end, Function callback}) : _end = end, _callback = callback;
 
   @override
-  State<StatefulWidget> createState() => _CountdownState(_end);
+  State<StatefulWidget> createState() => _CountdownState(_end, _callback);
 }
 
 class _CountdownState extends State<Countdown> {
   final DateTime _end;
   TimeText _timeText = TimeText();
   Timer _updateTimer;
+  Function _callback;
 
-  _CountdownState(this._end);
+  _CountdownState(this._end, this._callback);
 
   @override
   void initState() {
@@ -46,6 +49,10 @@ class _CountdownState extends State<Countdown> {
 
   void updateTimeText() {
     var _timeLeft = _end.difference(DateTime.now());
+
+    if (_timeLeft.isNegative) {
+      _callback?.call();
+    }
 
     _timeText = TimeText(duration: _timeLeft);
   }

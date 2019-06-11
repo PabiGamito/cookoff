@@ -35,7 +35,18 @@ class GameHeader extends StatelessWidget {
                 if (challenge.end == null) {
                   return Container();
                 } else {
-                  return Countdown(end: challenge.end);
+                  return Countdown(
+                    end: challenge.end,
+                    callback: () => {
+                          if (!challenge.complete)
+                            {
+                              _bloc.dispatch(CompleteChallenge(
+                                  InjectorWidget.of(context)
+                                      .injector
+                                      .challengeProvider))
+                            }
+                        },
+                  );
                 }
               }),
           GameTimeButton(onTap: () {})

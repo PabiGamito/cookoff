@@ -37,5 +37,11 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
       yield newChallenge;
     }
 
+    if (event is CompleteChallenge) {
+      Challenge newChallenge = currentState.copyAsComplete();
+      await event.challengeProvider.updateChallenge(newChallenge);
+      yield newChallenge;
+    }
+
   }
 }

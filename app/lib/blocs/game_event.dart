@@ -28,10 +28,19 @@ class UploadPictureButton extends GameEvent {
   UploadPictureButton(this.file, this.uploader) : super([file, uploader]);
 }
 
+// Mark a single user as finished on that challenge
 class FinishChallengeButton extends GameEvent {
   final User user;
   final ChallengeProvider challengeProvider;
 
   FinishChallengeButton(this.user, this.challengeProvider)
       : super([user, challengeProvider]);
+}
+
+// Complete a challenge (for all users)
+class CompleteChallenge extends GameEvent {
+  final ChallengeProvider challengeProvider;
+
+  CompleteChallenge(this.challengeProvider)
+      : super([challengeProvider]);
 }
