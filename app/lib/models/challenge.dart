@@ -1,3 +1,4 @@
+import 'package:cookoff/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
@@ -93,6 +94,8 @@ class Challenge {
       complete: finishedParticipants.length == participants.length,
       end: end,
       images: images);
+
+  bool userHasFinished(User user) => finishedParticipants.contains(user.id);
 
   Map<String, dynamic> toJson() => _$ChallengeToJson(this);
 }

@@ -35,5 +35,12 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
     if (event is UploadPictureButton) {
       yield await event.uploader.uploadPicture(event.file.path, currentState);
     }
+
+    if (event is FinishChallengeButton) {
+      Challenge newChallenge = currentState.copyWithParticipantFinished(event.user.id);
+      await event.challengeProvider.updateChallenge(newChallenge);
+      yield newChallenge;
+    }
+
   }
 }
