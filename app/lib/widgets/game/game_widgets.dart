@@ -123,16 +123,25 @@ class GameScreenButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder(
         bloc: _bloc,
-        builder: (BuildContext context, Challenge challenge) =>
-            challenge.started
-                ? GameSubmitButton(
-                    color: _color,
-                    bloc: _bloc,
-                  )
-                : GameStartButton(
-                    color: _color,
-                    bloc: _bloc,
-                  ));
+        builder: (BuildContext context, Challenge challenge) {
+          var user = UserWidget.of(context).user;
+          if (challenge.userHasFinished(user)) {
+            return GameScreenBrowseButton(
+              color: _color,
+              bloc: _bloc,
+            );
+          } else if (challenge.started) {
+            return GameSubmitButton(
+              color: _color,
+              bloc: _bloc,
+            );
+          } else {
+            return GameStartButton(
+              color: _color,
+              bloc: _bloc,
+            );
+          }
+        });
   }
 }
 
@@ -176,21 +185,17 @@ class GameSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameEvent, Challenge>(
-        bloc: _bloc,
-        builder: (context, challenge) {
-          var user = UserWidget.of(context).user;
-          return _GameScreenButton(
+      bloc: _bloc,
+      builder: (context, challenge) => _GameScreenButton(
             color: _color,
             bloc: _bloc,
-            text: challenge.userHasFinished(user) ? "COMPLETE" : "SUBMIT",
+            text: "SUBMIT",
             icon: Container(
               height: Scaler(context).scale(50),
               width: Scaler(context).scale(50),
               margin: EdgeInsets.only(right: Scaler(context).scale(15)),
               child: Icon(
-                challenge.userHasFinished(user)
-                    ? Icons.done
-                    : Icons.add_a_photo,
+                Icons.add_a_photo,
                 color: _color,
                 size: Scaler(context).scale(35),
               ),
@@ -212,8 +217,42 @@ class GameSubmitButton extends StatelessWidget {
                 );
               }
             },
-          );
-        });
+          ),
+    );
+  }
+}
+
+class GameScreenBrowseButton extends StatelessWidget {
+  final Color _color;
+  final GameBloc _bloc;
+
+  GameScreenBrowseButton({Color color, GameBloc bloc})
+      : _color = color,
+        _bloc = bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GameEvent, Challenge>(
+      bloc: _bloc,
+      builder: (context, challenge) => _GameScreenButton(
+            color: _color,
+            bloc: _bloc,
+            text: "BROWSE",
+            icon: Container(
+              height: Scaler(context).scale(50),
+              width: Scaler(context).scale(50),
+              margin: EdgeInsets.only(right: Scaler(context).scale(15)),
+              child: Icon(
+                Icons.photo,
+                color: _color,
+                size: Scaler(context).scale(35),
+              ),
+            ),
+            onTap: () {
+              // Open friends image carousel
+            },
+          ),
+    );
   }
 }
 
