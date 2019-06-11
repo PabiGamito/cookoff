@@ -20,6 +20,6 @@ class Injector {
   final IngredientProvider ingredientProvider = LocalIngredientProvider();
 
   final UserProvider userProvider = UserFirebaseAdapter();
-  
+
   final PictureProvider pictureProvider = PictureFirebaseAdapter();
 }

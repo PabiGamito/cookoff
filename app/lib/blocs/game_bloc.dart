@@ -1,9 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
-import 'package:cookoff/firebase/picture_firebase_adapter.dart';
 import 'package:cookoff/models/challenge.dart';
-import 'package:cookoff/providers/picture_provider.dart';
-import 'package:cookoff/widgets/injector_widget.dart';
 
 class GameBloc extends Bloc<GameEvent, Challenge> {
   final Challenge initialState;
@@ -14,8 +11,7 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
   Stream<Challenge> mapEventToState(GameEvent event) async* {
     if (event is GameButton) {
       if (!currentState.started) {
-        yield await event.challengeProvider
-            .addChallenge(currentState);
+        yield await event.challengeProvider.addChallenge(currentState);
       }
     }
 
@@ -32,7 +28,8 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
     }
 
     if (event is FinishChallengeButton) {
-      Challenge newChallenge = currentState.copyWithParticipantFinished(event.user.id);
+      Challenge newChallenge =
+          currentState.copyWithParticipantFinished(event.user.id);
       await event.challengeProvider.updateChallenge(newChallenge);
       yield newChallenge;
     }
@@ -42,6 +39,5 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
       await event.challengeProvider.updateChallenge(newChallenge);
       yield newChallenge;
     }
-
   }
 }

@@ -116,15 +116,14 @@ class FriendCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        margin: EdgeInsets.only(bottom: Scaler(context).scale(25)),
-        child: GestureDetector(
+      margin: EdgeInsets.only(bottom: Scaler(context).scale(25)),
+      child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () => _bloc.dispatch(FriendButton(_friend.id)),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: [
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(children: [
                   Container(
                       padding:
                           EdgeInsets.only(right: Scaler(context).scale(20)),

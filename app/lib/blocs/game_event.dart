@@ -41,6 +41,5 @@ class FinishChallengeButton extends GameEvent {
 class CompleteChallenge extends GameEvent {
   final ChallengeProvider challengeProvider;
 
-  CompleteChallenge(this.challengeProvider)
-      : super([challengeProvider]);
+  CompleteChallenge(this.challengeProvider) : super([challengeProvider]);
 }
