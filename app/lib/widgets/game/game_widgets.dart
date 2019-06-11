@@ -7,6 +7,7 @@ import 'package:cookoff/screens/camera.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -174,34 +175,45 @@ class GameSubmitButton extends StatelessWidget {
         _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) => _GameScreenButton(
-        color: _color,
-        bloc: _bloc,
-        text: "SUBMIT",
-        icon: Container(
-          height: Scaler(context).scale(50),
-          width: Scaler(context).scale(50),
-          margin: EdgeInsets.only(right: Scaler(context).scale(15)),
-          child: Icon(
-            Icons.add_a_photo,
+  Widget build(BuildContext context) {
+    return BlocBuilder<GameEvent, Challenge>(
+      bloc: _bloc,
+      builder: (context, challenge) {
+        var user = UserWidget.of(context).user;
+        return _GameScreenButton(
             color: _color,
-            size: Scaler(context).scale(35),
-          ),
-        ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(
-                    body: CameraScreen(
-                      backgroundColor: _color,
-                      bloc: _bloc,
-                    ),
-                  ),
+            bloc: _bloc,
+            text: challenge.userHasFinished(user) ? "COMPLETE" : "SUBMIT",
+            icon: Container(
+              height: Scaler(context).scale(50),
+              width: Scaler(context).scale(50),
+              margin: EdgeInsets.only(right: Scaler(context).scale(15)),
+              child: Icon(
+                challenge.userHasFinished(user) ? Icons.done : Icons.add_a_photo,
+                color: _color,
+                size: Scaler(context).scale(35),
+              ),
             ),
+            onTap: () {
+              if (challenge.userHasFinished(user)) {
+                return;
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                        body: CameraScreen(
+                          backgroundColor: _color,
+                          bloc: _bloc,
+                        ),
+                      ),
+                ),
+              );
+            },
           );
-        },
-      );
+      }
+    );
+  }
 }
 
 class _GameScreenButton extends StatelessWidget {
