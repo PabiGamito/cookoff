@@ -1,23 +1,84 @@
 import 'dart:math';
 
-import 'package:cookoff/models/ingredient.dart';
+import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/providers/picture_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/titled_section.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../injector.dart';
 
-class InspirationCard extends StatelessWidget {
-  final Ingredient _ingredient;
+class GameScreenCard extends StatelessWidget {
   final PictureProvider _pictureProvider;
+  final GameBloc _bloc;
 
-  InspirationCard({Key key, @required Ingredient ingredient})
-      : _pictureProvider = Injector().pictureProvider,
-        _ingredient = ingredient,
+  const GameScreenCard(
+      {Key key, PictureProvider pictureProvider, GameBloc bloc})
+      : _bloc = bloc,
+        _pictureProvider = pictureProvider,
         super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      _bloc.currentState.userHasFinished(UserWidget.of(context).user)
+          ? BrowseCard(
+              pictureProvider: _pictureProvider,
+              bloc: _bloc,
+            )
+          : InspirationCard(
+              pictureProvider: _pictureProvider,
+              bloc: _bloc,
+            );
+}
+
+class InspirationCard extends StatelessWidget {
+  final PictureProvider _pictureProvider;
+  final GameBloc _bloc;
+
+  const InspirationCard(
+      {Key key, PictureProvider pictureProvider, GameBloc bloc})
+      : _bloc = bloc,
+        _pictureProvider = pictureProvider,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _GameScreenCard(
+        stream: _pictureProvider.picturesStream(_bloc.currentState.ingredient),
+        title: "Some Inspiration...");
+  }
+}
+
+class BrowseCard extends StatelessWidget {
+  final PictureProvider _pictureProvider;
+  final GameBloc _bloc;
+
+  const BrowseCard({Key key, PictureProvider pictureProvider, GameBloc bloc})
+      : _bloc = bloc,
+        _pictureProvider = pictureProvider,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _GameScreenCard(
+        stream: _pictureProvider.challengePictureStream(_bloc.currentState),
+        title: "Browse Dishes...");
+  }
+}
+
+// Game Screen Card
+class _GameScreenCard extends StatelessWidget {
+  final Stream<Iterable<String>> _stream;
+  final PictureProvider _pictureProvider;
+  final String _title;
+
+  _GameScreenCard({@required Stream<Iterable<String>> stream, String title})
+      : _pictureProvider = Injector().pictureProvider,
+        _stream = stream,
+        _title = title;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +87,10 @@ class InspirationCard extends StatelessWidget {
       child: RoundedCard(
         child: Container(
           child: TitledSection(
-            title: 'Some inspiration',
+            title: _title,
             underlineColor: Color(0xFF65D2EB),
             child: StreamBuilder<Iterable<String>>(
-                stream: _pictureProvider.picturesStream(_ingredient.name),
+                stream: _stream,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Container();

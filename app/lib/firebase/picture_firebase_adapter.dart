@@ -23,6 +23,13 @@ class PictureFirebaseAdapter implements PictureProvider {
           .map((DocumentSnapshot doc) => Challenge.fromJson(doc.data).images)
           .reduce((List<String> a, List<String> b) => [...a, ...b]));
 
+  Stream<Iterable<String>> challengePictureStream(Challenge challenge) =>
+      Stream.fromFuture(_firestore
+          .collection('challenges')
+          .document(challenge.id)
+          .get()
+          .then((DocumentSnapshot doc) => Challenge.fromJson(doc.data).images));
+
   @override
   Future<Challenge> uploadPicture(String path, Challenge challenge) async {
     // Prepare data

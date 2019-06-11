@@ -1,7 +1,7 @@
 import 'package:cookoff/blocs/game_bloc.dart';
+import 'package:cookoff/injector.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
-import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/widgets/game/friends_tab.dart';
 import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/game/inspiration_card.dart';
@@ -93,18 +93,9 @@ class _GameScreenState extends State<GameScreen> {
                     ],
                   ),
                 ),
-                StreamBuilder<Ingredient>(
-                  stream: LocalIngredientProvider()
-                      .ingredientStream(widget._challenge.ingredient),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Container();
-                    }
-
-                    return InspirationCard(
-                      ingredient: snapshot.data,
-                    );
-                  },
+                GameScreenCard(
+                  pictureProvider: Injector().pictureProvider,
+                  bloc: _bloc,
                 ),
                 Visibility(
                   visible: _friendsTabOpen,
