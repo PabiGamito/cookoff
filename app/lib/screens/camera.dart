@@ -90,14 +90,11 @@ class CameraScreenState extends State<CameraScreen> {
           ? Container()
           : FloatingActionButton(
               onPressed: () {
-                _bloc.dispatch(FinishChallengeButton(UserWidget
-                    .of(context)
-                    .user,
-                    InjectorWidget
-                        .of(context)
-                        .injector
-                        .challengeProvider));
-                Navigator.pop(context);
+                _bloc.dispatch(UploadPictureButton(_image,
+                    InjectorWidget.of(context).injector.pictureProvider));
+                _bloc.dispatch(FinishChallengeButton(
+                    UserWidget.of(context).user,
+                    InjectorWidget.of(context).injector.challengeProvider));
                 _popScreen();
               },
               child: Icon(Icons.cloud_upload),
