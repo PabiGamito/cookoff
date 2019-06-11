@@ -16,11 +16,6 @@ class GameBloc extends Bloc<GameEvent, Challenge> {
       if (!currentState.started) {
         yield await event.challengeProvider
             .addChallenge(currentState);
-      } else {
-        // TODO: mark user as finished
-        // Currently just sets entire challenge as complete
-        assert(!currentState.complete);
-        yield currentState.copyAsComplete();
       }
     }
 
