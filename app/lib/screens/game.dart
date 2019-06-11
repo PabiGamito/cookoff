@@ -43,75 +43,84 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) => StreamBuilder<Ingredient>(
-      stream: InjectorWidget.of(context)
-          .injector
-          .ingredientProvider
-          .ingredientStream(widget._challenge.ingredient),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Container();
-        }
+        stream: InjectorWidget.of(context)
+            .injector
+            .ingredientProvider
+            .ingredientStream(widget._challenge.ingredient),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
 
-        var ingredient = snapshot.data;
+          var ingredient = snapshot.data;
 
-        // Set status bar color on Android to match header
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: ingredient.color,
-        ));
+          // Set status bar color on Android to match header
+          SystemChrome.setSystemUIOverlayStyle(
+              SystemUiOverlayStyle.dark.copyWith(
+            statusBarColor: ingredient.color,
+          ));
 
-        return WillPopScope(
+          return WillPopScope(
             onWillPop: () {
               _popScreen();
             },
             child: Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: <Widget>[
-                  Container(color: ingredient.color),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: Scaler(context).scale(60),
-                        horizontal: Scaler(context).scale(35)),
-                    margin: EdgeInsets.only(bottom: Scaler(context).scale(130)),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GameHeader(onExit: _popScreen, bloc: _bloc),
-                          IngredientName(ingredient: ingredient),
-                          IngredientIcon(ingredient: ingredient),
-                          GameScreenButton(
-                              color: ingredient.color, bloc: _bloc),
-                          FriendProfiles(
-                              color: ingredient.color,
-                              onTap: () {
-                                setState(() {
-                                  _friendsTabOpen = true;
-                                });
+              alignment: AlignmentDirectional.bottomCenter,
+              children: <Widget>[
+                Container(color: ingredient.color),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: Scaler(context).scale(60),
+                      horizontal: Scaler(context).scale(35)),
+                  margin: EdgeInsets.only(bottom: Scaler(context).scale(130)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GameHeader(onExit: _popScreen, bloc: _bloc),
+                      IngredientName(ingredient: ingredient),
+                      IngredientIcon(ingredient: ingredient),
+                      GameScreenButton(color: ingredient.color, bloc: _bloc),
+                      FriendProfiles(
+                          color: ingredient.color,
+                          onTap: () {
+                            setState(
+                              () {
+                                _friendsTabOpen = true;
                               },
-                              bloc: _bloc)
-                        ]),
-                  ),
-                  StreamBuilder<Ingredient>(
-                    stream: LocalIngredientProvider()
-                        .ingredientStream(widget._challenge.ingredient),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Container();
-                      }
-
-                      return InspirationCard(
-                        ingredient: snapshot.data,
-                      );
-                    },
-                  ),
-                  Visibility(
-                      visible: _friendsTabOpen,
-                      child: FriendsTab(
-                          onClose: () {
-                            setState(() {
-                              _friendsTabOpen = false;
-                            });
+                            );
                           },
-                          bloc: _bloc))
-                ]));
-      });
+                          bloc: _bloc),
+                    ],
+                  ),
+                ),
+                StreamBuilder<Ingredient>(
+                  stream: LocalIngredientProvider()
+                      .ingredientStream(widget._challenge.ingredient),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container();
+                    }
+
+                    return InspirationCard(
+                      ingredient: snapshot.data,
+                    );
+                  },
+                ),
+                Visibility(
+                  visible: _friendsTabOpen,
+                  child: FriendsTab(
+                      onClose: () {
+                        setState(
+                          () {
+                            _friendsTabOpen = false;
+                          },
+                        );
+                      },
+                      bloc: _bloc),
+                ),
+              ],
+            ),
+          );
+        },
+      );
 }

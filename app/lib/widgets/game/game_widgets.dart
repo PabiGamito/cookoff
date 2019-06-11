@@ -11,6 +11,8 @@ import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../camera.dart';
+
 class GameHeader extends StatelessWidget {
   final Function _onExit;
   final GameBloc _bloc;
@@ -158,10 +160,7 @@ class GameStartButton extends StatelessWidget {
         ),
         onTap: () {
           _bloc.dispatch(GameButton(
-              InjectorWidget
-                  .of(context)
-                  .injector
-                  .challengeProvider));
+              InjectorWidget.of(context).injector.challengeProvider));
         },
       );
 }
@@ -177,10 +176,10 @@ class GameSubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameEvent, Challenge>(
-      bloc: _bloc,
-      builder: (context, challenge) {
-        var user = UserWidget.of(context).user;
-        return _GameScreenButton(
+        bloc: _bloc,
+        builder: (context, challenge) {
+          var user = UserWidget.of(context).user;
+          return _GameScreenButton(
             color: _color,
             bloc: _bloc,
             text: challenge.userHasFinished(user) ? "COMPLETE" : "SUBMIT",
@@ -189,30 +188,32 @@ class GameSubmitButton extends StatelessWidget {
               width: Scaler(context).scale(50),
               margin: EdgeInsets.only(right: Scaler(context).scale(15)),
               child: Icon(
-                challenge.userHasFinished(user) ? Icons.done : Icons.add_a_photo,
+                challenge.userHasFinished(user)
+                    ? Icons.done
+                    : Icons.add_a_photo,
                 color: _color,
                 size: Scaler(context).scale(35),
               ),
             ),
-            onTap: () {
-              if (challenge.userHasFinished(user)) {
-                return;
-              }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Scaffold(
-                        body: CameraScreen(
-                          backgroundColor: _color,
-                          bloc: _bloc,
+            onTap: () async {
+              var compressedImage = await getImageFromSource();
+              if (compressedImage != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                          body: CameraScreen(
+                            backgroundColor: _color,
+                            bloc: _bloc,
+                            image: compressedImage,
+                          ),
                         ),
-                      ),
-                ),
-              );
+                  ),
+                );
+              }
             },
           );
-      }
-    );
+        });
   }
 }
 
