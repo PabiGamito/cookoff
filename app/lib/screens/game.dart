@@ -22,9 +22,22 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   final GameBloc _bloc;
+  final ScrollController _controller = ScrollController();
+
+  double _height = 0;
   bool _friendsTabOpen = false;
 
-  _GameScreenState(Challenge challenge) : _bloc = GameBloc(challenge);
+  _GameScreenState(Challenge challenge) : _bloc = GameBloc(challenge) {
+    _controller.addListener(() {
+      setState(() {
+        if (_controller.hasClients && _controller.offset > 0) {
+          _height = _controller.offset;
+        } else {
+          _height = 0;
+        }
+      });
+    });
+  }
 
   _popScreen() {
     // Close the friends tab on back press
@@ -68,7 +81,9 @@ class _GameScreenState extends State<GameScreen> {
               alignment: AlignmentDirectional.bottomCenter,
               children: <Widget>[
                 Container(color: ingredient.color),
+                Container(height: _height, color: Colors.white),
                 CustomScrollView(
+                  controller: _controller,
                   physics: BouncingScrollPhysics(),
                   slivers: [
                     SliverPersistentHeader(
