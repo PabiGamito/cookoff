@@ -2,14 +2,14 @@ import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/injector.dart';
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/game/friends_tab.dart';
 import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/game/inspiration_card.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
+import 'package:cookoff/widgets/sliver_card_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../scalar.dart';
 
 class GameScreen extends StatefulWidget {
   final Challenge _challenge;
@@ -68,34 +68,50 @@ class _GameScreenState extends State<GameScreen> {
               alignment: AlignmentDirectional.bottomCenter,
               children: <Widget>[
                 Container(color: ingredient.color),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: Scaler(context).scale(60),
-                      horizontal: Scaler(context).scale(35)),
-                  margin: EdgeInsets.only(bottom: Scaler(context).scale(130)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GameHeader(onExit: _popScreen, bloc: _bloc),
-                      IngredientName(ingredient: ingredient),
-                      IngredientIcon(ingredient: ingredient),
-                      GameScreenButton(color: ingredient.color, bloc: _bloc),
-                      FriendProfiles(
-                          color: ingredient.color,
-                          onTap: () {
-                            setState(
-                              () {
-                                _friendsTabOpen = true;
-                              },
-                            );
-                          },
-                          bloc: _bloc),
-                    ],
-                  ),
-                ),
-                GameScreenCard(
-                  pictureProvider: Injector().pictureProvider,
-                  bloc: _bloc,
+                CustomScrollView(
+                  physics: BouncingScrollPhysics(),
+                  slivers: [
+                    SliverPersistentHeader(
+                      delegate: SliverCardDelegate(
+                        maxExtent: MediaQuery.of(context).size.height -
+                            Scaler(context).scale(200),
+                        minExtent: 0,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: Scaler(context).scale(60),
+                              horizontal: Scaler(context).scale(35)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GameHeader(onExit: _popScreen, bloc: _bloc),
+                              IngredientName(ingredient: ingredient),
+                              IngredientIcon(ingredient: ingredient),
+                              GameScreenButton(
+                                  color: ingredient.color, bloc: _bloc),
+                              FriendProfiles(
+                                  color: ingredient.color,
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        _friendsTabOpen = true;
+                                      },
+                                    );
+                                  },
+                                  bloc: _bloc),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        GameScreenCard(
+                          pictureProvider: Injector().pictureProvider,
+                          bloc: _bloc,
+                        ),
+                      ]),
+                    ),
+                  ],
                 ),
                 Visibility(
                   visible: _friendsTabOpen,
