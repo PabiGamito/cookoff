@@ -34,11 +34,6 @@ class CameraScreenState extends State<CameraScreen> {
   final File _image;
 
   _popScreen() {
-    // Delete image on back press
-    if (_image != null) {
-      _image.deleteSync();
-    }
-
     // Set status bar color on Android to match header
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: bgColor,
