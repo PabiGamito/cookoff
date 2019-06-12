@@ -115,31 +115,49 @@ class FriendCard extends StatelessWidget {
         _friend = friend;
 
   @override
-  Widget build(BuildContext context) => Container(
-      margin: EdgeInsets.only(bottom: Scaler(context).scale(25)),
-      child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () => _bloc.dispatch(FriendButton(_friend.id)),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(children: [
-                  Container(
-                      padding:
-                          EdgeInsets.only(right: Scaler(context).scale(20)),
-                      child: ProfileIcon(
-                          user: _friend,
-                          size: Scaler(context).scale(55),
-                          border: false)),
-                  Text(_friend.name,
-                      style: TextStyle(
-                        fontSize: Scaler(context).scale(20),
-                        fontFamily: "Montserrat",
-                      ))
-                ]),
-                BlocBuilder<GameEvent, Challenge>(
-                    bloc: _bloc,
-                    builder: (context, challenge) => Container(
+  Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
+      bloc: _bloc,
+      builder: (context, challenge) => Container(
+          margin: EdgeInsets.only(bottom: Scaler(context).scale(25)),
+          child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () async {
+                // Check that user can eat ingredient according to diet
+                var diet = await InjectorWidget.of(context)
+                    .injector
+                    .ingredientProvider
+                    .dietFromName(_friend.dietName);
+
+                if (diet.filteredIngredients.contains(challenge.ingredient)) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: new Text('Can\'t add friend'),
+                            content: new Text(
+                                '${_friend.firstName}\'s diet is ${diet.name}, so he can\'t be added to this challenge.'),
+                          ));
+                  return;
+                }
+                _bloc.dispatch(FriendButton(_friend.id));
+              },
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(children: [
+                      Container(
+                          padding:
+                              EdgeInsets.only(right: Scaler(context).scale(20)),
+                          child: ProfileIcon(
+                              user: _friend,
+                              size: Scaler(context).scale(55),
+                              border: false)),
+                      Text(_friend.name,
+                          style: TextStyle(
+                            fontSize: Scaler(context).scale(20),
+                            fontFamily: "Montserrat",
+                          ))
+                    ]),
+                    Container(
                         width: Scaler(context).scale(45),
                         height: Scaler(context).scale(45),
                         decoration: new BoxDecoration(
@@ -152,8 +170,8 @@ class FriendCard extends StatelessWidget {
                           child: Icon(Icons.check,
                               color: Colors.white,
                               size: Scaler(context).scale(20)),
-                        )))
-              ])));
+                        ))
+                  ]))));
 }
 
 class FriendsSelectButton extends StatelessWidget {

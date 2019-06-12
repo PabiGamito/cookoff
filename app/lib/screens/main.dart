@@ -1,20 +1,20 @@
+import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/models/diet.dart';
 import 'package:cookoff/models/user.dart';
+import 'package:cookoff/providers/auth_provider.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/auth_builder.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
+import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/scrollable_layout.dart';
 import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs/auth_bloc.dart';
-import '../providers/auth_provider.dart';
-import '../scalar.dart';
-import '../widgets/injector_widget.dart';
 import 'ingredients.dart';
 
 class MainScreen extends StatelessWidget {
