@@ -162,7 +162,7 @@ class AuthorizedMainScreen extends StatelessWidget {
               challengesCard,
             ],
           ),
-          FriendsAdder(visible: true),
+          FriendsAdderOverlay(visible: true),
         ],
       ),
     );

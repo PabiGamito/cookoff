@@ -7,21 +7,21 @@ import 'package:flutter/widgets.dart';
 import '../scalar.dart';
 
 // Friend adder overlay
-class FriendsAdder extends StatefulWidget {
+class FriendsAdderOverlay extends StatefulWidget {
   final bool _toShow;
   final Function _onTap;
 
-  FriendsAdder({bool visible = false, Function onTap})
+  FriendsAdderOverlay({bool visible = false, Function onTap})
       : _toShow = visible,
         _onTap = onTap;
 
   @override
   State<StatefulWidget> createState() {
-    return _FriendsAdderState(_toShow, _onTap);
+    return _FriendsAdderOverlayState(_toShow, _onTap);
   }
 }
 
-class _FriendsAdderState extends State<FriendsAdder> {
+class _FriendsAdderOverlayState extends State<FriendsAdderOverlay> {
   final Function _onTap;
 
   // TODO: Bloc it out
@@ -36,8 +36,6 @@ class _FriendsAdderState extends State<FriendsAdder> {
       return;
     }
 
-    print("Email: $email, User id: ${UserWidget.of(context).user.email}");
-
     var friendAdded = await InjectorWidget.of(context)
         .injector
         .userProvider
@@ -49,7 +47,7 @@ class _FriendsAdderState extends State<FriendsAdder> {
     });
   }
 
-  _FriendsAdderState(this._addFriendsScreen, this._onTap);
+  _FriendsAdderOverlayState(this._addFriendsScreen, this._onTap);
 
   @override
   Widget build(BuildContext context) {
