@@ -24,7 +24,8 @@ class GameScreenCard extends StatelessWidget {
   Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
         bloc: _bloc,
         builder: (context, challenge) =>
-            challenge.userHasFinished(UserWidget.of(context).user)
+            challenge.userHasFinished(UserWidget.of(context).user) ||
+                    challenge.complete
                 ? BrowseCard(
                     pictureProvider: _pictureProvider,
                     challenge: challenge,
