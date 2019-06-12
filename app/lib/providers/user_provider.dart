@@ -6,4 +6,6 @@ abstract class UserProvider {
 
   // Add a friend by email. Returns if successful or not
   Future<bool> addFriend(String email, User currentUser);
+
+  Future<User> changeDiet(User user, String dietName);
 }

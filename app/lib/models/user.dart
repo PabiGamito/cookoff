@@ -29,7 +29,16 @@ class User extends Equatable {
       name: name,
       email: email,
       friends: friends,
-      profilePictureUrl: profilePictureUrl);
+      profilePictureUrl: profilePictureUrl,
+      dietName: dietName);
+
+  User copyWithDiet(String dietName) => User(
+      id: id,
+      name: name,
+      email: email,
+      friends: friends,
+      profilePictureUrl: profilePictureUrl,
+      dietName: dietName);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

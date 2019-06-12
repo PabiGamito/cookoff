@@ -43,4 +43,14 @@ class UserFirebaseAdapter implements UserProvider {
     Future.wait([updateUser(friend), updateUser(currentUser)]);
     return true;
   }
+
+  @override
+  Future<User> changeDiet(User user, String dietName) async {
+    var newUser = user.copyWithDiet(dietName);
+    await _firestore
+        .collection(_collection)
+        .document(newUser.id)
+        .setData(newUser.toJson());
+    return newUser;
+  }
 }
