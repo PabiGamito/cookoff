@@ -46,10 +46,10 @@ class LocalIngredientProvider extends IngredientProvider {
           ingredientColor[ingredient] ?? Colors.blueGrey)));
 
   @override
-  Stream<Iterable<Diet>> allDiets() => Future.value(diets.values).asStream();
+  Stream<Iterable<Diet>> dietsStream() => Future.value(diets.values).asStream();
 
   @override
-  Future<Diet> dietFromName(String name) => Future.value(diets[name] ?? NoDiet());
+  Future<Diet> dietStream(String name) => Future.value(diets[name] ?? NoDiet());
 }
 
 const Map<String, Color> ingredientColor = {
@@ -111,8 +111,7 @@ class LocalIngredientSection extends IngredientSection {
                   name,
                   'assets/ingredients/$name.png',
                   ingredientColor[name] ?? Color(0xFF7C54EA),
-                )),
-            diet);
+                )));
 }
 
 class FeaturedSection extends LocalIngredientSection {

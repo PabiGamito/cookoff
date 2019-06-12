@@ -126,7 +126,7 @@ class FriendCard extends StatelessWidget {
                 var diet = await InjectorWidget.of(context)
                     .injector
                     .ingredientProvider
-                    .dietFromName(_friend.dietName);
+                    .dietStream(_friend.dietName);
 
                 if (diet.filteredIngredients.contains(challenge.ingredient)) {
                   showDialog(

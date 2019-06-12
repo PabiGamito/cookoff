@@ -10,7 +10,7 @@ abstract class IngredientProvider {
 
   Stream<Ingredient> ingredientStream(String ingredient);
 
-  Stream<Iterable<Diet>> allDiets();
+  Stream<Iterable<Diet>> dietsStream();
 
-  Future<Diet> dietFromName(String name);
+  Future<Diet> dietStream(String diet);
 }

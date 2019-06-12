@@ -108,7 +108,7 @@ class AuthorizedMainScreen extends StatelessWidget {
                 }
                 return FutureBuilder<Diet>(
                     future:
-                        injector.ingredientProvider.dietFromName(user.dietName),
+                        injector.ingredientProvider.dietStream(user.dietName),
                     builder: (context, snapshot) {
                       // Return empty widget while diet loads
                       if (!snapshot.hasData) {
