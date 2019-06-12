@@ -3,6 +3,7 @@ import 'package:cookoff/firebase/user_firebase_adapter.dart';
 import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthFirebaseAdapter implements AuthProvider {
@@ -10,6 +11,8 @@ class AuthFirebaseAdapter implements AuthProvider {
 
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static final Firestore _firestore = Firestore.instance;
+
+  final FirebaseMessaging _messaging = FirebaseMessaging();
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -20,6 +23,8 @@ class AuthFirebaseAdapter implements AuthProvider {
 
   // Add user to users in firestore if user doesn't exist
   Future _registerUser(FirebaseUser user) async {
+    var token = await _messaging.getToken();
+
     if (!await _firestore
         .collection(_collection)
         .document(user.uid)
@@ -29,7 +34,8 @@ class AuthFirebaseAdapter implements AuthProvider {
         'name': user.displayName,
         'email': user.email,
         'profilePictureUrl': user.photoUrl,
-        'friends': []
+        'friends': [],
+        'deviceTokens': [token],
       });
     }
   }
