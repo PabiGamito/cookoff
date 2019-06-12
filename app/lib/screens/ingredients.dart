@@ -3,6 +3,7 @@ import 'package:cookoff/providers/ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/pill_button.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 
 class IngredientsScreen extends StatelessWidget {
@@ -39,7 +40,8 @@ class IngredientsScreen extends StatelessWidget {
           child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: StreamBuilder<Iterable<IngredientSection>>(
-                  stream: _ingredientProvider.ingredientSectionsStream(),
+                  stream: _ingredientProvider
+                      .ingredientSectionsStream(UserWidget.of(context).user),
                   builder: (context, snapshots) {
                     if (!snapshots.hasData) {
                       return Container();

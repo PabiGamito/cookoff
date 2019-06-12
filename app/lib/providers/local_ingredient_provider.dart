@@ -1,31 +1,42 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:cookoff/models/diet.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/ingredient_section.dart';
+import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/ingredient_provider.dart';
 import 'package:flutter/material.dart';
 
 class LocalIngredientProvider extends IngredientProvider {
-  List<IngredientSection> sections = [
-    FeaturedSection(),
-    BasicSection(),
-    VegetableSection(),
-    FruitSection(),
-    TreatSection(),
-    VeganSection()
-  ];
+  List<IngredientSection> sections;
+  Map<String, Diet> diets = {
+    'vegetarian': Diet('Vegetarian', ['ham', 'meat', 'saussage', 'shrimp', 'fish']),
+    'gluten_free': Diet('Gluten Free', ['wheat']),
+    'vegan': Diet('Vegan', ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'eggs', 'cheese']),
+    'pescetarian': Diet('Pescetarian', ['ham', 'meat', 'saussage'])
+  };
 
   @override
   Stream<Iterable<Ingredient>> ingredientsStream() {
     throw UnimplementedError();
   }
 
-  Future<Iterable<IngredientSection>> getIngredientSections() async => sections;
+  Future<Iterable<IngredientSection>> getIngredientSections(User user) async {
+    var diet = diets[user.dietName] ?? NoDiet();
+    return sections = [
+      FeaturedSection(diet),
+      BasicSection(diet),
+      VegetableSection(diet),
+      FruitSection(diet),
+      TreatSection(diet),
+      VeganSection(diet)
+    ];
+  }
 
   @override
-  Stream<Iterable<IngredientSection>> ingredientSectionsStream() =>
-      Stream.fromFuture(getIngredientSections());
+  Stream<Iterable<IngredientSection>> ingredientSectionsStream(User user) =>
+      Stream.fromFuture(getIngredientSections(user));
 
   @override
   Stream<Ingredient> ingredientStream(String ingredient) =>
@@ -33,6 +44,12 @@ class LocalIngredientProvider extends IngredientProvider {
           ingredient,
           'assets/ingredients/$ingredient.png',
           ingredientColor[ingredient] ?? Colors.blueGrey)));
+
+  @override
+  Stream<Iterable<Diet>> allDiets() => Future.value(diets.values).asStream();
+
+  @override
+  Future<Diet> dietFromName(String name) => Future.value(diets[name] ?? NoDiet());
 }
 
 const Map<String, Color> ingredientColor = {
@@ -85,29 +102,32 @@ const Map<String, Color> ingredientColor = {
 };
 
 class LocalIngredientSection extends IngredientSection {
-  LocalIngredientSection({String title, Iterable<String> ingredients})
+  LocalIngredientSection(
+      {String title, Iterable<String> ingredients, Diet diet})
       : super(
             title,
-            ingredients.map((name) => Ingredient(
+            ingredients.where((name) => !diet.filteredIngredients.contains(name))
+                .map((name) => Ingredient(
                   name,
                   'assets/ingredients/$name.png',
                   ingredientColor[name] ?? Color(0xFF7C54EA),
-                )));
+                )),
+            diet);
 }
 
 class FeaturedSection extends LocalIngredientSection {
-  FeaturedSection()
+  FeaturedSection(Diet diet)
       : super(title: 'Featured', ingredients: [
           'cheese',
           'shrimp',
           'jelly',
           'strawberry',
           'garlic',
-        ]);
+        ], diet: diet);
 }
 
 class BasicSection extends LocalIngredientSection {
-  BasicSection()
+  BasicSection(Diet diet)
       : super(title: 'Basics', ingredients: [
           'bacon',
           'eggs',
@@ -121,11 +141,11 @@ class BasicSection extends LocalIngredientSection {
           'pickles',
           'fish',
           'cheese',
-        ]);
+        ], diet: diet);
 }
 
 class VegetableSection extends LocalIngredientSection {
-  VegetableSection()
+  VegetableSection(Diet diet)
       : super(title: 'Veggies', ingredients: [
           'aubergine',
           'beans',
@@ -143,11 +163,11 @@ class VegetableSection extends LocalIngredientSection {
           'radish',
           'tomato',
           'pepper',
-        ]);
+        ], diet: diet);
 }
 
 class FruitSection extends LocalIngredientSection {
-  FruitSection()
+  FruitSection(Diet diet)
       : super(title: 'Fruits', ingredients: [
           'apple',
           'banana',
@@ -163,21 +183,21 @@ class FruitSection extends LocalIngredientSection {
           'raspberry',
           'strawberry',
           'watermelon',
-        ]);
+        ], diet: diet);
 }
 
 class TreatSection extends LocalIngredientSection {
-  TreatSection()
+  TreatSection(Diet diet)
       : super(title: 'Treats', ingredients: [
           'chocolate',
           'honey',
           'jam',
           'jelly',
-        ]);
+        ], diet: diet);
 }
 
 class VeganSection extends LocalIngredientSection {
-  VeganSection()
+  VeganSection(Diet diet)
       : super(title: 'Vegan', ingredients: [
           'flour',
           'aubergine',
@@ -210,5 +230,5 @@ class VeganSection extends LocalIngredientSection {
           'raspberry',
           'strawberry',
           'watermelon',
-        ]);
+        ], diet: diet);
 }

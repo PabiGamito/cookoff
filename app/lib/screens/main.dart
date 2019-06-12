@@ -1,3 +1,4 @@
+import 'package:cookoff/models/diet.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/widgets/auth_builder.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
@@ -29,6 +30,12 @@ class AuthorizedMainScreen extends StatelessWidget {
     var injector = InjectorWidget.of(context).injector;
     var challengeProvider = injector.challengeProvider;
     var ingredientProvider = injector.ingredientProvider;
+
+    var user = UserWidget.of(context).user;
+    var diet = InjectorWidget.of(context)
+        .injector
+        .ingredientProvider
+        .dietFromName(user.dietName);
 
     const double firstCardMaxOffset = 188;
     const double firstCardTitleHeight = 112;
@@ -93,21 +100,30 @@ class AuthorizedMainScreen extends StatelessWidget {
         maxOffset: Scaler(context).scale(firstCardMaxOffset),
         startingOffset: Scaler(context).scale(firstCardMaxOffset),
         cardBuilder: (context, scrolledAmount, fullyExpanded) {
-          return RoundedCard(
-            padding: false,
-            child: Container(
-              padding: EdgeInsets.only(
-                top: Scaler(context).scale(35),
-                bottom: Scaler(context).scale(15),
-              ),
-              child: IngredientsSection(
-                ingredientSection: FeaturedSection(),
-                title: 'Start cooking...',
-                titleUnderlineColor: Color(0xFF8EE5B6),
-                more: true,
-                onMoreTap: _showAllIngredients,
-              ),
-            ),
+          return FutureBuilder<Diet>(
+            future: diet,
+            builder: (context, snapshot) {
+              // Return empty widget while diet loads
+              if (!snapshot.hasData) {
+                return Container();
+              }
+              return RoundedCard(
+                padding: false,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    top: Scaler(context).scale(35),
+                    bottom: Scaler(context).scale(15),
+                  ),
+                  child: IngredientsSection(
+                    ingredientSection: FeaturedSection(snapshot.data),
+                    title: 'Start cooking...',
+                    titleUnderlineColor: Color(0xFF8EE5B6),
+                    more: true,
+                    onMoreTap: _showAllIngredients,
+                  ),
+                ),
+              );
+            }
           );
         });
 

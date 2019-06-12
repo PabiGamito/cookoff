@@ -10,13 +10,15 @@ class User extends Equatable {
   final String email;
   final List<String> friends;
   final String profilePictureUrl;
+  final String dietName;
 
   User(
       {this.id,
       this.name,
       this.email,
       this.friends = const [],
-      this.profilePictureUrl});
+      this.profilePictureUrl,
+      this.dietName});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
