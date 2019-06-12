@@ -1,6 +1,5 @@
 import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/models/diet.dart';
-import 'package:cookoff/models/user.dart';
 import 'package:cookoff/providers/auth_provider.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
@@ -95,42 +94,30 @@ class AuthorizedMainScreen extends StatelessWidget {
         maxOffset: Scaler(context).scale(firstCardMaxOffset),
         startingOffset: Scaler(context).scale(firstCardMaxOffset),
         cardBuilder: (context, scrolledAmount, fullyExpanded) {
-          return StreamBuilder<User>(
-              // Ok, this looks dumb, but the actual UserWidget user only updates
-              // on authStateChange. So we need to stream the user if we want
-              // up do date diet information.
-              stream: injector.userProvider
-                  .userStream(UserWidget.of(context).user.id),
+          return FutureBuilder<Diet>(
+              future: injector.ingredientProvider
+                  .dietStream(UserWidget.of(context).user.dietName),
               builder: (context, snapshot) {
-                var user = snapshot.data;
-                if (user == null) {
+                // Return empty widget while diet loads
+                if (!snapshot.hasData) {
                   return Container();
                 }
-                return FutureBuilder<Diet>(
-                    future:
-                        injector.ingredientProvider.dietStream(user.dietName),
-                    builder: (context, snapshot) {
-                      // Return empty widget while diet loads
-                      if (!snapshot.hasData) {
-                        return Container();
-                      }
-                      return RoundedCard(
-                        padding: false,
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: Scaler(context).scale(35),
-                            bottom: Scaler(context).scale(15),
-                          ),
-                          child: IngredientsSection(
-                            ingredientSection: FeaturedSection(snapshot.data),
-                            title: 'Start cooking...',
-                            titleUnderlineColor: Color(0xFF8EE5B6),
-                            more: true,
-                            onMoreTap: _showAllIngredients,
-                          ),
-                        ),
-                      );
-                    });
+                return RoundedCard(
+                  padding: false,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: Scaler(context).scale(35),
+                      bottom: Scaler(context).scale(15),
+                    ),
+                    child: IngredientsSection(
+                      ingredientSection: FeaturedSection(snapshot.data),
+                      title: 'Start cooking...',
+                      titleUnderlineColor: Color(0xFF8EE5B6),
+                      more: true,
+                      onMoreTap: _showAllIngredients,
+                    ),
+                  ),
+                );
               });
         });
 

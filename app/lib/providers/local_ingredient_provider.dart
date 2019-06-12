@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 class LocalIngredientProvider extends IngredientProvider {
   List<IngredientSection> sections;
   Map<String, Diet> diets = {
-    'vegetarian': Diet('Vegetarian', ['ham', 'meat', 'saussage', 'shrimp', 'fish']),
+    'vegetarian': Diet('Vegetarian', ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'bacon']),
     'gluten_free': Diet('Gluten Free', ['wheat']),
-    'vegan': Diet('Vegan', ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'eggs', 'cheese']),
-    'pescetarian': Diet('Pescetarian', ['ham', 'meat', 'saussage'])
+    'vegan': Diet('Vegan', ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'eggs', 'cheese', 'bacon']),
+    'pescetarian': Diet('Pescetarian', ['ham', 'meat', 'saussage', 'bacon'])
   };
 
   @override

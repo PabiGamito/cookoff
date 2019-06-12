@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookoff/firebase/user_firebase_adapter.dart';
 import 'package:cookoff/models/user.dart';
@@ -15,11 +17,15 @@ class AuthFirebaseAdapter implements AuthProvider {
   final FirebaseMessaging _messaging = FirebaseMessaging();
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final StreamController<User> _user = StreamController();
 
-  // Firebase user
-  final Stream<FirebaseUser> _user;
-
-  AuthFirebaseAdapter() : _user = _firebaseAuth.onAuthStateChanged;
+  AuthFirebaseAdapter() {
+    _firebaseAuth.onAuthStateChanged
+        .where((user) => user != null)
+        .listen((user) {
+          _user.sink.addStream(UserFirebaseAdapter().userStream(user.uid));
+        });
+  }
 
   // Add user to users in firestore if user doesn't exist
   Future _registerUser(FirebaseUser user) async {
@@ -41,9 +47,7 @@ class AuthFirebaseAdapter implements AuthProvider {
   }
 
   @override
-  Stream<User> userStream() => _user
-      .where((user) => user != null)
-      .asyncExpand((user) => UserFirebaseAdapter().userStream(user.uid));
+  Stream<User> userStream() => _user.stream;
 
   @override
   Future signIn() async {
@@ -59,4 +63,6 @@ class AuthFirebaseAdapter implements AuthProvider {
 
   @override
   Future signOut() async => await _firebaseAuth.signOut();
+
+  dispose() => _user.close();
 }
