@@ -6,7 +6,7 @@ import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Future main() async {
+Future main() {
   var injector = Injector();
   var widget = InjectorWidget(
       injector: injector,
