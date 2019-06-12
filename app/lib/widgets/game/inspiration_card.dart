@@ -109,7 +109,7 @@ class _GameScreenCard extends StatelessWidget {
                             image: new DecorationImage(
                                 fit: BoxFit.cover,
                                 image: new NetworkImage(url))),
-                      )
+                      ),
                   ],
                 );
               },

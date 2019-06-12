@@ -3,6 +3,7 @@ import 'package:cookoff/models/diet.dart';
 import 'package:cookoff/providers/auth_provider.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
+import 'package:cookoff/widgets/add_friends.dart';
 import 'package:cookoff/widgets/auth_builder.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
@@ -45,18 +46,23 @@ class AuthorizedMainScreen extends StatelessWidget {
 
     var _showAllIngredients = (context) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Scaffold(
-                  body: Container(
-                      // Status bar height
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).padding.top),
-                      color: Colors.amber,
-                      child: RoundedCard(
-                          padding: false,
-                          child: IngredientsScreen(
-                              ingredientProvider: ingredientProvider))))));
+        context,
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+                body: Container(
+                  // Status bar height
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  color: Colors.amber,
+                  child: RoundedCard(
+                    padding: false,
+                    child: IngredientsScreen(
+                        ingredientProvider: ingredientProvider),
+                  ),
+                ),
+              ),
+        ),
+      );
     };
 
     var headerCard = ScrollableCard(
@@ -145,13 +151,18 @@ class AuthorizedMainScreen extends StatelessWidget {
       // Status bar height
       color: Colors.amber,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      child: ScrollableLayout(
-        minScroll: Scaler(context).scale(minScrollAmount),
-        maxScroll: 0,
-        scrollableCards: [
-          headerCard,
-          featuredIngredientsCard,
-          challengesCard,
+      child: Stack(
+        children: <Widget>[
+          ScrollableLayout(
+            minScroll: Scaler(context).scale(minScrollAmount),
+            maxScroll: 0,
+            scrollableCards: [
+              headerCard,
+              featuredIngredientsCard,
+              challengesCard,
+            ],
+          ),
+          FriendsAdder(visible: true),
         ],
       ),
     );
@@ -165,36 +176,37 @@ class UnauthorizedMainScreen extends StatelessWidget {
     AuthProvider authProvider =
         InjectorWidget.of(context).injector.authProvider;
     return Container(
-        color: Colors.amber,
-        child: Center(
-          child: BlocBuilder<bool, bool>(
-            bloc: LoadingAuthBloc.instance,
-            builder: (context, loading) => GestureDetector(
-                  onTap: () {
-                    LoadingAuthBloc.instance.dispatch(true);
-                    // disable button while loading
-                    if (!loading) {
-                      authProvider.signIn();
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF52C7F2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      loading ? 'Loading...' : 'Sign In with Google',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: "Montserrat",
-                        color: Colors.white,
-                        letterSpacing: 2,
-                      ),
+      color: Colors.amber,
+      child: Center(
+        child: BlocBuilder<bool, bool>(
+          bloc: LoadingAuthBloc.instance,
+          builder: (context, loading) => GestureDetector(
+                onTap: () {
+                  LoadingAuthBloc.instance.dispatch(true);
+                  // disable button while loading
+                  if (!loading) {
+                    authProvider.signIn();
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF52C7F2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    loading ? 'Loading...' : 'Sign In with Google',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: "Montserrat",
+                      color: Colors.white,
+                      letterSpacing: 2,
                     ),
                   ),
                 ),
-          ),
-        ));
+              ),
+        ),
+      ),
+    );
   }
 }

@@ -25,25 +25,26 @@ class UserFirebaseAdapter implements UserProvider {
   @override
   Future<bool> addFriend(String email, User currentUser) async {
     // Find friend with given email address
-    var snapshot = await _firestore
-        .collection(_collection)
-        .where("email", isEqualTo: email)
-        .snapshots()
-        .first;
-    var doc = snapshot.documents.first;
-    // If the user doesn't exist, return false
-    if (doc == null) {
+
+    try {
+      var snapshot = await _firestore
+          .collection(_collection)
+          .where("email", isEqualTo: email)
+          .snapshots()
+          .first;
+      var doc = snapshot.documents.first;
+      User friend = User.fromJson(doc.data..['id'] = doc.documentID);
+
+      // Add each other as friends
+      currentUser.copyWithFriends([...currentUser.friends, friend.id]);
+      friend.copyWithFriends([...friend.friends, currentUser.id]);
+
+      // Update both users in database
+      Future.wait([updateUser(friend), updateUser(currentUser)]);
+      return true;
+    } catch (e) {
       return false;
     }
-    User friend = User.fromJson(doc.data..['id'] = doc.documentID);
-
-    // Add each other as friends
-    currentUser.copyWithFriends([...currentUser.friends, friend.id]);
-    friend.copyWithFriends([...friend.friends, currentUser.id]);
-
-    // Update both users in database
-    Future.wait([updateUser(friend), updateUser(currentUser)]);
-    return true;
   }
 
   @override

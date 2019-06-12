@@ -13,9 +13,9 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
             Stack(children: [
               Positioned(
                   child: Container(
@@ -32,8 +32,10 @@ class HomeHeader extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: Scaler(context).scale(20)),
               child: HelloMessage(_user.firstName),
-            )
-          ]));
+            ),
+          ],
+        ),
+      );
 }
 
 class HelloMessage extends StatelessWidget {

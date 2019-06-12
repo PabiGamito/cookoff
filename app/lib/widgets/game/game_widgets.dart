@@ -166,23 +166,22 @@ class GameStartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _GameScreenButton(
-    color: _color,
-    bloc: _bloc,
-    text: "START",
-    icon: Container(
-      height: Scaler(context).scale(50),
-      width: Scaler(context).scale(50),
-      margin: EdgeInsets.only(right: Scaler(context).scale(15)),
-      child: Transform.rotate(
-        angle: 1.1,
-        child: Image.asset("assets/icons/rocket.png", color: _color),
-      ),
-    ),
-    onTap: () {
-      _bloc.dispatch(GameButton(
-          InjectorWidget.of(context).injector.challengeProvider));
-    },
-  );
+        color: _color,
+        text: "START",
+        icon: Container(
+          height: Scaler(context).scale(50),
+          width: Scaler(context).scale(50),
+          margin: EdgeInsets.only(right: Scaler(context).scale(15)),
+          child: Transform.rotate(
+            angle: 1.1,
+            child: Image.asset("assets/icons/rocket.png", color: _color),
+          ),
+        ),
+        onTap: () {
+          _bloc.dispatch(GameButton(
+              InjectorWidget.of(context).injector.challengeProvider));
+        },
+      );
 }
 
 class GameSubmitButton extends StatelessWidget {
@@ -199,7 +198,6 @@ class GameSubmitButton extends StatelessWidget {
       bloc: _bloc,
       builder: (context, challenge) => _GameScreenButton(
             color: _color,
-            bloc: _bloc,
             text: "SUBMIT",
             icon: Container(
               height: Scaler(context).scale(50),
@@ -247,7 +245,6 @@ class GameScreenBrowseButton extends StatelessWidget {
       bloc: _bloc,
       builder: (context, challenge) => _GameScreenButton(
             color: _color,
-            bloc: _bloc,
             text: "BROWSE",
             icon: Container(
               height: Scaler(context).scale(50),
@@ -269,7 +266,6 @@ class GameScreenBrowseButton extends StatelessWidget {
 
 class _GameScreenButton extends StatelessWidget {
   final Color _color;
-  final GameBloc _bloc;
   final Function _onTap;
   final String _text;
   final Widget _icon;
@@ -277,7 +273,6 @@ class _GameScreenButton extends StatelessWidget {
   _GameScreenButton(
       {Color color, GameBloc bloc, Function onTap, String text, Widget icon})
       : _color = color,
-        _bloc = bloc,
         _onTap = onTap,
         _text = text,
         _icon = icon;
