@@ -20,15 +20,27 @@ exports.offerTrigger = functions.firestore
 async function challengeCreationNotify(challenge) {
   const db = admin.firestore();
   const participants = challenge.participants;
+  const ownerId = challenge.owner;
 
   if (participants == undefined) {
-    console.error("Challenge has no participants field. User :: ", challenge);
+    console.error(
+      "Challenge has no participants field. Challenge :: ",
+      challenge
+    );
+  }
+
+  if (ownerId == undefined) {
+    console.error("Challenge has no owner field. Challenge :: ", challenge);
   }
 
   const deviceTokens = [];
 
   for (const userId of participants) {
     console.log("User ID", userId);
+
+    if (userId == ownerId) {
+      continue;
+    }
 
     const user = await db.doc("users/" + userId).get();
 
@@ -42,10 +54,18 @@ async function challengeCreationNotify(challenge) {
     }
   }
 
+  const owner = await db.doc("users/" + ownerId).get();
+
+  const ownerName = owner.data().name;
+
   const payload = {
     notification: {
-      title: "Yo bru!",
-      body: challenge.ingredient,
+      title: "Yo bru! You been challenged BRU!",
+      body:
+        ownerName +
+        " has challenged you to a " +
+        challenge.ingredient +
+        " cookoff!",
       sound: "default"
     }
   };
