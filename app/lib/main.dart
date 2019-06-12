@@ -3,7 +3,6 @@ import 'package:cookoff/models/user.dart';
 import 'package:cookoff/screens/main.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/user_widget.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,12 +20,6 @@ Future main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
     statusBarColor: Colors.amber,
   ));
-
-  final FirebaseMessaging _messaging = FirebaseMessaging();
-
-  var token = await _messaging.getToken();
-
-  print("TOKEN:: $token");
 
   runApp(widget);
 }
