@@ -20,15 +20,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-  var addFriendsOverlay = FriendsAdderOverlay(
-    visible: false,
-  );
-
   @override
   Widget build(BuildContext context) {
     var historyCardController = CardController();
     var historyCardTitleHeight = Scaler(context).scale(180);
     var historyCardContentHeight = Scaler(context).scale(360);
+    var addFriendsOverlay = FriendsAdderOverlay(
+      visible: false,
+    );
 
     var challenges = InjectorWidget.of(context)
         .injector
@@ -123,6 +122,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               },
             ),
           ),
+          addFriendsOverlay,
         ],
       ),
     );
