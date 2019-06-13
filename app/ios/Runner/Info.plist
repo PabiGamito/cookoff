@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Cookoff</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -18,20 +20,31 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.839181180751-mjecdd8esc7ftap4o1ipua9pdpsb877b</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow Cookoff to use the camera to take pictures of the dish that you've made?</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow Cookoff to use the camera to take pictures of the dish that you've made?</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow Cookoff to use the pictures on your phone of the dish that you've made?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSCameraUsageDescription</key>
-    <string>Allow Cookoff to use the camera to take pictures of the dish that you've made?</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Allow Cookoff to use the camera to take pictures of the dish that you've made?</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Allow Cookoff to use the pictures on your phone of the dish that you've made?</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -47,20 +60,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
-  <!-- Google Sign-in Section -->
-  <key>CFBundleURLTypes</key>
-  <array>
-  	<dict>
-  		<key>CFBundleTypeRole</key>
-  		<string>Editor</string>
-  		<key>CFBundleURLSchemes</key>
-  		<array>
-  			<!-- Copied from GoogleServices-Info.plist key REVERSE_CLIENT_ID -->
-  			<string>com.googleusercontent.apps.839181180751-mjecdd8esc7ftap4o1ipua9pdpsb877b</string>
-  		</array>
-  	</dict>
-  </array>
-  <!-- End of the Google Sign-in Section -->
 </dict>
 </plist>
