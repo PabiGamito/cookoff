@@ -47,6 +47,7 @@ class AuthFirebaseAdapter implements AuthProvider {
         'email': user.email,
         'profilePictureUrl': user.photoUrl,
         'friends': [],
+        'dietName': 'all',
         'deviceTokens': [token],
       });
     }

@@ -2,6 +2,7 @@ import 'package:cookoff/models/diet.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
+import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -26,10 +27,20 @@ class DietChoiceCarousel extends StatelessWidget {
         });
   }
 
-  ListView _createList(final Iterable<Diet> diets) => ListView(
+  ListView _createList(final Iterable<Diet> diets) {
+    var children = [for (var diet in diets) DietItem(diet: diet)];
+    return ListView.separated(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
-      children: [for (var diet in diets) DietItem(diet: diet)]);
+      itemCount: children.length,
+      itemBuilder: (BuildContext context, int i) => children[i],
+      separatorBuilder: (BuildContext context, int index) {
+        return Container(
+          width: 20,
+        );
+      },
+    );
+  }
 }
 
 class DietItem extends StatelessWidget {
@@ -39,43 +50,73 @@ class DietItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Ingredient>(
-        stream: InjectorWidget.of(context)
-            .injector
-            .ingredientProvider
-            .ingredientStream(diet.iconicIngredient),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
-          var ingredient = snapshot.data;
-          return Container(
-            width: Scaler(context).scale(160),
-            decoration: BoxDecoration(
-                color: Color.lerp(ingredient.color, Colors.black54, 0.1),
-                borderRadius: BorderRadius.circular(Scaler(context).scale(10))),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: Scaler(context).scale(50),
-                    height: Scaler(context).scale(50),
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(ingredient.imgPath))),
-                  ),
-                  Text(
-                    diet.name.toUpperCase(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Montserrat',
-                        letterSpacing: 2),
-                  ),
-                ],
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Switch diet?'),
+              content: Text(
+                  'Would you like to switch your diet to ${diet.name}?'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('no'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('yes'),
+                  onPressed: () {
+                    InjectorWidget.of(context)
+                        .injector
+                        .userProvider
+                        .changeDiet(UserWidget.of(context).user, diet.name);
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
+      },
+      child: StreamBuilder<Ingredient>(
+          stream: InjectorWidget.of(context)
+              .injector
+              .ingredientProvider
+              .ingredientStream(diet.iconicIngredient),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
+            var ingredient = snapshot.data;
+            return Container(
+              width: Scaler(context).scale(160),
+              decoration: BoxDecoration(
+                  color: Color.lerp(ingredient.color, Colors.black54, 0.1),
+                  borderRadius:
+                      BorderRadius.circular(Scaler(context).scale(10))),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: Scaler(context).scale(50),
+                      height: Scaler(context).scale(50),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(ingredient.imgPath))),
+                    ),
+                    Text(
+                      diet.name.toUpperCase(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Montserrat',
+                          letterSpacing: 2),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }
