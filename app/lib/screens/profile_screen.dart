@@ -35,8 +35,6 @@ class ProfileScreenState extends State<ProfileScreen> {
         .challengeProvider
         .archivedChallengesStream(UserWidget.of(context).user.id);
 
-    var diet = UserWidget.of(context).user.dietName;
-
     var headerCard = ScrollableCard(
       bounce: false,
       scrollable: false,

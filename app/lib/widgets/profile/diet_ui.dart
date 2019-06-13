@@ -22,7 +22,6 @@ class DietChoiceCarousel extends StatelessWidget {
           return Container(
               width: MediaQuery.of(context).size.width,
               height: Scaler(context).scale(120),
-              margin: EdgeInsets.only(left: Scaler(context).scale(20)),
               child: _createList(snapshot.data));
         });
   }
@@ -35,9 +34,7 @@ class DietChoiceCarousel extends StatelessWidget {
       itemCount: children.length,
       itemBuilder: (BuildContext context, int i) => children[i],
       separatorBuilder: (BuildContext context, int index) {
-        return Container(
-          width: 20,
-        );
+        return Container();
       },
     );
   }
@@ -90,6 +87,9 @@ class DietItem extends StatelessWidget {
             var ingredient = snapshot.data;
             return Container(
               width: Scaler(context).scale(160),
+              margin: EdgeInsets.only(
+                  left: Scaler(context).scale(10),
+                  right: Scaler(context).scale(10)),
               decoration: BoxDecoration(
                   color: Color.lerp(ingredient.color, Colors.black54, 0.1),
                   borderRadius:
