@@ -9,6 +9,7 @@ class User extends Equatable {
   final String name;
   final String email;
   final List<String> friends;
+  final Set<String> deviceTokens;
   final String profilePictureUrl;
   final String dietName;
 
@@ -17,6 +18,7 @@ class User extends Equatable {
       this.name,
       this.email,
       this.friends = const [],
+      this.deviceTokens,
       this.profilePictureUrl,
       this.dietName});
 
@@ -37,6 +39,7 @@ class User extends Equatable {
       name: name,
       email: email,
       friends: friends,
+      deviceTokens: deviceTokens,
       profilePictureUrl: profilePictureUrl,
       dietName: dietName);
 
