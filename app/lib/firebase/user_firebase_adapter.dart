@@ -42,7 +42,7 @@ class UserFirebaseAdapter implements UserProvider {
       // Update both users in database
       Future.wait([updateUser(friend), updateUser(currentUser)]);
       return true;
-    } catch (e) {
+    } on StateError {
       return false;
     }
   }
