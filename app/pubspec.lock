@@ -349,15 +349,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.18"
-  link_preview:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "38fae3fd103c4c9bf5a43fe6d86421b173161cf7"
-      url: "https://github.com/devdennysegura/flutter-link-preview"
-    source: git
-    version: "0.0.1"
   logging:
     dependency: transitive
     description:
