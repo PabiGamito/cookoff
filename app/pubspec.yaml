@@ -31,6 +31,12 @@ dev_dependencies:
     sdk: flutter
   json_serializable: ^3.0.0
   mockito: ^4.1.0
+  flutter_launcher_icons: ^0.7.2
+
+flutter_icons:
+  image_path: "assets/icons/logo150.png"
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true
