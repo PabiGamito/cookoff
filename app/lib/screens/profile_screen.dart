@@ -2,6 +2,7 @@ import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/add_friends.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
+import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
@@ -36,6 +37,50 @@ class ProfileScreenState extends State<ProfileScreen> {
 
     var diet = UserWidget.of(context).user.dietName;
 
+    var headerCard = ScrollableCard(
+      bounce: false,
+      scrollable: false,
+      minOffset: 0,
+      maxOffset: 0,
+      startingOffset: 0,
+      cardBuilder: (context, scrolledAmount, fullyExpanded) {
+        // TODO: Add slide down animation
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.amber,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                    top: Scaler(context).scale(30),
+                    bottom: Scaler(context).scale(25)),
+                child: HomeHeader(
+                    user: UserWidget.of(context).user, notificationCount: 0),
+              ),
+              ProfileFriendsCarousel(
+                users: UserWidget.of(context)
+                    .user
+                    .friends
+                    .map((String id) => InjectorWidget.of(context)
+                        .injector
+                        .userProvider
+                        .userStream(id))
+                    .toList(),
+                size: Scaler(context).scale(100),
+                color: Colors.pink,
+                maxIcons: 10,
+                onAddMore: () {
+                  addFriendsOverlay.toggleVisibility();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
     var historyCard = ScrollableCard(
       controler: historyCardController,
       minOffset: historyCardTitleHeight,
@@ -65,38 +110,18 @@ class ProfileScreenState extends State<ProfileScreen> {
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Stack(
         children: <Widget>[
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.only(
-                    top: Scaler(context).scale(30),
-                    bottom: Scaler(context).scale(25)),
-                child: HomeHeader(
-                    user: UserWidget.of(context).user, notificationCount: 0),
-              ),
-              ProfileFriendsCarousel(
-                users: UserWidget.of(context)
-                    .user
-                    .friends
-                    .map((String id) => InjectorWidget.of(context)
-                        .injector
-                        .userProvider
-                        .userStream(id))
-                    .toList(),
-                size: Scaler(context).scale(100),
-                color: Colors.pink,
-                maxIcons: 10,
-                onAddMore: () {
-                  addFriendsOverlay.toggleVisibility();
-                },
-              ),
-            ],
-          ),
           ScrollableLayout(
             minScroll: 0,
             maxScroll: 0,
-            scrollableCards: [historyCard],
+            scrollableCards: [headerCard, historyCard],
+          ),
+          Container(
+            margin: EdgeInsets.only(top: Scaler(context).scale(5)),
+            child: GameBackButton(
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
         ],
       ),
