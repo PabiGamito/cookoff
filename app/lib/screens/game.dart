@@ -42,7 +42,10 @@ class _GameScreenState extends State<GameScreen> {
   _popScreen() {
     // Close the friends tab on back press
     if (_friendsTabOpen) {
-      _friendsTabOpen = false;
+      setState(() {
+        _friendsTabOpen = false;
+      });
+
       return;
     }
 
@@ -106,11 +109,9 @@ class _GameScreenState extends State<GameScreen> {
                               FriendProfiles(
                                   color: ingredient.color,
                                   onTap: () {
-                                    setState(
-                                      () {
-                                        _friendsTabOpen = true;
-                                      },
-                                    );
+                                    setState(() {
+                                      _friendsTabOpen = true;
+                                    });
                                   },
                                   bloc: _bloc),
                             ],
@@ -132,11 +133,9 @@ class _GameScreenState extends State<GameScreen> {
                   visible: _friendsTabOpen,
                   child: FriendsTab(
                       onClose: () {
-                        setState(
-                          () {
-                            _friendsTabOpen = false;
-                          },
-                        );
+                        setState(() {
+                          _friendsTabOpen = false;
+                        });
                       },
                       bloc: _bloc),
                 ),
