@@ -1,10 +1,9 @@
+import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/titled_section.dart';
 import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import '../scalar.dart';
 
 // Friend adder overlay
 class FriendsAdderOverlay extends StatefulWidget {
