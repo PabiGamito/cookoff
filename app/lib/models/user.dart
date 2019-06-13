@@ -17,7 +17,7 @@ class User extends Equatable {
       {this.id,
       this.name,
       this.email,
-      this.deviceTokens,
+      this.deviceTokens = const {},
       this.friends = const {},
       this.profilePictureUrl,
       this.dietName});
