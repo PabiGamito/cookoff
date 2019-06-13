@@ -15,16 +15,22 @@ class AuthFirebaseAdapter implements AuthProvider {
   static final Firestore _firestore = Firestore.instance;
 
   final FirebaseMessaging _messaging = FirebaseMessaging();
-
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final StreamController<User> _user = StreamController();
 
+  Stream<User> _innerStream;
+
   AuthFirebaseAdapter() {
     _firebaseAuth.onAuthStateChanged
-        .where((user) => user != null)
-        .listen((user) {
-          _user.sink.addStream(UserFirebaseAdapter().userStream(user.uid));
-        });
+        .where((event) => event != null)
+        .listen((event) {
+      var stream = UserFirebaseAdapter().userStream(event.uid);
+      _innerStream = stream;
+
+      stream.takeWhile((_) => _innerStream == stream).listen((user) {
+        _user.sink.add(user);
+      });
+    });
   }
 
   // Add user to users in firestore if user doesn't exist

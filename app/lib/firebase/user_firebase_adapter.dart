@@ -9,11 +9,13 @@ class UserFirebaseAdapter implements UserProvider {
 
   @override
   Stream<User> userStream(String id) => _firestore
-      .collection(_collection)
-      .document(id)
-      .snapshots()
-      .map((snapshot) =>
-          User.fromJson(snapshot.data..['id'] = snapshot.documentID));
+          .collection(_collection)
+          .document(id)
+          .snapshots()
+          .where((snapshot) => snapshot.exists)
+          .map((snapshot) {
+        return User.fromJson(snapshot.data..['id'] = snapshot.documentID);
+      });
 
   Future updateUser(User user) async => _firestore
       .collection(_collection)
