@@ -49,31 +49,34 @@ class DietItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: Text('Switch diet?'),
-                  content: Text(
-                      'Would you like to switch your diet to ${diet.name.toLowerCase()}?'),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Yes'),
-                      onPressed: () {
-                        InjectorWidget.of(context)
-                            .injector
-                            .userProvider
-                            .changeDiet(UserWidget.of(context).user, diet.name);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    FlatButton(
-                      child: Text('No'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                ));
+        if (UserWidget.of(context).user.dietName.toLowerCase() !=
+            diet.name.toLowerCase())
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text('Switch diet?'),
+                    content: Text(
+                        'Would you like to switch your diet to ${diet.name.toLowerCase()}?'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Yes'),
+                        onPressed: () {
+                          InjectorWidget.of(context)
+                              .injector
+                              .userProvider
+                              .changeDiet(
+                                  UserWidget.of(context).user, diet.name);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      FlatButton(
+                        child: Text('No'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
       },
       child: StreamBuilder<Ingredient>(
           stream: InjectorWidget.of(context)
@@ -85,36 +88,56 @@ class DietItem extends StatelessWidget {
               return Container();
             }
             var ingredient = snapshot.data;
-            return Container(
-              width: Scaler(context).scale(160),
-              margin: EdgeInsets.only(
-                  left: Scaler(context).scale(10),
-                  right: Scaler(context).scale(10)),
-              decoration: BoxDecoration(
-                  color: Color.lerp(ingredient.color, Colors.black54, 0.1),
-                  borderRadius:
-                      BorderRadius.circular(Scaler(context).scale(10))),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: Scaler(context).scale(50),
-                      height: Scaler(context).scale(50),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(ingredient.imgPath))),
+            return Stack(
+              children: <Widget>[
+                Container(
+                  width: Scaler(context).scale(160),
+                  margin: EdgeInsets.only(
+                      left: Scaler(context).scale(10),
+                      right: Scaler(context).scale(10)),
+                  decoration: BoxDecoration(
+                      color: Color.lerp(ingredient.color, Colors.black54, 0.1),
+                      borderRadius:
+                          BorderRadius.circular(Scaler(context).scale(10))),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: Scaler(context).scale(50),
+                          height: Scaler(context).scale(50),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(ingredient.imgPath))),
+                        ),
+                        Text(
+                          diet.name.toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Montserrat',
+                              letterSpacing: 2),
+                        ),
+                      ],
                     ),
-                    Text(
-                      diet.name.toUpperCase(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Montserrat',
-                          letterSpacing: 2),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                if (UserWidget.of(context).user.dietName.toLowerCase() ==
+                    diet.name.toLowerCase())
+                  Container(
+                    width: Scaler(context).scale(160),
+                    margin: EdgeInsets.only(
+                        left: Scaler(context).scale(10),
+                        right: Scaler(context).scale(10)),
+                    color: Color.lerp(Colors.amber, Color(0x33FFFFFF), 0.7),
+                    child: Center(
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: Scaler(context).scale(50),
+                      ),
+                    ),
+                  )
+              ],
             );
           }),
     );
