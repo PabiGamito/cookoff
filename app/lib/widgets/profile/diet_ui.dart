@@ -14,71 +14,66 @@ class DietChoiceCarousel extends StatelessWidget {
             .ingredientProvider
             .dietsStream(),
         builder: (context, snapshot) {
-          var diets = snapshot.data == null
-              ? []
-              : snapshot.data.map((Diet d) {
-                  return StreamBuilder<Ingredient>(
-                      stream: InjectorWidget.of(context)
-                          .injector
-                          .ingredientProvider
-                          .ingredientStream(d.iconicIngredient),
-                      builder: (context, snapshot) {
-                        var ingredient = snapshot.data;
-                        print(ingredient?.name);
-                        return ingredient != null
-                            ? Container(
-                                width: Scaler(context).scale(160),
-                                decoration: BoxDecoration(
-                                    color: Color.lerp(
-                                        ingredient.color, Colors.black54, 0.1),
-                                    borderRadius: BorderRadius.circular(
-                                        Scaler(context).scale(10))),
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        width: Scaler(context).scale(50),
-                                        height: Scaler(context).scale(50),
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    ingredient.imgPath))),
-                                      ),
-                                      Text(
-                                        d.name.toUpperCase(),
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Montserrat',
-                                            letterSpacing: 2),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                width: 300,
-                                height: 300,
-                              );
-                      });
-                }).toList();
+          if (!snapshot.hasData) {
+            return Container();
+          }
 
           return Container(
-            width: MediaQuery.of(context).size.width,
-            height: Scaler(context).scale(120),
-            margin: EdgeInsets.only(left: Scaler(context).scale(20)),
-            child: ListView.separated(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: diets.length,
-              itemBuilder: (BuildContext context, int index) {
-                return diets[index];
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Container(
-                  width: 30,
-                );
-              },
+              width: MediaQuery.of(context).size.width,
+              height: Scaler(context).scale(120),
+              margin: EdgeInsets.only(left: Scaler(context).scale(20)),
+              child: _createList(snapshot.data));
+        });
+  }
+
+  ListView _createList(final Iterable<Diet> diets) => ListView(
+      physics: BouncingScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      children: [for (var diet in diets) DietItem(diet: diet)]);
+}
+
+class DietItem extends StatelessWidget {
+  final Diet diet;
+
+  const DietItem({Key key, this.diet}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<Ingredient>(
+        stream: InjectorWidget.of(context)
+            .injector
+            .ingredientProvider
+            .ingredientStream(diet.iconicIngredient),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+          var ingredient = snapshot.data;
+          return Container(
+            width: Scaler(context).scale(160),
+            decoration: BoxDecoration(
+                color: Color.lerp(ingredient.color, Colors.black54, 0.1),
+                borderRadius: BorderRadius.circular(Scaler(context).scale(10))),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: Scaler(context).scale(50),
+                    height: Scaler(context).scale(50),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(ingredient.imgPath))),
+                  ),
+                  Text(
+                    diet.name.toUpperCase(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Montserrat',
+                        letterSpacing: 2),
+                  ),
+                ],
+              ),
             ),
           );
         });
