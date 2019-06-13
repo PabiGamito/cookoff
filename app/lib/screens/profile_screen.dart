@@ -25,7 +25,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     var historyCardController = CardController();
     var historyCardTitleHeight = Scaler(context).scale(180);
-    var historyCardContentHeight = Scaler(context).scale(360);
+    var historyCardContentHeight = Scaler(context).scale(390);
     var addFriendsOverlay = FriendsAdderOverlay(
       visible: false,
     );

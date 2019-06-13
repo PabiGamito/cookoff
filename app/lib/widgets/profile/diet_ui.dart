@@ -55,28 +55,28 @@ class DietItem extends StatelessWidget {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Switch diet?'),
-              content: Text(
-                  'Would you like to switch your diet to ${diet.name}?'),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('no'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                FlatButton(
-                  child: Text('yes'),
-                  onPressed: () {
-                    InjectorWidget.of(context)
-                        .injector
-                        .userProvider
-                        .changeDiet(UserWidget.of(context).user, diet.name);
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ));
+                  title: Text('Switch diet?'),
+                  content: Text(
+                      'Would you like to switch your diet to ${diet.name.toLowerCase()}?'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Yes'),
+                      onPressed: () {
+                        InjectorWidget.of(context)
+                            .injector
+                            .userProvider
+                            .changeDiet(UserWidget.of(context).user, diet.name);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('No'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
       },
       child: StreamBuilder<Ingredient>(
           stream: InjectorWidget.of(context)
