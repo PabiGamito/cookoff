@@ -22,6 +22,7 @@ dependencies:
   image_picker: ^0.6.0+9
   firebase_storage: ^3.0.1
   firebase_messaging: ^5.0.2
+  url_launcher: ^5.0.3
   link_preview:
     git: https://github.com/devdennysegura/flutter-link-preview
   flutter_native_image:
