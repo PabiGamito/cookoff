@@ -45,7 +45,7 @@ class _FriendsTabState extends State<FriendsTab> {
 
   @override
   Widget build(BuildContext context) {
-    var friends = UserWidget.of(context).user.friends;
+    var friends = UserWidget.of(context).user.friends.toList();
     var length = friends?.length ?? 0;
 
     if (_friends == null || _friends.length != length) {
