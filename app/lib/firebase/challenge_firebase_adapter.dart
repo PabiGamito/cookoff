@@ -7,13 +7,27 @@ class ChallengeFirebaseAdapter implements ChallengeProvider {
 
   static final Firestore _firestore = Firestore.instance;
 
-  @override
-  Stream<Iterable<Challenge>> challengesStream(String user) => _firestore
+  // Return all challenges
+  Stream<Iterable<Challenge>> allChallengesStream(String user) => _firestore
       .collection(_collection)
       .where('participants', arrayContains: user)
       .snapshots()
       .map((snapshot) => snapshot.documents.map((document) =>
           Challenge.fromJson(document.data..['id'] = document.documentID)));
+
+  // Return challenges that expired at most 1 day ago, or are still ongoing
+  @override
+  Stream<Iterable<Challenge>> challengesStream(String user) =>
+      allChallengesStream(user).map((challenges) => challenges.where(
+          (challenge) => challenge.end
+              .isAfter(DateTime.now().subtract(Duration(days: 1)))));
+
+  // Return challenges that expired more than one day ago
+  @override
+  Stream<Iterable<Challenge>> archivedChallengesStream(String user) =>
+      allChallengesStream(user).map((challenges) => challenges.where(
+          (challenge) => challenge.end
+              .isBefore(DateTime.now().subtract(Duration(days: 1)))));
 
   @override
   Future<Challenge> addChallenge(Challenge challenge) async {
