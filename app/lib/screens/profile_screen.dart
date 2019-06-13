@@ -5,6 +5,7 @@ import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
+import 'package:cookoff/widgets/profile/diet_ui.dart';
 import 'package:cookoff/widgets/profile_icon.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/scrollable_layout.dart';
@@ -74,6 +75,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   addFriendsOverlay.toggleVisibility();
                 },
               ),
+              DietChoiceCarousel(),
             ],
           ),
         );

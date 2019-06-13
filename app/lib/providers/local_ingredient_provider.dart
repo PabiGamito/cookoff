@@ -10,11 +10,26 @@ import 'package:flutter/material.dart';
 
 class LocalIngredientProvider extends IngredientProvider {
   List<IngredientSection> sections;
-  Map<String, Diet> diets = {
-    'vegetarian': Diet('Vegetarian', ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'bacon']),
-    'gluten_free': Diet('Gluten Free', ['wheat']),
-    'vegan': Diet('Vegan', ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'eggs', 'cheese', 'bacon']),
-    'pescetarian': Diet('Pescetarian', ['ham', 'meat', 'saussage', 'bacon'])
+  static final Map<String, Diet> diets = {
+    'all': NoDiet(),
+    'vegetarian': Diet('Vegetarian',
+        ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'bacon'], 'broccoli'),
+    'gluten_free': Diet('Gluten Free', ['wheat'], 'pear'),
+    'vegan': Diet(
+        'Vegan',
+        [
+          'ham',
+          'meat',
+          'saussage',
+          'shrimp',
+          'fish',
+          'eggs',
+          'cheese',
+          'bacon'
+        ],
+        'tomato'),
+    'pescetarian':
+        Diet('Pescetarian', ['ham', 'meat', 'saussage', 'bacon'], 'fish')
   };
 
   @override
@@ -106,128 +121,147 @@ class LocalIngredientSection extends IngredientSection {
       {String title, Iterable<String> ingredients, Diet diet})
       : super(
             title,
-            ingredients.where((name) => !diet.filteredIngredients.contains(name))
+            ingredients
+                .where((name) => !diet.filteredIngredients.contains(name))
                 .map((name) => Ingredient(
-                  name,
-                  'assets/ingredients/$name.png',
-                  ingredientColor[name] ?? Color(0xFF7C54EA),
-                )));
+                      name,
+                      'assets/ingredients/$name.png',
+                      ingredientColor[name] ?? Color(0xFF7C54EA),
+                    )));
 }
 
 class FeaturedSection extends LocalIngredientSection {
   FeaturedSection(Diet diet)
-      : super(title: 'Featured', ingredients: [
-          'cheese',
-          'shrimp',
-          'jelly',
-          'strawberry',
-          'garlic',
-        ], diet: diet);
+      : super(
+            title: 'Featured',
+            ingredients: [
+              'cheese',
+              'shrimp',
+              'jelly',
+              'strawberry',
+              'garlic',
+            ],
+            diet: diet);
 }
 
 class BasicSection extends LocalIngredientSection {
   BasicSection(Diet diet)
-      : super(title: 'Basics', ingredients: [
-          'bacon',
-          'eggs',
-          'flour',
-          'ham',
-          'meat',
-          'sausage',
-          'baguette',
-          'toast',
-          'shrimp',
-          'pickles',
-          'fish',
-          'cheese',
-        ], diet: diet);
+      : super(
+            title: 'Basics',
+            ingredients: [
+              'bacon',
+              'eggs',
+              'flour',
+              'ham',
+              'meat',
+              'sausage',
+              'baguette',
+              'toast',
+              'shrimp',
+              'pickles',
+              'fish',
+              'cheese',
+            ],
+            diet: diet);
 }
 
 class VegetableSection extends LocalIngredientSection {
   VegetableSection(Diet diet)
-      : super(title: 'Veggies', ingredients: [
-          'aubergine',
-          'beans',
-          'broccoli',
-          'cabbage',
-          'carrot',
-          'cauliflower',
-          'chives',
-          'salad',
-          'corn',
-          'cucumber',
-          'garlic',
-          'onion',
-          'pumpkin',
-          'radish',
-          'tomato',
-          'pepper',
-        ], diet: diet);
+      : super(
+            title: 'Veggies',
+            ingredients: [
+              'aubergine',
+              'beans',
+              'broccoli',
+              'cabbage',
+              'carrot',
+              'cauliflower',
+              'chives',
+              'salad',
+              'corn',
+              'cucumber',
+              'garlic',
+              'onion',
+              'pumpkin',
+              'radish',
+              'tomato',
+              'pepper',
+            ],
+            diet: diet);
 }
 
 class FruitSection extends LocalIngredientSection {
   FruitSection(Diet diet)
-      : super(title: 'Fruits', ingredients: [
-          'apple',
-          'banana',
-          'blueberries',
-          'cherries',
-          'grapes',
-          'lemon',
-          'lime',
-          'orange',
-          'peach',
-          'pear',
-          'pomegranate',
-          'raspberry',
-          'strawberry',
-          'watermelon',
-        ], diet: diet);
+      : super(
+            title: 'Fruits',
+            ingredients: [
+              'apple',
+              'banana',
+              'blueberries',
+              'cherries',
+              'grapes',
+              'lemon',
+              'lime',
+              'orange',
+              'peach',
+              'pear',
+              'pomegranate',
+              'raspberry',
+              'strawberry',
+              'watermelon',
+            ],
+            diet: diet);
 }
 
 class TreatSection extends LocalIngredientSection {
   TreatSection(Diet diet)
-      : super(title: 'Treats', ingredients: [
-          'chocolate',
-          'honey',
-          'jam',
-          'jelly',
-        ], diet: diet);
+      : super(
+            title: 'Treats',
+            ingredients: [
+              'chocolate',
+              'honey',
+              'jam',
+              'jelly',
+            ],
+            diet: diet);
 }
 
 class VeganSection extends LocalIngredientSection {
   VeganSection(Diet diet)
-      : super(title: 'Vegan', ingredients: [
-          'flour',
-          'aubergine',
-          'beans',
-          'broccoli',
-          'cabbage',
-          'carrot',
-          'cauliflower',
-          'chives',
-          'salad',
-          'corn',
-          'cucumber',
-          'garlic',
-          'onion',
-          'pumpkin',
-          'radish',
-          'tomato',
-          'pepper',
-          'apple',
-          'banana',
-          'blueberries',
-          'cherries',
-          'grapes',
-          'lemon',
-          'lime',
-          'orange',
-          'peach',
-          'pear',
-          'pomegranate',
-          'raspberry',
-          'strawberry',
-          'watermelon',
-        ], diet: diet);
+      : super(
+            title: 'Vegan',
+            ingredients: [
+              'flour',
+              'aubergine',
+              'beans',
+              'broccoli',
+              'cabbage',
+              'carrot',
+              'cauliflower',
+              'chives',
+              'salad',
+              'corn',
+              'cucumber',
+              'garlic',
+              'onion',
+              'pumpkin',
+              'radish',
+              'tomato',
+              'pepper',
+              'apple',
+              'banana',
+              'blueberries',
+              'cherries',
+              'grapes',
+              'lemon',
+              'lime',
+              'orange',
+              'peach',
+              'pear',
+              'pomegranate',
+              'raspberry',
+              'strawberry',
+              'watermelon',
+            ],
+            diet: diet);
 }
