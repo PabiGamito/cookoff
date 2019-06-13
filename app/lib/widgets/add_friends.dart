@@ -8,24 +8,34 @@ import 'package:flutter/widgets.dart';
 // Friend adder overlay
 class FriendsAdderOverlay extends StatefulWidget {
   final bool _toShow;
-  final Function _onTap;
+  final Function _onClose;
 
-  FriendsAdderOverlay({bool visible = false, Function onTap})
+  _FriendsAdderOverlayState state;
+
+  FriendsAdderOverlay({bool visible = false, Function onClose})
       : _toShow = visible,
-        _onTap = onTap;
+        _onClose = onClose {
+    state = _FriendsAdderOverlayState(_toShow, _onClose);
+  }
+
+  void toggleVisibility() {
+    state.toggleVisibility();
+  }
 
   @override
   State<StatefulWidget> createState() {
-    return _FriendsAdderOverlayState(_toShow, _onTap);
+    return state;
   }
 }
 
 class _FriendsAdderOverlayState extends State<FriendsAdderOverlay> {
   final Function _onTap;
 
+  bool _visible = false;
+
   // TODO: Bloc it out
   String _currentText = "";
-  bool _addFriendsScreen;
+
   bool _submittedRequest = false;
   bool _friendAdded = false;
 
@@ -46,44 +56,55 @@ class _FriendsAdderOverlayState extends State<FriendsAdderOverlay> {
     });
   }
 
-  _FriendsAdderOverlayState(this._addFriendsScreen, this._onTap);
+  void toggleVisibility() {
+    setState(() {
+      _visible = !_visible;
+    });
+  }
+
+  _FriendsAdderOverlayState(bool visible, this._onTap) {
+    _visible = visible;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Visibility(
-          visible: _addFriendsScreen,
-          child: Stack(
-            children: [
-              OverlayBackground(
-                onTap: () {
-                  if (_onTap != null) _onTap();
-                  setState(() {
-                    _addFriendsScreen = false;
-                  });
-                },
-              ),
-              Center(
-                child: AddFriendCard(
-                  button: SubmitUIButton(
-                    currentText: _currentText,
-                    onTap: submitAddRequest,
-                    requestSuccessful: _friendAdded,
-                    submittedRequest: _submittedRequest,
-                  ),
-                  textField: AddFriendsTextField(
-                    onChange: (String input) {
-                      setState(() {
-                        _currentText = input;
-                        _submittedRequest = false;
-                      });
-                    },
-                    onSubmit: submitAddRequest,
+        IgnorePointer(
+          ignoring: !_visible,
+          child: Opacity(
+            opacity: _visible ? 1.0 : 0.0,
+            child: Stack(
+              children: [
+                OverlayBackground(
+                  onTap: () {
+                    if (_onTap != null) _onTap();
+                    setState(() {
+                      _visible = false;
+                    });
+                  },
+                ),
+                Center(
+                  child: AddFriendCard(
+                    button: SubmitUIButton(
+                      currentText: _currentText,
+                      onTap: submitAddRequest,
+                      requestSuccessful: _friendAdded,
+                      submittedRequest: _submittedRequest,
+                    ),
+                    textField: AddFriendsTextField(
+                      onChange: (String input) {
+                        setState(() {
+                          _currentText = input;
+                          _submittedRequest = false;
+                        });
+                      },
+                      onSubmit: submitAddRequest,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

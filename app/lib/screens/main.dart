@@ -3,7 +3,7 @@ import 'package:cookoff/models/diet.dart';
 import 'package:cookoff/providers/auth_provider.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
-import 'package:cookoff/widgets/add_friends.dart';
+import 'package:cookoff/screens/profile_screen.dart';
 import 'package:cookoff/widgets/auth_builder.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
 import 'package:cookoff/widgets/home_header.dart';
@@ -72,24 +72,37 @@ class AuthorizedMainScreen extends StatelessWidget {
       maxOffset: 0,
       startingOffset: 0,
       cardBuilder: (context, scrolledAmount, fullyExpanded) {
-        return Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.amber,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.only(
-                    top: Scaler(context).scale(30),
-                    bottom: Scaler(context).scale(25)),
-                child: HomeHeader(
-                    user: UserWidget.of(context).user, notificationCount: 0),
+        // TODO: Add slide down animation
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Scaffold(
+                      body: ProfileScreen(),
+                    ),
               ),
-              Expanded(
-                child: Container(),
-              ),
-            ],
+            );
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.amber,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(
+                      top: Scaler(context).scale(30),
+                      bottom: Scaler(context).scale(25)),
+                  child: HomeHeader(
+                      user: UserWidget.of(context).user, notificationCount: 0),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -139,7 +152,7 @@ class AuthorizedMainScreen extends StatelessWidget {
           padding: false,
           backgroundColor: Color(0xFFF5F5F5),
           child: ChallengesSection(
-            challengeProvider,
+            challengeProvider.challengesStream(UserWidget.of(context).user.id),
             scrollable: fullyExpanded,
             onAddChallenge: _showAllIngredients,
           ),
@@ -162,7 +175,6 @@ class AuthorizedMainScreen extends StatelessWidget {
               challengesCard,
             ],
           ),
-          FriendsAdderOverlay(visible: true),
         ],
       ),
     );

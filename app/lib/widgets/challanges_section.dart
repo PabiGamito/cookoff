@@ -1,7 +1,6 @@
 import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/models/user.dart';
-import 'package:cookoff/providers/challenge_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/countdown.dart';
@@ -11,15 +10,22 @@ import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 
 class ChallengesSection extends StatelessWidget {
-  final ChallengeProvider _challengeProvider;
+  final Stream _challenges;
   final bool _scrollable;
   final void Function(BuildContext) _onAddChallenge;
+  final String _title;
+  final String _fillText;
 
-  ChallengesSection(ChallengeProvider challengeProvider,
-      {bool scrollable = true, void Function(BuildContext) onAddChallenge})
-      : _challengeProvider = challengeProvider,
+  ChallengesSection(Stream<Iterable<Challenge>> challenges,
+      {bool scrollable = true,
+      void Function(BuildContext) onAddChallenge,
+      String title = "My Challenges",
+      String noChallengesFill = "NO CURRENT\nCHALLENGES"})
+      : _challenges = challenges,
         _scrollable = scrollable,
-        _onAddChallenge = onAddChallenge ?? ((c) {});
+        _title = title,
+        _fillText = noChallengesFill,
+        _onAddChallenge = onAddChallenge;
 
   @override
   Widget build(BuildContext context) => Column(children: <Widget>[
@@ -35,15 +41,16 @@ class ChallengesSection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'My challenges',
+                    _title,
                     style: TextStyle(
                         fontSize: Scaler(context).scale(25),
                         fontFamily: 'Montserrat'),
                     textAlign: TextAlign.left,
                   ),
-                  CircleAddButton(
-                    onTap: () => _onAddChallenge(context),
-                  ),
+                  if (_onAddChallenge != null)
+                    CircleAddButton(
+                      onTap: () => _onAddChallenge(context),
+                    ),
                 ],
               ),
               Container(
@@ -65,11 +72,10 @@ class ChallengesSection extends StatelessWidget {
                     left: Scaler(context).scale(30),
                     right: Scaler(context).scale(30)),
                 child: StreamBuilder<Iterable<Challenge>>(
-                    stream: _challengeProvider
-                        .challengesStream(UserWidget.of(context).user.id),
+                    stream: _challenges,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData || snapshot.data.length == 0) {
-                        return NoChallenges();
+                        return NoChallenges(fillText: _fillText);
                       }
 
                       return ChallengesList(
@@ -107,6 +113,10 @@ class CircleAddButton extends StatelessWidget {
 }
 
 class NoChallenges extends StatelessWidget {
+  final String _fillText;
+
+  const NoChallenges({String fillText}) : _fillText = fillText;
+
   @override
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -114,9 +124,9 @@ class NoChallenges extends StatelessWidget {
           Container(
             width: Scaler(context).scale(100),
             height: Scaler(context).scale(100),
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
                   'assets/icons/apple.png',
                 ),
                 fit: BoxFit.cover,
@@ -126,7 +136,7 @@ class NoChallenges extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: Scaler(context).scale(25)),
             child: Text(
-              'NO CURRENT\nCHALLENGES',
+              _fillText,
               style: TextStyle(
                   fontSize: Scaler(context).scale(21),
                   fontFamily: 'Montserrat',
