@@ -143,7 +143,12 @@ class _InspirationCard extends StatelessWidget {
 
                   return Column(
                     children: [
-                      for (String url in snapshot.data) LinkPreviewer(url: url)
+                      for (String url in snapshot.data)
+                        Container(
+                          padding: EdgeInsets.only(
+                              bottom: Scaler(context).scale(20)),
+                          child: LinkPreviewer(url: url),
+                        )
                     ],
                   );
                 }),

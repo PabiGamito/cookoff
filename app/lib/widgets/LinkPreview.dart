@@ -60,10 +60,16 @@ class LinkPreviewer extends StatelessWidget {
                 Container(
                   height: Scaler(context).scale(150),
                   width: Scaler(context).scale(150),
-                  child: Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(imageUrl),
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
+                ),
+                Container(
+                  width: Scaler(context).scale(15),
                 ),
                 Expanded(
                   child: Column(
@@ -86,7 +92,7 @@ class LinkPreviewer extends StatelessWidget {
                       ),
                       Text(
                         description,
-                        maxLines: 3,
+                        maxLines: 5,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: Colors.black54,
