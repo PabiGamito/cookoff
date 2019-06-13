@@ -60,12 +60,9 @@ async function challengeCreationNotify(challenge) {
 
   const payload = {
     notification: {
-      title: "New Cookoff Challenge!",
+      title: ownerName + " challenged you",
       body:
-        ownerName +
-        " has challenged you to a " +
-        challenge.ingredient +
-        " cookoff!",
+        "You have been challenged to a " + challenge.ingredient + " cookoff!",
       sound: "default"
     }
   };

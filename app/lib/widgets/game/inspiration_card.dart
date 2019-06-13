@@ -2,6 +2,7 @@ import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/injector.dart';
 import 'package:cookoff/models/challenge.dart';
+import 'package:cookoff/providers/local_recipe_provider.dart';
 import 'package:cookoff/providers/picture_provider.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
@@ -50,7 +51,9 @@ class InspirationCard extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) => _InspirationCard();
+  Widget build(BuildContext context) => _InspirationCard(
+        ingredientId: _challenge.ingredient,
+      );
 }
 
 class BrowseCard extends StatelessWidget {
@@ -120,20 +123,30 @@ class _GameScreenCard extends StatelessWidget {
 }
 
 class _InspirationCard extends StatelessWidget {
+  final String ingredientId;
+
+  const _InspirationCard({Key key, @required this.ingredientId})
+      : super(key: key);
+
   Widget build(BuildContext context) => RoundedCard(
         child: Container(
           child: TitledSection(
             title: "Some Inspiration...",
             underlineColor: Color(0xFF65D2EB),
-            child: Column(
-              children: [
-                LinkPreviewer(
-                    url: 'https://www.bbcgoodfood.com/recipes/lobster-rolls'),
-                LinkPreviewer(
-                    url:
-                        'https://www.bbcgoodfood.com/videos/healthy-steak-goulash-sauce'),
-              ],
-            ),
+            // TODO: Use injector for RecipeProvider instead
+            child: StreamBuilder<Iterable<String>>(
+                stream: LocalRecipeProvider().recipeUrlStream(ingredientId),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container();
+                  }
+
+                  return Column(
+                    children: [
+                      for (String url in snapshot.data) LinkPreviewer(url: url)
+                    ],
+                  );
+                }),
           ),
         ),
       );
