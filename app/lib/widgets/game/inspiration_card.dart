@@ -91,8 +91,8 @@ class _GameScreenCard extends StatelessWidget {
             child: StreamBuilder<Iterable<String>>(
               stream: _stream,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
+                if (!snapshot.hasData || snapshot.data.isEmpty) {
+                  return Container(height: Scaler(context).scale(27));
                 }
 
                 return Column(

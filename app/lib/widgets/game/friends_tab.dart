@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cookoff/blocs/game_bloc.dart';
 import 'package:cookoff/blocs/game_event.dart';
 import 'package:cookoff/models/challenge.dart';
@@ -25,7 +27,9 @@ class FriendsTab extends StatefulWidget {
 
 class _FriendsTabState extends State<FriendsTab> {
   final ScrollController _controller = ScrollController();
+
   double _height = 0;
+  List<User> _friends;
 
   _FriendsTabState() {
     _controller.addListener(() {
@@ -40,34 +44,64 @@ class _FriendsTabState extends State<FriendsTab> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Stack(alignment: AlignmentDirectional.bottomEnd, children: <Widget>[
-        Container(
-          height: MediaQuery.of(context).size.height,
-          color: Color(0x80000000),
-        ),
-        Container(height: _height, color: Colors.white),
-        ListView(
-            controller: _controller,
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.zero,
-            children: [
-              GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: widget._onClose,
-                  child: Container(
-                      height: MediaQuery.of(context).size.height -
-                          Scaler(context).scale(500))),
-              FriendsCard(bloc: widget._bloc)
-            ]),
-        FriendsSelectButton(onTap: widget._onClose)
-      ]);
+  Widget build(BuildContext context) {
+    var friends = UserWidget.of(context).user.friends;
+    var length = friends?.length ?? 0;
+
+    if (_friends == null || _friends.length != length) {
+      setState(() {
+        _friends = List(length);
+      });
+    }
+
+    for (var i = 0; i < length; i++) {
+      InjectorWidget.of(context)
+          .injector
+          .userProvider
+          .userStream(friends[i])
+          .listen((friend) {
+        setState(() {
+          _friends[i] = friend;
+        });
+      });
+    }
+
+    if (_friends.any((friend) => friend == null)) {
+      return Container();
+    }
+
+    return Stack(alignment: AlignmentDirectional.bottomEnd, children: <Widget>[
+      Container(
+        height: MediaQuery.of(context).size.height,
+        color: Color(0x80000000),
+      ),
+      Container(height: _height, color: Colors.white),
+      ListView(
+          controller: _controller,
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.zero,
+          children: [
+            GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: widget._onClose,
+                child: Container(
+                    height: MediaQuery.of(context).size.height -
+                        Scaler(context)
+                            .scale(min(500, 80 * length.toDouble() + 232)))),
+            FriendsCard(friends: _friends, bloc: widget._bloc)
+          ]),
+      FriendsSelectButton(onTap: widget._onClose)
+    ]);
+  }
 }
 
 class FriendsCard extends StatelessWidget {
+  final List<User> _friends;
   final GameBloc _bloc;
 
-  FriendsCard({GameBloc bloc}) : _bloc = bloc;
+  FriendsCard({List<User> friends, GameBloc bloc})
+      : _friends = friends,
+        _bloc = bloc;
 
   @override
   Widget build(BuildContext context) => RoundedCard(
@@ -76,32 +110,21 @@ class FriendsCard extends StatelessWidget {
           child: TitledSection(
               title: 'Add friends...',
               underlineColor: Color(0xFF65D2EB),
-              child: FriendsList(bloc: _bloc))));
+              child: FriendsList(friends: _friends, bloc: _bloc))));
 }
 
 class FriendsList extends StatelessWidget {
+  final List<User> _friends;
   final GameBloc _bloc;
 
-  FriendsList({GameBloc bloc}) : _bloc = bloc;
+  FriendsList({List<User> friends, GameBloc bloc})
+      : _friends = friends,
+        _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) {
-    var injector = InjectorWidget.of(context).injector;
-    var user = UserWidget.of(context).user;
-
-    return Column(children: [
-      for (var friend in user.friends)
-        StreamBuilder<User>(
-            stream: injector.userProvider.userStream(friend),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return FriendCard(bloc: _bloc, friend: snapshot.data);
-              } else {
-                return Container();
-              }
-            })
-    ]);
-  }
+  Widget build(BuildContext context) => Column(children: [
+        for (var friend in _friends) FriendCard(bloc: _bloc, friend: friend)
+      ]);
 }
 
 class FriendCard extends StatelessWidget {
