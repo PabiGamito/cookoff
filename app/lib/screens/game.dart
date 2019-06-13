@@ -7,6 +7,7 @@ import 'package:cookoff/widgets/game/friends_tab.dart';
 import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/game/inspiration_card.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
+import 'package:cookoff/widgets/scroll_bru.dart';
 import 'package:cookoff/widgets/sliver_card_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,20 +25,9 @@ class _GameScreenState extends State<GameScreen> {
   final GameBloc _bloc;
   final ScrollController _controller = ScrollController();
 
-  double _height = 0;
   bool _friendsTabOpen = false;
 
-  _GameScreenState(Challenge challenge) : _bloc = GameBloc(challenge) {
-    _controller.addListener(() {
-      setState(() {
-        if (_controller.hasClients && _controller.offset > 0) {
-          _height = _controller.offset;
-        } else {
-          _height = 0;
-        }
-      });
-    });
-  }
+  _GameScreenState(Challenge challenge) : _bloc = GameBloc(challenge);
 
   _popScreen() {
     // Close the friends tab on back press
@@ -84,7 +74,7 @@ class _GameScreenState extends State<GameScreen> {
               alignment: AlignmentDirectional.bottomCenter,
               children: <Widget>[
                 Container(color: ingredient.color),
-                Container(height: _height, color: Colors.white),
+                ScrollBru(color: Colors.white, controller: _controller),
                 CustomScrollView(
                   controller: _controller,
                   physics: BouncingScrollPhysics(),
