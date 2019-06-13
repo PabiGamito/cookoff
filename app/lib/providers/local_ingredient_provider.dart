@@ -13,23 +13,14 @@ class LocalIngredientProvider extends IngredientProvider {
   static final Map<String, Diet> diets = {
     'all': NoDiet(),
     'vegetarian': Diet('Vegetarian',
-        ['ham', 'meat', 'saussage', 'shrimp', 'fish', 'bacon'], 'broccoli'),
-    'gluten_free': Diet('Gluten Free', ['wheat'], 'pear'),
+        ['ham', 'meat', 'shrimp', 'fish', 'bacon', 'sausage'], 'broccoli'),
+    'gluten_free': Diet('Gluten Free', ['flour', 'baguette', 'toast'], 'pear'),
     'vegan': Diet(
         'Vegan',
-        [
-          'ham',
-          'meat',
-          'saussage',
-          'shrimp',
-          'fish',
-          'eggs',
-          'cheese',
-          'bacon'
-        ],
+        ['ham', 'meat', 'sausage', 'shrimp', 'fish', 'eggs', 'cheese', 'bacon'],
         'tomato'),
     'pescetarian':
-        Diet('Pescetarian', ['ham', 'meat', 'saussage', 'bacon'], 'fish')
+        Diet('Pescetarian', ['ham', 'meat', 'sausage', 'bacon'], 'fish')
   };
 
   @override

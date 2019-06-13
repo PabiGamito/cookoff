@@ -165,23 +165,37 @@ class GameStartButton extends StatelessWidget {
         _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) => _GameScreenButton(
-        color: _color,
-        text: "START",
-        icon: Container(
-          height: Scaler(context).scale(50),
-          width: Scaler(context).scale(50),
-          margin: EdgeInsets.only(right: Scaler(context).scale(15)),
-          child: Transform.rotate(
-            angle: 1.1,
-            child: Image.asset("assets/icons/rocket.png", color: _color),
-          ),
+  Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
+    bloc: _bloc,
+    builder: (context, snapshot) => _GameScreenButton(
+      color: _color,
+      bloc: _bloc,
+      text: "START",
+      icon: Container(
+        height: Scaler(context).scale(50),
+        width: Scaler(context).scale(50),
+        margin: EdgeInsets.only(right: Scaler(context).scale(15)),
+        child: Transform.rotate(
+          angle: 1.1,
+          child: Image.asset("assets/icons/rocket.png", color: _color),
         ),
-        onTap: () {
-          _bloc.dispatch(GameButton(
-              InjectorWidget.of(context).injector.challengeProvider));
-        },
-      );
+      ),
+      onTap: () {
+        if (snapshot.participants.length <= 1) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Can\'t start challenge'),
+              content: Text('Please add at least one friend to the challenge'),
+            )
+          );
+          return;
+        }
+        _bloc.dispatch(GameButton(
+            InjectorWidget.of(context).injector.challengeProvider));
+      },
+    ),
+  );
 }
 
 class GameSubmitButton extends StatelessWidget {
