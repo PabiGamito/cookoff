@@ -10,6 +10,8 @@ import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../LinkPreview.dart';
+
 class GameScreenCard extends StatelessWidget {
   final PictureProvider _pictureProvider;
   final GameBloc _bloc;
@@ -48,9 +50,7 @@ class InspirationCard extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) => _GameScreenCard(
-      stream: _pictureProvider.picturesStream(_challenge.ingredient),
-      title: "Some Inspiration...");
+  Widget build(BuildContext context) => _InspirationCard();
 }
 
 class BrowseCard extends StatelessWidget {
@@ -113,6 +113,26 @@ class _GameScreenCard extends StatelessWidget {
                   ],
                 );
               },
+            ),
+          ),
+        ),
+      );
+}
+
+class _InspirationCard extends StatelessWidget {
+  Widget build(BuildContext context) => RoundedCard(
+        child: Container(
+          child: TitledSection(
+            title: "Some Inspiration...",
+            underlineColor: Color(0xFF65D2EB),
+            child: Column(
+              children: [
+                LinkPreviewer(
+                    url: 'https://www.bbcgoodfood.com/recipes/lobster-rolls'),
+                LinkPreviewer(
+                    url:
+                        'https://www.bbcgoodfood.com/videos/healthy-steak-goulash-sauce'),
+              ],
             ),
           ),
         ),
