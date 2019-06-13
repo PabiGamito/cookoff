@@ -32,6 +32,7 @@ class User extends Equatable {
       email: email,
       friends: [...friends, friend],
       profilePictureUrl: profilePictureUrl,
+      deviceTokens: deviceTokens,
       dietName: dietName);
 
   User copyWithDiet(String dietName) => User(
