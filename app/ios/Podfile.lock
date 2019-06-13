@@ -22,6 +22,9 @@ PODS:
   - Firebase/Firestore (6.1.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 1.3.1)
+  - Firebase/Messaging (6.1.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 4.0.1)
   - Firebase/Storage (6.1.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 3.2.1)
@@ -31,6 +34,10 @@ PODS:
     - Flutter
   - firebase_core (0.0.1):
     - Firebase/Core
+    - Flutter
+  - firebase_messaging (0.0.1):
+    - Firebase/Core
+    - Firebase/Messaging
     - Flutter
   - firebase_storage (0.0.1):
     - Firebase/Storage
@@ -44,6 +51,7 @@ PODS:
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 0.3)
+  - FirebaseAnalyticsInterop (1.2.0)
   - FirebaseAuth (6.1.0):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
@@ -73,6 +81,15 @@ PODS:
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
+  - FirebaseMessaging (4.0.1):
+    - FirebaseAnalyticsInterop (~> 1.1)
+    - FirebaseCore (~> 6.0)
+    - FirebaseInstanceID (~> 4.1)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/Environment (~> 6.0)
+    - GoogleUtilities/Reachability (~> 6.0)
+    - GoogleUtilities/UserDefaults (~> 6.0)
+    - Protobuf (~> 3.1)
   - FirebaseStorage (3.2.1):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
@@ -153,6 +170,7 @@ DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_native_image (from `.symlinks/plugins/flutter_native_image/ios`)
@@ -165,11 +183,13 @@ SPEC REPOS:
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
+    - FirebaseAnalyticsInterop
     - FirebaseAuth
     - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseFirestore
     - FirebaseInstanceID
+    - FirebaseMessaging
     - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleSignIn
@@ -191,6 +211,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_messaging:
+    :path: ".symlinks/plugins/firebase_messaging/ios"
   firebase_storage:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
@@ -211,13 +233,16 @@ SPEC CHECKSUMS:
   Firebase: 8d77bb33624ae9b62d745d82ec023de5f70f7e4f
   firebase_auth: b08c4f3eb6dcaa66d71882e8e17db5cc65f00080
   firebase_core: c96aa8b2fcf7f5167d32f22034f502f9304952b8
+  firebase_messaging: a5f5d4a9491b660f33a1f94bd0596558f820bad1
   firebase_storage: 4991d126595463648bd10b5f75bca54bea4ee924
   FirebaseAnalytics: 629301c2b9925f3537d4093a17a72751ae5b7084
+  FirebaseAnalyticsInterop: efbe45c8385ec626e29f9525e5ebd38520dfb6c1
   FirebaseAuth: 4281d6d98a90881e00710fa8d9e37c2ccdfc7d80
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
   FirebaseCore: 66bdef3b310a026880e2a5bc8aa586ab62ce4543
   FirebaseFirestore: 8feac73d330bf7ed6945518e5ffc0aeb164a07f6
   FirebaseInstanceID: 27bed93a59b6685f5c3e0c028a878a764fd75c33
+  FirebaseMessaging: 31377e05331d16dc6c9fd82554f9a5c49aa70aed
   FirebaseStorage: 926d41552072b9fee67aa645760f05f87b7ce604
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
   flutter_native_image: 3d9f735f47bf8af7dea28056bf90c03ad4ce531b

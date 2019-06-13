@@ -24,11 +24,11 @@ class User extends Equatable {
 
   String get firstName => name.split(' ')[0];
 
-  User copyWithFriends(List<String> friends) => User(
+  User copyWithFriend(String friend) => User(
       id: id,
       name: name,
       email: email,
-      friends: friends,
+      friends: [...friends, friend],
       profilePictureUrl: profilePictureUrl,
       dietName: dietName);
 
