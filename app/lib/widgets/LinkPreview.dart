@@ -46,57 +46,81 @@ class LinkPreviewer extends StatelessWidget {
           );
         }
 
-        final imageUrl = snapshot.data['image_url'];
-        final title = snapshot.data['title'];
-        final description = snapshot.data['description'];
+        var imageUrl = snapshot.data['image_url'];
+        var title = snapshot.data['title'];
+        var description = snapshot.data['description'];
+        var domain = Uri.parse(url).host;
 
         return GestureDetector(
           onTap: _launchURL,
           child: Container(
             width: MediaQuery.of(context).size.width,
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  height: Scaler(context).scale(150),
-                  width: Scaler(context).scale(150),
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(imageUrl),
+                    color: Color(0xFFEEEEEE),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
-                ),
-                Container(
-                  width: Scaler(context).scale(15),
-                ),
-                Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Container(
-                        margin:
-                            EdgeInsets.only(bottom: Scaler(context).scale(10)),
-                        child: Text(
-                          title,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: Scaler(context).scale(20),
-                            fontWeight: FontWeight.bold,
+                        height: Scaler(context).scale(150),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(imageUrl),
                           ),
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(15)),
                         ),
                       ),
-                      Text(
-                        description,
-                        maxLines: 5,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: Scaler(context).scale(12.0),
+                      Padding(
+                        padding: EdgeInsets.all(Scaler(context).scale(20)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: Scaler(context).scale(10)),
+                              child: Text(
+                                title,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: Scaler(context).scale(16),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              description,
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.black54,
+                                height: 1.2,
+                                fontSize: Scaler(context).scale(13),
+                              ),
+                            ),
+                            Container(
+                              height: Scaler(context).scale(10),
+                            ),
+                            Text(
+                              domain,
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.black54,
+                                height: 1.2,
+                                fontSize: Scaler(context).scale(13),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
