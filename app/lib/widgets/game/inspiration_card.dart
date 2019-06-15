@@ -5,13 +5,12 @@ import 'package:cookoff/models/challenge.dart';
 import 'package:cookoff/providers/local_recipe_provider.dart';
 import 'package:cookoff/providers/picture_provider.dart';
 import 'package:cookoff/scalar.dart';
+import 'package:cookoff/widgets/link_preview.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
 import 'package:cookoff/widgets/titled_section.dart';
 import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../LinkPreview.dart';
 
 class GameScreenCard extends StatelessWidget {
   final PictureProvider _pictureProvider;
