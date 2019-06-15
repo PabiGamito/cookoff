@@ -44,8 +44,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       cardBuilder: (context, scrolledAmount, fullyExpanded) {
         // TODO: Add slide down animation
         return Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
           color: Colors.amber,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -89,7 +87,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           .scale(historyCardTitleHeight + historyCardContentHeight),
       cardBuilder: (context, scrolledAmount, fullyExpanded) {
         return RoundedCard(
-          padding: false,
+          padding: EdgeInsets.zero,
           backgroundColor: Color(0xFFF5F5F5),
           child: ChallengesSection(
             challenges,

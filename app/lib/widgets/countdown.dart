@@ -130,7 +130,7 @@ class TimeText extends StatelessWidget {
         'Done',
         style: TextStyle(
             color: Colors.white,
-            fontSize: Scaler(context).scale(24),
+            fontSize: Scaler(context).scale(20),
             fontFamily: 'Montserrat'),
       );
     }

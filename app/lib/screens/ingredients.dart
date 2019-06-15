@@ -24,11 +24,7 @@ class IngredientsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Container(
-        padding: EdgeInsets.only(
-            top: Scaler(context).scale(30),
-            bottom: Scaler(context).scale(30),
-            left: Scaler(context).scale(20),
-            right: Scaler(context).scale(20)),
+        padding: EdgeInsets.only(bottom: Scaler(context).scale(30)),
         child: PillButton(
           "BACK TO CHALLENGES",
           onTap: () {

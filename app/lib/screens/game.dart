@@ -74,7 +74,13 @@ class _GameScreenState extends State<GameScreen> {
               alignment: AlignmentDirectional.bottomCenter,
               children: <Widget>[
                 Container(color: ingredient.color),
-                ScrollBru(color: Colors.white, controller: _controller),
+                ScrollBru(
+                  controller: _controller,
+                  bru: (height) => Container(
+                        color: Colors.white,
+                        height: height,
+                      ),
+                ),
                 CustomScrollView(
                   controller: _controller,
                   physics: BouncingScrollPhysics(),

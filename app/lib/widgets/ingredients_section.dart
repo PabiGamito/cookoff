@@ -1,9 +1,8 @@
 import 'package:cookoff/models/ingredient_section.dart';
+import 'package:cookoff/scalar.dart';
+import 'package:cookoff/widgets/tile_carousel.dart';
+import 'package:cookoff/widgets/titled_section.dart';
 import 'package:flutter/widgets.dart';
-
-import '../scalar.dart';
-import 'section_title.dart';
-import 'tile_carousel.dart';
 
 class IngredientsSection extends StatelessWidget {
   final String _title;
@@ -47,24 +46,12 @@ class IngredientsSection extends StatelessWidget {
       if (_more) moreTile
     ];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-            left: Scaler(context).scale(30),
-            right: Scaler(context).scale(30),
-          ),
-          child: SectionTitle(
-            title: _title ?? _ingredientSection.title,
-            color: _titleUnderlineColor,
-            fontSize: Scaler(context).scale(25),
-          ),
-        ),
-        TileCarousel(
-          tiles: tiles,
-        ),
-      ],
+    return TitledSection(
+      title: _title ?? _ingredientSection.title,
+      underlineColor: _titleUnderlineColor,
+      child: TileCarousel(
+        tiles: tiles,
+      ),
     );
   }
 }

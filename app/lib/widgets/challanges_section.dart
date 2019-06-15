@@ -6,6 +6,7 @@ import 'package:cookoff/screens/game.dart';
 import 'package:cookoff/widgets/countdown.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
+import 'package:cookoff/widgets/titled_section.dart';
 import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -28,60 +29,33 @@ class ChallengesSection extends StatelessWidget {
         _onAddChallenge = onAddChallenge;
 
   @override
-  Widget build(BuildContext context) => Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              top: Scaler(context).scale(30),
-              left: Scaler(context).scale(30),
-              right: Scaler(context).scale(30)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    _title,
-                    style: TextStyle(
-                        fontSize: Scaler(context).scale(25),
-                        fontFamily: 'Montserrat'),
-                    textAlign: TextAlign.left,
-                  ),
-                  if (_onAddChallenge != null)
-                    CircleAddButton(
-                      onTap: () => _onAddChallenge(context),
-                    ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: Scaler(context).scale(10)),
-                width: Scaler(context).scale(35),
-                height: Scaler(context).scale(6),
-                decoration: new BoxDecoration(
-                  color: Color(0xFF8057E2),
-                  borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.width * 0.03),
-                ),
-              )
-            ],
-          ),
-        ),
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.only(
-                    left: Scaler(context).scale(30),
-                    right: Scaler(context).scale(30)),
-                child: StreamBuilder<Iterable<Challenge>>(
-                    stream: _challenges,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData || snapshot.data.length == 0) {
-                        return NoChallenges(fillText: _fillText);
-                      }
+  Widget build(BuildContext context) => Stack(
+        overflow: Overflow.visible,
+        children: [
+          TitledSection(
+            title: 'My challenges',
+            underlineColor: Color(0xFF8057E2),
+            child: StreamBuilder<Iterable<Challenge>>(
+              stream: _challenges,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData || snapshot.data.length == 0) {
+                  return NoChallenges(fillText: _fillText);
+                }
 
-                      return ChallengesList(
-                          challenges: snapshot.data, scrollable: _scrollable);
-                    })))
-      ]);
+                return ChallengesList(
+                    challenges: snapshot.data, scrollable: _scrollable);
+              },
+            ),
+          ),
+          Positioned(
+            top: -Scaler(context).scale(8),
+            right: 0,
+            child: CircleAddButton(
+              onTap: () => _onAddChallenge(context),
+            ),
+          ),
+        ],
+      );
 }
 
 class CircleAddButton extends StatelessWidget {
@@ -158,18 +132,11 @@ class ChallengesList extends StatelessWidget {
         _scrollable = scrollable;
 
   @override
-  Widget build(BuildContext context) => ListView(
-      physics: _scrollable
-          ? const BouncingScrollPhysics()
-          : const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.only(
-        top: Scaler(context).scale(15),
-        bottom: Scaler(context).scale(15),
-        left: Scaler(context).scale(0),
-        right: Scaler(context).scale(0),
-      ),
-      children:
-          _challenges.map((challenge) => ChallengeItem(challenge)).toList());
+  Widget build(BuildContext context) => Column(
+        children: [
+          for (var challenge in _challenges) ChallengeItem(challenge),
+        ],
+      );
 }
 
 class ChallengeItem extends StatelessWidget {
@@ -183,38 +150,38 @@ class ChallengeItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  Scaffold(body: GameScreen(challenge: _challenge)),
+              builder: (context) => Scaffold(
+                    body: GameScreen(challenge: _challenge),
+                  ),
             ),
           );
         },
         child: StreamBuilder<Ingredient>(
-            stream: InjectorWidget.of(context)
-                .injector
-                .ingredientProvider
-                .ingredientStream(_challenge.ingredient),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                // Loading...
-                return Container();
-              }
+          stream: InjectorWidget.of(context)
+              .injector
+              .ingredientProvider
+              .ingredientStream(_challenge.ingredient),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              // Loading...
+              return Container();
+            }
 
-              var ingredient = snapshot.data;
+            var ingredient = snapshot.data;
 
-              return Container(
-                margin: EdgeInsets.only(
-                    top: Scaler(context).scale(10),
-                    bottom: Scaler(context).scale(10)),
-                height: Scaler(context).scale(100),
-                decoration: BoxDecoration(
-                  color: ingredient.color,
-                  borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.width * 0.03),
-                ),
-                child: ChallengeInnerContent(
-                    challenge: _challenge, ingredient: ingredient),
-              );
-            }),
+            return Container(
+              margin: EdgeInsets.only(bottom: Scaler(context).scale(20)),
+              padding: EdgeInsets.all(Scaler(context).scale(25)),
+              decoration: BoxDecoration(
+                color: ingredient.color,
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.of(context).size.width * 0.03),
+              ),
+              child: ChallengeInnerContent(
+                  challenge: _challenge, ingredient: ingredient),
+            );
+          },
+        ),
       );
 }
 
@@ -232,25 +199,16 @@ class ChallengeInnerContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(Scaler(context).scale(25)),
-                child: Image.asset(
-                    'assets/ingredients/' + _challenge.ingredient + '.png'),
-              ),
-              Container(
-                child: Countdown(end: _challenge.end),
-              ),
-            ],
+          Image.asset(
+            'assets/ingredients/' + _challenge.ingredient + '.png',
+            height: Scaler(context).scale(50),
           ),
-          Container(
-              padding: EdgeInsets.only(right: Scaler(context).scale(25)),
-              child: ProfileList(
-                  users: profileListContent(context),
-                  size: Scaler(context).scale(45),
-                  color: _ingredient.color,
-                  maxIcons: 2))
+          Container(child: Countdown(end: _challenge.end)),
+          ProfileList(
+              users: profileListContent(context),
+              size: Scaler(context).scale(45),
+              color: _ingredient.color,
+              maxIcons: 2)
         ],
       );
 

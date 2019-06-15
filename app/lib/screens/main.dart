@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:cookoff/blocs/auth_bloc.dart';
 import 'package:cookoff/models/diet.dart';
 import 'package:cookoff/providers/auth_provider.dart';
 import 'package:cookoff/providers/local_ingredient_provider.dart';
 import 'package:cookoff/scalar.dart';
+import 'package:cookoff/screens/ingredients.dart';
 import 'package:cookoff/screens/profile_screen.dart';
 import 'package:cookoff/widgets/auth_builder.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
@@ -10,12 +13,11 @@ import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/ingredients_section.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/rounded_card.dart';
-import 'package:cookoff/widgets/scrollable_layout.dart';
+import 'package:cookoff/widgets/scroll_bru.dart';
+import 'package:cookoff/widgets/sliver_card_delegate.dart';
 import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'ingredients.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -25,39 +27,36 @@ class MainScreen extends StatelessWidget {
       loadingBloc: LoadingAuthBloc.instance);
 }
 
-class AuthorizedMainScreen extends StatelessWidget {
+class AuthorizedMainScreen extends StatefulWidget {
+  @override
+  _AuthorizedMainScreenState createState() => _AuthorizedMainScreenState();
+}
+
+class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
+  final ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     var injector = InjectorWidget.of(context).injector;
+
     var challengeProvider = injector.challengeProvider;
     var ingredientProvider = injector.ingredientProvider;
 
-    const double firstCardMaxOffset = 188;
-    const double firstCardTitleHeight = 112;
-    const double firstCardContentHeight = 148;
-
-    const double secondCardMaxOffset =
-        firstCardMaxOffset + firstCardTitleHeight + firstCardContentHeight;
-
-    const double minScrollAmount =
-        -(secondCardMaxOffset - firstCardTitleHeight);
-
-    var challengesCardController = CardController();
-
-    var _showAllIngredients = (context) {
+    var showAllIngredients = (context) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => Scaffold(
                 body: Container(
                   // Status bar height
-                  padding:
-                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top,
+                  ),
                   color: Colors.amber,
                   child: RoundedCard(
-                    padding: false,
                     child: IngredientsScreen(
-                        ingredientProvider: ingredientProvider),
+                      ingredientProvider: ingredientProvider,
+                    ),
                   ),
                 ),
               ),
@@ -65,116 +64,106 @@ class AuthorizedMainScreen extends StatelessWidget {
       );
     };
 
-    var headerCard = ScrollableCard(
-      bounce: false,
-      scrollable: false,
-      minOffset: 0,
-      maxOffset: 0,
-      startingOffset: 0,
-      cardBuilder: (context, scrolledAmount, fullyExpanded) {
-        // TODO: Add slide down animation
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Scaffold(
-                      body: ProfileScreen(),
-                    ),
-              ),
-            );
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.amber,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                      top: Scaler(context).scale(30),
-                      bottom: Scaler(context).scale(25)),
-                  child: HomeHeader(
-                      user: UserWidget.of(context).user, notificationCount: 0),
+    var headerCard = GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Scaffold(
+                  body: ProfileScreen(),
                 ),
-                Expanded(
-                  child: Container(),
-                ),
-              ],
-            ),
+          ),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.only(top: Scaler(context).scale(75)),
+        child:
+            HomeHeader(user: UserWidget.of(context).user, notificationCount: 0),
+      ),
+    );
+
+    var featuredIngredientsCard = FutureBuilder<Diet>(
+      future: InjectorWidget.of(context)
+          .injector
+          .ingredientProvider
+          .dietStream(UserWidget.of(context).user.dietName),
+      builder: (context, snapshot) {
+        // Return empty widget while diet loads
+        if (!snapshot.hasData) {
+          return Container();
+        }
+
+        return RoundedCard(
+          child: IngredientsSection(
+            ingredientSection: FeaturedSection(snapshot.data),
+            title: 'Start cooking...',
+            titleUnderlineColor: Color(0xFF8EE5B6),
+            more: true,
+            onMoreTap: showAllIngredients,
           ),
         );
       },
     );
 
-    var featuredIngredientsCard = ScrollableCard(
-        minOffset: 0,
-        maxOffset: Scaler(context).scale(firstCardMaxOffset),
-        startingOffset: Scaler(context).scale(firstCardMaxOffset),
-        cardBuilder: (context, scrolledAmount, fullyExpanded) {
-          return FutureBuilder<Diet>(
-              future: injector.ingredientProvider
-                  .dietStream(UserWidget.of(context).user.dietName),
-              builder: (context, snapshot) {
-                // Return empty widget while diet loads
-                if (!snapshot.hasData) {
-                  return Container();
-                }
-                return RoundedCard(
-                  padding: false,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: Scaler(context).scale(35),
-                      bottom: Scaler(context).scale(15),
-                    ),
-                    child: IngredientsSection(
-                      ingredientSection: FeaturedSection(snapshot.data),
-                      title: 'Start cooking...',
-                      titleUnderlineColor: Color(0xFF8EE5B6),
-                      more: true,
-                      onMoreTap: _showAllIngredients,
-                    ),
-                  ),
-                );
-              });
-        });
-
-    var challengesCard = ScrollableCard(
-      controler: challengesCardController,
-      minOffset: firstCardTitleHeight,
-      maxOffset:
-          Scaler(context).scale(firstCardTitleHeight + firstCardContentHeight),
-      startingOffset:
-          Scaler(context).scale(firstCardTitleHeight + firstCardContentHeight),
-      cardBuilder: (context, scrolledAmount, fullyExpanded) {
-        return RoundedCard(
-          padding: false,
-          backgroundColor: Color(0xFFF5F5F5),
-          child: ChallengesSection(
-            challengeProvider.challengesStream(UserWidget.of(context).user.id),
-            scrollable: fullyExpanded,
-            onAddChallenge: _showAllIngredients,
-          ),
-        );
-      },
+    var challengesCard = RoundedCard(
+      backgroundColor: Color(0xFFF5F5F5),
+      padding: EdgeInsets.only(
+        top: Scaler(context).scale(45),
+        bottom: Scaler(context).scale(25),
+        left: Scaler(context).scale(35),
+        right: Scaler(context).scale(35),
+      ),
+      child: ChallengesSection(
+        challengeProvider.challengesStream(UserWidget.of(context).user.id),
+        onAddChallenge: showAllIngredients,
+      ),
     );
 
     return Container(
-      // Status bar height
-      color: Colors.amber,
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      color: Colors.white,
       child: Stack(
-        children: <Widget>[
-          ScrollableLayout(
-            minScroll: Scaler(context).scale(minScrollAmount),
-            maxScroll: 0,
-            scrollableCards: [
-              headerCard,
-              featuredIngredientsCard,
-              challengesCard,
-            ],
+        alignment: AlignmentDirectional.bottomCenter,
+        children: [
+          ScrollBru(
+            controller: _controller,
+            bru: (height) => Container(
+                  color: Color(0xFFF5F5F5),
+                  height: height,
+                ),
           ),
+          CustomScrollView(
+            controller: _controller,
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              SliverPersistentHeader(
+                delegate: SliverCardDelegate(
+                  maxExtent: Scaler(context).scale(500),
+                  minExtent: 0,
+                  child: Stack(
+                    children: [
+                      Container(color: Colors.amber),
+                      headerCard,
+                      ScrollBru(
+                        controller: _controller,
+                        bru: (height) {
+                          var offset = max(0.0, height - 130);
+                          return Positioned(
+                            bottom: Scaler(context).scale(offset),
+                            child: featuredIngredientsCard,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  challengesCard,
+                ]),
+              ),
+            ],
+          )
         ],
       ),
     );
