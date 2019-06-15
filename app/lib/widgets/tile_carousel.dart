@@ -12,26 +12,15 @@ class TileCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: MediaQuery.of(context).size.width - Scaler(context).scale(70),
+        width: MediaQuery.of(context).size.width,
         height: Scaler(context).scale(100),
-        child: Stack(
-          overflow: Overflow.visible,
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
           children: [
-            Positioned(
-              top: 0,
-              bottom: 0,
-              left: -Scaler(context).scale(35),
-              right: -Scaler(context).scale(35),
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  Container(width: Scaler(context).scale(35)),
-                  ..._tiles,
-                  Container(width: Scaler(context).scale(15))
-                ],
-              ),
-            ),
+            Container(width: Scaler(context).scale(35)),
+            ..._tiles,
+            Container(width: Scaler(context).scale(15))
           ],
         ),
       );

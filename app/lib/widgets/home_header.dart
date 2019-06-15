@@ -12,25 +12,26 @@ class HomeHeader extends StatelessWidget {
         _notificationCount = notificationCount;
 
   @override
-  Widget build(BuildContext context) => IntrinsicHeight(
+  Widget build(BuildContext context) => Container(
+        height: Scaler(context).scale(230),
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Stack(children: [
-              Positioned(
-                child: ProfileIcon(
-                  user: _user,
-                  size: Scaler(context).scale(118),
-                ),
-              ),
-              if (_notificationCount > 0)
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.topEnd,
+              children: [
                 Positioned(
-                  top: Scaler(context).scale(3),
-                  right: Scaler(context).scale(8),
-                  child: NotificationBadge(_notificationCount),
-                )
-            ]),
+                  child: ProfileIcon(
+                    user: _user,
+                    size: Scaler(context).scale(118),
+                  ),
+                ),
+                if (_notificationCount > 0)
+                  NotificationBadge(_notificationCount)
+              ],
+            ),
             Container(
               margin: EdgeInsets.only(left: Scaler(context).scale(20)),
               child: HelloMessage(_user.firstName),

@@ -49,7 +49,7 @@ class ChallengesSection extends StatelessWidget {
           ),
           Positioned(
             top: -Scaler(context).scale(8),
-            right: 0,
+            right: Scaler(context).scale(35),
             child: CircleAddButton(
               onTap: () => _onAddChallenge(context),
             ),
@@ -132,10 +132,14 @@ class ChallengesList extends StatelessWidget {
         _scrollable = scrollable;
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          for (var challenge in _challenges) ChallengeItem(challenge),
-        ],
+  Widget build(BuildContext context) => Container(
+        padding: EdgeInsets.symmetric(horizontal: Scaler(context).scale(35)),
+        margin: EdgeInsets.only(bottom: Scaler(context).scale(25)),
+        child: Column(
+          children: [
+            for (var challenge in _challenges) ChallengeItem(challenge),
+          ],
+        ),
       );
 }
 

@@ -5,19 +5,16 @@ class TitledSection extends StatelessWidget {
   final String _title;
   final Color _titleColor;
   final Color _underlineColor;
-  final EdgeInsets _padding;
   final Widget _child;
 
   const TitledSection(
       {String title,
       Color titleColor = Colors.black,
       Color underlineColor,
-      EdgeInsets padding = EdgeInsets.zero,
       Widget child})
       : _title = title,
         _titleColor = titleColor,
         _underlineColor = underlineColor,
-        _padding = padding,
         _child = child;
 
   @override
@@ -26,7 +23,7 @@ class TitledSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: _padding,
+            padding: EdgeInsets.only(left: Scaler(context).scale(35)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

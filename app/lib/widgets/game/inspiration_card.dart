@@ -90,31 +90,36 @@ class _GameScreenCard extends StatelessWidget {
           child: TitledSection(
             title: _title,
             underlineColor: Color(0xFF65D2EB),
-            child: StreamBuilder<Iterable<String>>(
-              stream: _stream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData || snapshot.data.isEmpty) {
-                  return Container(height: Scaler(context).scale(27));
-                }
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: Scaler(context).scale(35),
+              ),
+              child: StreamBuilder<Iterable<String>>(
+                stream: _stream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    return Container(height: Scaler(context).scale(27));
+                  }
 
-                return Column(
-                  children: [
-                    for (var url in snapshot.data)
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical: Scaler(context).scale(10)),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width,
-                        decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                Scaler(context).scale(25)),
-                            image: new DecorationImage(
-                                fit: BoxFit.cover,
-                                image: new NetworkImage(url))),
-                      ),
-                  ],
-                );
-              },
+                  return Column(
+                    children: [
+                      for (var url in snapshot.data)
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: Scaler(context).scale(10)),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width,
+                          decoration: new BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  Scaler(context).scale(25)),
+                              image: new DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: new NetworkImage(url))),
+                        ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),

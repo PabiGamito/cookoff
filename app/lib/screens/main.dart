@@ -47,18 +47,7 @@ class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => Scaffold(
-                body: Container(
-                  // Status bar height
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top,
-                  ),
-                  color: Colors.amber,
-                  child: RoundedCard(
-                    child: IngredientsScreen(
-                      ingredientProvider: ingredientProvider,
-                    ),
-                  ),
-                ),
+                body: IngredientsScreen(ingredientProvider: ingredientProvider),
               ),
         ),
       );
@@ -75,10 +64,9 @@ class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
           ),
         );
       },
-      child: Container(
-        padding: EdgeInsets.only(top: Scaler(context).scale(75)),
-        child:
-            HomeHeader(user: UserWidget.of(context).user, notificationCount: 0),
+      child: HomeHeader(
+        user: UserWidget.of(context).user,
+        notificationCount: 0,
       ),
     );
 
@@ -94,12 +82,15 @@ class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
         }
 
         return RoundedCard(
-          child: IngredientsSection(
-            ingredientSection: FeaturedSection(snapshot.data),
-            title: 'Start cooking...',
-            titleUnderlineColor: Color(0xFF8EE5B6),
-            more: true,
-            onMoreTap: showAllIngredients,
+          child: Container(
+            padding: EdgeInsets.only(bottom: Scaler(context).scale(45)),
+            child: IngredientsSection(
+              ingredientSection: FeaturedSection(snapshot.data),
+              title: 'Start cooking...',
+              titleUnderlineColor: Color(0xFF8EE5B6),
+              more: true,
+              onMoreTap: showAllIngredients,
+            ),
           ),
         );
       },
@@ -107,12 +98,6 @@ class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
 
     var challengesCard = RoundedCard(
       backgroundColor: Color(0xFFF5F5F5),
-      padding: EdgeInsets.only(
-        top: Scaler(context).scale(45),
-        bottom: Scaler(context).scale(25),
-        left: Scaler(context).scale(35),
-        right: Scaler(context).scale(35),
-      ),
       child: ChallengesSection(
         challengeProvider.challengesStream(UserWidget.of(context).user.id),
         onAddChallenge: showAllIngredients,
@@ -148,7 +133,7 @@ class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
                         bru: (height) {
                           var offset = max(0.0, height - 130);
                           return Positioned(
-                            bottom: Scaler(context).scale(offset),
+                            top: Scaler(context).scale(230 - offset),
                             child: featuredIngredientsCard,
                           );
                         },

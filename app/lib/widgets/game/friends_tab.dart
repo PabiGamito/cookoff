@@ -122,9 +122,12 @@ class FriendsList extends StatelessWidget {
         _bloc = bloc;
 
   @override
-  Widget build(BuildContext context) => Column(children: [
-        for (var friend in _friends) FriendCard(bloc: _bloc, friend: friend)
-      ]);
+  Widget build(BuildContext context) => Container(
+        padding: EdgeInsets.symmetric(horizontal: Scaler(context).scale(35)),
+        child: Column(children: [
+          for (var friend in _friends) FriendCard(bloc: _bloc, friend: friend)
+        ]),
+      );
 }
 
 class FriendCard extends StatelessWidget {
