@@ -12,18 +12,15 @@ import 'package:flutter/material.dart';
 
 class ChallengesSection extends StatelessWidget {
   final Stream _challenges;
-  final bool _scrollable;
   final void Function(BuildContext) _onAddChallenge;
   final String _title;
   final String _fillText;
 
   ChallengesSection(Stream<Iterable<Challenge>> challenges,
-      {bool scrollable = true,
-      void Function(BuildContext) onAddChallenge,
+      {void Function(BuildContext) onAddChallenge,
       String title = "My Challenges",
       String noChallengesFill = "NO CURRENT\nCHALLENGES"})
       : _challenges = challenges,
-        _scrollable = scrollable,
         _title = title,
         _fillText = noChallengesFill,
         _onAddChallenge = onAddChallenge;
@@ -39,11 +36,13 @@ class ChallengesSection extends StatelessWidget {
               stream: _challenges,
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.data.length == 0) {
-                  return NoChallenges(fillText: _fillText);
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: NoChallenges(fillText: _fillText),
+                  );
                 }
 
-                return ChallengesList(
-                    challenges: snapshot.data, scrollable: _scrollable);
+                return ChallengesList(challenges: snapshot.data);
               },
             ),
           ),
@@ -94,6 +93,7 @@ class NoChallenges extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
             width: Scaler(context).scale(100),
@@ -125,11 +125,8 @@ class NoChallenges extends StatelessWidget {
 
 class ChallengesList extends StatelessWidget {
   final Iterable<Challenge> _challenges;
-  final bool _scrollable;
 
-  ChallengesList({Iterable<Challenge> challenges, bool scrollable = true})
-      : _challenges = challenges,
-        _scrollable = scrollable;
+  ChallengesList({Iterable<Challenge> challenges}) : _challenges = challenges;
 
   @override
   Widget build(BuildContext context) => Container(

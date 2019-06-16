@@ -124,9 +124,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
                 ),
               ),
               SliverList(
-                delegate: SliverChildListDelegate([
-                  ingredientsCard,
-                ]),
+                delegate: SliverChildListDelegate([ingredientsCard]),
               ),
             ],
           )

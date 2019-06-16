@@ -98,9 +98,15 @@ class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
 
     var challengesCard = RoundedCard(
       backgroundColor: Color(0xFFF5F5F5),
-      child: ChallengesSection(
-        challengeProvider.challengesStream(UserWidget.of(context).user.id),
-        onAddChallenge: showAllIngredients,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight:
+              MediaQuery.of(context).size.height - Scaler(context).scale(545),
+        ),
+        child: ChallengesSection(
+          challengeProvider.challengesStream(UserWidget.of(context).user.id),
+          onAddChallenge: showAllIngredients,
+        ),
       ),
     );
 
@@ -143,9 +149,7 @@ class _AuthorizedMainScreenState extends State<AuthorizedMainScreen> {
                 ),
               ),
               SliverList(
-                delegate: SliverChildListDelegate([
-                  challengesCard,
-                ]),
+                delegate: SliverChildListDelegate([challengesCard]),
               ),
             ],
           )

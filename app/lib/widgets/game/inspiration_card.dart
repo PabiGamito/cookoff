@@ -138,24 +138,29 @@ class _InspirationCard extends StatelessWidget {
             title: "Some Inspiration...",
             underlineColor: Color(0xFF65D2EB),
             // TODO: Use injector for RecipeProvider instead
-            child: StreamBuilder<Iterable<String>>(
-                stream: LocalRecipeProvider().recipeUrlStream(ingredientId),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Container();
-                  }
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: Scaler(context).scale(35),
+              ),
+              child: StreamBuilder<Iterable<String>>(
+                  stream: LocalRecipeProvider().recipeUrlStream(ingredientId),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container();
+                    }
 
-                  return Column(
-                    children: [
-                      for (String url in snapshot.data)
-                        Container(
-                          padding: EdgeInsets.only(
-                              bottom: Scaler(context).scale(20)),
-                          child: LinkPreviewer(url: url),
-                        )
-                    ],
-                  );
-                }),
+                    return Column(
+                      children: [
+                        for (String url in snapshot.data)
+                          Container(
+                            padding: EdgeInsets.only(
+                                bottom: Scaler(context).scale(20)),
+                            child: LinkPreviewer(url: url),
+                          )
+                      ],
+                    );
+                  }),
+            ),
           ),
         ),
       );

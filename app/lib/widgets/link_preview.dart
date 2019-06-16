@@ -91,7 +91,8 @@ class LinkPreviewer extends StatelessWidget {
                                 maxLines: 1,
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: Scaler(context).scale(16),
+                                  fontFamily: 'Montserrat',
+                                  fontSize: Scaler(context).scale(17),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
