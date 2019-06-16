@@ -34,8 +34,6 @@ class GameHeaderState extends State<GameHeader> {
   final GameBloc _bloc;
   final Color _color;
 
-  Duration _currentDuration = Duration(days: 1);
-
   GameHeaderState(this._onExit, this._bloc, this._color);
 
   @override
@@ -47,40 +45,22 @@ class GameHeaderState extends State<GameHeader> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GameBackButton(onTap: _onExit),
-            BlocBuilder<GameEvent, Challenge>(
-                bloc: _bloc,
-                builder: (context, challenge) {
-                  if (challenge.end == null) {
-                    return Container();
-                  } else {
-                    return Countdown(
-                      end: challenge.end,
-                      callback: () => {
-                            if (!challenge.complete)
-                              {
-                                _bloc.dispatch(CompleteChallenge(
-                                    InjectorWidget.of(context)
-                                        .injector
-                                        .challengeProvider))
-                              }
-                          },
-                    );
-                  }
-                }),
+            GameDurationText(bloc: _bloc),
             BlocBuilder<GameEvent, Challenge>(
               bloc: _bloc,
-              builder: (context, challenge) {
-                return DurationPicker1(
-                  duration: _currentDuration,
-                  onDurationChange: (DateTime duration) {
-                    _currentDuration = duration.difference(DateTime(0, 0));
-                  },
-                  child: GameTimeButton(
-                    color: _color,
-                    gameStarted: challenge.started,
+              builder: (context, challenge) => DurationPicker(
+                    onDurationChange: (DateTime duration) {
+                      _bloc.dispatch(SetDuration(
+                          duration,
+                          InjectorWidget.of(context)
+                              .injector
+                              .challengeProvider));
+                    },
+                    child: GameTimeButton(
+                      color: _color,
+                      gameStarted: challenge.started,
+                    ),
                   ),
-                );
-              },
             ),
           ],
         ),
@@ -94,13 +74,49 @@ class GameBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: _onTap,
-      child: Container(
-        width: Scaler(context).scale(100),
-        height: Scaler(context).scale(60),
-        child: Icon(Icons.keyboard_backspace,
-            color: Colors.white, size: Scaler(context).scale(40)),
-      ));
+        onTap: _onTap,
+        child: Container(
+          width: Scaler(context).scale(100),
+          height: Scaler(context).scale(60),
+          child: Icon(Icons.keyboard_backspace,
+              color: Colors.white, size: Scaler(context).scale(40)),
+        ),
+      );
+}
+
+class GameDurationText extends StatelessWidget {
+  final GameBloc _bloc;
+
+  const GameDurationText({GameBloc bloc}) : _bloc = bloc;
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
+      bloc: _bloc,
+      builder: (context, challenge) {
+        if (challenge.end == null) {
+          return Container();
+        }
+        if (challenge.started) {
+          return Countdown(
+            end: challenge.end,
+            callback: () => {
+                  if (!challenge.complete)
+                    {
+                      _bloc.dispatch(CompleteChallenge(
+                          InjectorWidget.of(context)
+                              .injector
+                              .challengeProvider))
+                    }
+                },
+          );
+        } else {
+          return TimeText(
+            duration: challenge.end.difference(DateTime(0, 0, 0)),
+            alwaysShowHours: true,
+            alwaysShowMinutes: true,
+          );
+        }
+      });
 }
 
 class GameTimeButton extends StatelessWidget {

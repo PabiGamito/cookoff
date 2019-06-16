@@ -1,23 +1,17 @@
 //a date&time picker model
-import 'package:cookoff/scalar.dart';
-import 'package:cookoff/widgets/countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-class DurationPicker1 extends StatelessWidget {
+class DurationPicker extends StatelessWidget {
   final Function _onDurationChange;
-  final Color _bgColor;
   final Widget _child;
-  final Duration _duration;
 
-  DurationPicker1({
+  DurationPicker({
     Duration duration,
     Color bgColor,
     Function onDurationChange,
     Widget child,
-  })  : _duration = duration ?? Duration(days: 1),
-        _onDurationChange = onDurationChange,
-        _bgColor = bgColor,
+  })  : _onDurationChange = onDurationChange,
         _child = child;
 
   @override
@@ -35,58 +29,6 @@ class DurationPicker1 extends StatelessWidget {
   }
 }
 
-class DurationPicker extends StatelessWidget {
-  final Function _onDurationChange;
-  final Color _bgColor;
-
-  final Duration _duration;
-
-  DurationPicker({
-    Duration duration,
-    Color bgColor,
-    Function onDurationChange,
-  })  : _duration = duration ?? Duration(days: 1),
-        _onDurationChange = onDurationChange,
-        _bgColor = bgColor;
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaSize = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        DatePicker.showPicker(
-          context,
-          pickerModel: _DurationPickerModel(),
-          onConfirm: _onDurationChange,
-        );
-      },
-      child: Center(
-        child: Container(
-          width: mediaSize.width * 0.4,
-          padding: EdgeInsets.only(
-            left: mediaSize.width * 0.04,
-            top: Scaler(context).scale(5),
-            bottom: Scaler(context).scale(5),
-          ),
-          decoration: BoxDecoration(
-            color: Color.lerp(_bgColor, Colors.black45, 0.3),
-            borderRadius:
-                BorderRadius.all(Radius.circular(Scaler(context).scale(5))),
-          ),
-          child: Center(
-            child: TimeText(
-              duration: _duration,
-              alwaysShowDays: true,
-              alwaysShowMinutes: true,
-              alwaysShowHours: true,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _DurationPickerModel extends CommonPickerModel {
   int maxDays;
   int minMinutes;
@@ -95,7 +37,7 @@ class _DurationPickerModel extends CommonPickerModel {
       {DateTime currentTime,
       LocaleType locale,
       this.maxDays = 30,
-      this.minMinutes = 15})
+      this.minMinutes = 30})
       : super(locale: locale) {
     setLeftIndex(1);
     setMiddleIndex(0);
@@ -161,7 +103,7 @@ class _DurationPickerModel extends CommonPickerModel {
 
   @override
   DateTime finalTime() {
-    return DateTime(0, 0, currentLeftIndex() + 1, currentMiddleIndex(),
+    return DateTime(0, 0, currentLeftIndex(), currentMiddleIndex(),
         currentRightIndex(), 0, 0);
   }
 

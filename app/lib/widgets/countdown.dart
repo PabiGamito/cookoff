@@ -137,7 +137,7 @@ class TimeText extends StatelessWidget {
 
     int cnt = 0;
     for (int i = 0; i < _values.length; i++) {
-      if (showUnits[i] || (cnt < 2 && _values[i] > 0)) {
+      if ((showUnits[i] && _values[i] > 0) || (cnt < 2 && _values[i] > 0)) {
         cnt++;
         text.add(
           Text(

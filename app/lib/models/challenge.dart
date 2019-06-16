@@ -95,6 +95,16 @@ class Challenge {
       end: end,
       images: images);
 
+  Challenge copyWithNewEndTime(DateTime newEnd) => Challenge(
+      id: id,
+      owner: owner,
+      participants: participants,
+      finishedParticipants: finishedParticipants,
+      ingredient: ingredient,
+      complete: complete,
+      end: newEnd,
+      images: images);
+
   bool userHasFinished(User user) => finishedParticipants.contains(user.id);
 
   Map<String, dynamic> toJson() => _$ChallengeToJson(this);

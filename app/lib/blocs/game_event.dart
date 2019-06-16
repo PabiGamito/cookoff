@@ -43,3 +43,13 @@ class CompleteChallenge extends GameEvent {
 
   CompleteChallenge(this.challengeProvider) : super([challengeProvider]);
 }
+
+// Setting a duration for a challenge
+// Duration is an absolute DateTime with a 1 day offset
+class SetDuration extends GameEvent {
+  final DateTime duration;
+  final ChallengeProvider challengeProvider;
+
+  SetDuration(this.duration, this.challengeProvider)
+      : super([duration, challengeProvider]);
+}
