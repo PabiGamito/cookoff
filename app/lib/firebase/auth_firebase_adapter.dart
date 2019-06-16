@@ -21,15 +21,17 @@ class AuthFirebaseAdapter implements AuthProvider {
   Stream<User> _innerStream;
 
   AuthFirebaseAdapter() {
-    _firebaseAuth.onAuthStateChanged
-        .where((event) => event != null)
-        .listen((event) {
-      var stream = UserFirebaseAdapter().userStream(event.uid);
-      _innerStream = stream;
+    _firebaseAuth.onAuthStateChanged.listen((event) {
+      if (event?.uid == null) {
+        _user.sink.add(NullUser());
+      } else {
+        var stream = UserFirebaseAdapter().userStream(event.uid);
+        _innerStream = stream;
 
-      stream.takeWhile((_) => _innerStream == stream).listen((user) {
-        _user.sink.add(user);
-      });
+        stream.takeWhile((_) => _innerStream == stream).listen((user) {
+          _user.sink.add(user);
+        });
+      }
     });
   }
 
@@ -69,7 +71,10 @@ class AuthFirebaseAdapter implements AuthProvider {
   }
 
   @override
-  Future signOut() async => await _firebaseAuth.signOut();
+  Future signOut() async {
+    _user.sink.add(NullUser());
+    return await _firebaseAuth.signOut();
+  }
 
   dispose() => _user.close();
 }

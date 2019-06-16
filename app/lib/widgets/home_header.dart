@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 class HomeHeader extends StatelessWidget {
   final User _user;
   final int _notificationCount;
+  final Function _onTap;
 
-  HomeHeader({User user, int notificationCount})
+  HomeHeader({User user, int notificationCount, Function onTap})
       : _user = user,
-        _notificationCount = notificationCount;
+        _notificationCount = notificationCount,
+        _onTap = onTap;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -23,9 +25,12 @@ class HomeHeader extends StatelessWidget {
               alignment: AlignmentDirectional.topEnd,
               children: [
                 Positioned(
-                  child: ProfileIcon(
-                    user: _user,
-                    size: Scaler(context).scale(118),
+                  child: GestureDetector(
+                    onTap: _onTap,
+                    child: ProfileIcon(
+                      user: _user,
+                      size: Scaler(context).scale(118),
+                    ),
                   ),
                 ),
                 if (_notificationCount > 0)

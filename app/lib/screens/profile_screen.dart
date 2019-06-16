@@ -25,6 +25,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     var user = UserWidget.of(context).user;
+
+    // Do not render if no user is signed in
+    if (user is NullUser || user == null) {
+      return Container();
+    }
+
     var challenges = InjectorWidget.of(context)
         .injector
         .challengeProvider
@@ -38,7 +44,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            HomeHeader(user: UserWidget.of(context).user, notificationCount: 0),
+            HomeHeader(
+              user: UserWidget.of(context).user,
+              notificationCount: 0,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text('Logout?'),
+                        content: Text(
+                          'Would you like to logout of your account?',
+                        ),
+                        actions: [
+                          FlatButton(
+                            child: Text('No'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('Yes'),
+                            onPressed: () {
+                              InjectorWidget.of(context)
+                                  .injector
+                                  .authProvider
+                                  .signOut();
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                );
+              },
+            ),
             Container(
               margin: EdgeInsets.only(
                 top: Scaler(context).scale(20),

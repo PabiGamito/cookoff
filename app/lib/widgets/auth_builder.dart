@@ -1,4 +1,5 @@
 import 'package:cookoff/blocs/auth_bloc.dart';
+import 'package:cookoff/models/user.dart';
 import 'package:cookoff/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,8 @@ class AuthBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (UserWidget.of(context).user == null) {
+    if (UserWidget.of(context).user == null ||
+        UserWidget.of(context).user is NullUser) {
       return _unauthorizedScreen;
     }
 
