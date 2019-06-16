@@ -156,12 +156,22 @@ class FriendCard extends StatelessWidget {
 
                 if (diet.filteredIngredients.contains(challenge.ingredient)) {
                   showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: new Text('Can\'t add friend'),
-                            content: new Text(
-                                '${_friend.firstName}\'s diet is ${diet.name}, so he can\'t be added to this challenge.'),
-                          ));
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: new Text('Can\'t add friend'),
+                          content: new Text(
+                            '${_friend.firstName}\'s diet is ${diet.name}, so can\'t be added to this challenge.',
+                          ),
+                          actions: [
+                            FlatButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                  );
                   return;
                 }
                 _bloc.dispatch(FriendButton(_friend.id));

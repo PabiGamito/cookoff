@@ -273,7 +273,15 @@ class GameStartButton extends StatelessWidget {
                     builder: (context) => AlertDialog(
                           title: Text('Can\'t start challenge'),
                           content: Text(
-                              'Please add at least one friend to the challenge'),
+                              'Please add at least one friend to the challenge.'),
+                          actions: [
+                            FlatButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
                         ),
                   );
                 } else {

@@ -62,7 +62,7 @@ class DietItem extends StatelessWidget {
                   content: Text(
                     'Would you like to switch your diet to ${diet.name.toLowerCase()}?',
                   ),
-                  actions: <Widget>[
+                  actions: [
                     FlatButton(
                       child: Text('No'),
                       onPressed: () {
