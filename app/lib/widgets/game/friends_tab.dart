@@ -106,7 +106,7 @@ class FriendsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => RoundedCard(
       child: Container(
-          padding: EdgeInsets.only(bottom: Scaler(context).scale(60)),
+          padding: EdgeInsets.only(bottom: Scaler(context).scale(105)),
           child: TitledSection(
               title: 'Add friends...',
               underlineColor: Color(0xFF65D2EB),
