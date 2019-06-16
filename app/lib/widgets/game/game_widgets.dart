@@ -234,16 +234,17 @@ class GameStartButton extends StatelessWidget {
               onTap: () {
                 if (snapshot.participants.length <= 1) {
                   showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text('Can\'t start challenge'),
-                            content: Text(
-                                'Please add at least one friend to the challenge'),
-                          ));
-                  return;
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text('Can\'t start challenge'),
+                          content: Text(
+                              'Please add at least one friend to the challenge'),
+                        ),
+                  );
+                } else {
+                  _bloc.dispatch(GameButton(
+                      InjectorWidget.of(context).injector.challengeProvider));
                 }
-                _bloc.dispatch(GameButton(
-                    InjectorWidget.of(context).injector.challengeProvider));
               },
             ),
       );
