@@ -34,22 +34,10 @@ class GameHeader extends StatelessWidget {
           children: [
             GameBackButton(onTap: _onExit),
             GameDurationText(bloc: _bloc),
-            BlocBuilder<GameEvent, Challenge>(
+            GameTimeButton(
               bloc: _bloc,
-              builder: (context, challenge) => DurationPicker(
-                    onDurationChange: (DateTime duration) {
-                      _bloc.dispatch(SetDuration(
-                          duration,
-                          InjectorWidget.of(context)
-                              .injector
-                              .challengeProvider));
-                    },
-                    child: GameTimeButton(
-                      color: _color,
-                      gameStarted: challenge.started,
-                    ),
-                  ),
-            ),
+              color: _color,
+            )
           ],
         ),
       );
@@ -108,32 +96,79 @@ class GameDurationText extends StatelessWidget {
 }
 
 class GameTimeButton extends StatelessWidget {
-  final Function _onTap;
-  final bool _started;
+  final GameBloc _bloc;
   final Color _color;
 
-  GameTimeButton({@required bool gameStarted, Function onTap, Color color})
-      : _onTap = onTap,
-        _color = color,
-        _started = gameStarted;
+  const GameTimeButton({Key key, GameBloc bloc, Color color})
+      : _bloc = bloc,
+        _color = color;
 
+  @override
+  Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
+        bloc: _bloc,
+        builder: (context, challenge) => challenge.started
+            ? _GameTimeIcon()
+            : _GameTimeButton(
+                bloc: _bloc,
+                color: _color,
+              ),
+      );
+}
+
+class _GameTimeButton extends StatelessWidget {
+  final GameBloc _bloc;
+  final Color _color;
+
+  const _GameTimeButton({Key key, GameBloc bloc, Color color})
+      : _bloc = bloc,
+        _color = color;
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
+        bloc: _bloc,
+        builder: (context, challenge) => DurationPicker(
+              onDurationChange: (DateTime duration) {
+                _bloc.dispatch(SetDuration(duration,
+                    InjectorWidget.of(context).injector.challengeProvider));
+              },
+              child: Container(
+                width: Scaler(context).scale(70),
+                height: Scaler(context).scale(70),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.circular(Scaler(context).scale(40)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x33FFFFFF),
+                      spreadRadius: Scaler(context).scale(1),
+                    )
+                  ],
+                ),
+                child: Icon(Icons.timer,
+                    color: _color, size: Scaler(context).scale(38)),
+              ),
+            ),
+      );
+}
+
+class _GameTimeIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: Scaler(context).scale(70),
         height: Scaler(context).scale(70),
         decoration: BoxDecoration(
-          color: _started ? Color(0x00000000) : Colors.white,
+          color: Color(0x00000000),
           borderRadius: BorderRadius.circular(Scaler(context).scale(40)),
           boxShadow: [
             BoxShadow(
-              color: _started ? Color(0x00000000) : Color(0x33FFFFFF),
+              color: Color(0x00000000),
               spreadRadius: Scaler(context).scale(1),
             )
           ],
         ),
         child: Icon(Icons.timer,
-            color: _started ? Colors.white : _color,
-            size: Scaler(context).scale(38)),
+            color: Colors.white, size: Scaler(context).scale(38)),
       );
 }
 
