@@ -14,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../camera.dart';
 
-class GameHeader extends StatefulWidget {
+class GameHeader extends StatelessWidget {
   final Function _onExit;
   final GameBloc _bloc;
   final Color _color;
@@ -23,18 +23,6 @@ class GameHeader extends StatefulWidget {
       : _onExit = onExit,
         _bloc = bloc,
         _color = color;
-
-  @override
-  State<StatefulWidget> createState() =>
-      GameHeaderState(_onExit, _bloc, _color);
-}
-
-class GameHeaderState extends State<GameHeader> {
-  final Function _onExit;
-  final GameBloc _bloc;
-  final Color _color;
-
-  GameHeaderState(this._onExit, this._bloc, this._color);
 
   @override
   Widget build(BuildContext context) => Container(
