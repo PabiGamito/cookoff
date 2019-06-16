@@ -2,6 +2,7 @@ import 'package:cookoff/models/user.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/widgets/add_friends.dart';
 import 'package:cookoff/widgets/challanges_section.dart';
+import 'package:cookoff/widgets/game/game_widgets.dart';
 import 'package:cookoff/widgets/home_header.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile/diet_ui.dart';
@@ -31,35 +32,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     var addFriendsOverlay = FriendsAdderOverlay(visible: false);
 
-    var headerCard = Container(
-      color: Colors.amber,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          HomeHeader(user: UserWidget.of(context).user, notificationCount: 0),
-          Container(
-            margin: EdgeInsets.only(
-              top: Scaler(context).scale(20),
-              bottom: Scaler(context).scale(40),
+    var headerCard = Stack(children: <Widget>[
+      Container(
+        color: Colors.amber,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            HomeHeader(user: UserWidget.of(context).user, notificationCount: 0),
+            Container(
+              margin: EdgeInsets.only(
+                top: Scaler(context).scale(20),
+                bottom: Scaler(context).scale(40),
+              ),
+              child: ProfileFriendsCarousel(
+                users: UserWidget.of(context)
+                    .user
+                    .friends
+                    .map((String id) => InjectorWidget.of(context)
+                        .injector
+                        .userProvider
+                        .userStream(id))
+                    .toList(),
+                onAddMore: () {
+                  addFriendsOverlay.toggleVisibility();
+                },
+              ),
             ),
-            child: ProfileFriendsCarousel(
-              users: UserWidget.of(context)
-                  .user
-                  .friends
-                  .map((String id) => InjectorWidget.of(context)
-                      .injector
-                      .userProvider
-                      .userStream(id))
-                  .toList(),
-              onAddMore: () {
-                addFriendsOverlay.toggleVisibility();
-              },
-            ),
-          ),
-          DietChoiceCarousel(),
-        ],
+            DietChoiceCarousel(),
+          ],
+        ),
       ),
-    );
+      Container(
+        margin: EdgeInsets.only(top: Scaler(context).scale(25)),
+        child: GameBackButton(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+    ]);
 
     var historyCard = RoundedCard(
       padding: EdgeInsets.zero,

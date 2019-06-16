@@ -30,7 +30,7 @@ class ChallengesSection extends StatelessWidget {
         overflow: Overflow.visible,
         children: [
           TitledSection(
-            title: 'My challenges',
+            title: _title,
             underlineColor: Color(0xFF8057E2),
             child: StreamBuilder<Iterable<Challenge>>(
               stream: _challenges,
@@ -49,9 +49,11 @@ class ChallengesSection extends StatelessWidget {
           Positioned(
             top: -Scaler(context).scale(8),
             right: Scaler(context).scale(35),
-            child: CircleAddButton(
-              onTap: () => _onAddChallenge(context),
-            ),
+            child: _onAddChallenge == null
+                ? Container()
+                : CircleAddButton(
+                    onTap: () => _onAddChallenge(context),
+                  ),
           ),
         ],
       );
