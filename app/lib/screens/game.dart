@@ -91,7 +91,11 @@ class _GameScreenState extends State<GameScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GameHeader(onExit: _popScreen, bloc: _bloc),
+                              GameHeader(
+                                onExit: _popScreen,
+                                bloc: _bloc,
+                                color: ingredient.color,
+                              ),
                               IngredientName(ingredient: ingredient),
                               IngredientIcon(ingredient: ingredient),
                               GameScreenButton(

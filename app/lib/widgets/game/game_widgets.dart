@@ -5,6 +5,7 @@ import 'package:cookoff/models/ingredient.dart';
 import 'package:cookoff/scalar.dart';
 import 'package:cookoff/screens/camera.dart';
 import 'package:cookoff/widgets/countdown.dart';
+import 'package:cookoff/widgets/duration_picker.dart';
 import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:cookoff/widgets/profile_list.dart';
 import 'package:cookoff/widgets/user_widget.dart';
@@ -13,44 +14,76 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../camera.dart';
 
-class GameHeader extends StatelessWidget {
+class GameHeader extends StatefulWidget {
   final Function _onExit;
   final GameBloc _bloc;
+  final Color _color;
 
-  GameHeader({Function onExit, GameBloc bloc})
+  GameHeader({Function onExit, GameBloc bloc, Color color})
       : _onExit = onExit,
-        _bloc = bloc;
+        _bloc = bloc,
+        _color = color;
+
+  @override
+  State<StatefulWidget> createState() =>
+      GameHeaderState(_onExit, _bloc, _color);
+}
+
+class GameHeaderState extends State<GameHeader> {
+  final Function _onExit;
+  final GameBloc _bloc;
+  final Color _color;
+
+  Duration _currentDuration = Duration(days: 1);
+
+  GameHeaderState(this._onExit, this._bloc, this._color);
 
   @override
   Widget build(BuildContext context) => Container(
         decoration: BoxDecoration(
             color: Color(0x50000000),
             borderRadius: BorderRadius.circular(1000)),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          GameBackButton(onTap: _onExit),
-          BlocBuilder<GameEvent, Challenge>(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GameBackButton(onTap: _onExit),
+            BlocBuilder<GameEvent, Challenge>(
+                bloc: _bloc,
+                builder: (context, challenge) {
+                  if (challenge.end == null) {
+                    return Container();
+                  } else {
+                    return Countdown(
+                      end: challenge.end,
+                      callback: () => {
+                            if (!challenge.complete)
+                              {
+                                _bloc.dispatch(CompleteChallenge(
+                                    InjectorWidget.of(context)
+                                        .injector
+                                        .challengeProvider))
+                              }
+                          },
+                    );
+                  }
+                }),
+            BlocBuilder<GameEvent, Challenge>(
               bloc: _bloc,
               builder: (context, challenge) {
-                if (challenge.end == null) {
-                  return Container();
-                } else {
-                  return Countdown(
-                    end: challenge.end,
-                    callback: () => {
-                          if (!challenge.complete)
-                            {
-                              _bloc.dispatch(CompleteChallenge(
-                                  InjectorWidget.of(context)
-                                      .injector
-                                      .challengeProvider))
-                            }
-                        },
-                  );
-                }
-              }),
-          GameTimeButton(onTap: () {})
-        ]),
+                return DurationPicker1(
+                  duration: _currentDuration,
+                  onDurationChange: (DateTime duration) {
+                    _currentDuration = duration.difference(DateTime(0, 0));
+                  },
+                  child: GameTimeButton(
+                    color: _color,
+                    gameStarted: challenge.started,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       );
 }
 
@@ -72,18 +105,32 @@ class GameBackButton extends StatelessWidget {
 
 class GameTimeButton extends StatelessWidget {
   final Function _onTap;
+  final bool _started;
+  final Color _color;
 
-  GameTimeButton({Function onTap}) : _onTap = onTap;
+  GameTimeButton({@required bool gameStarted, Function onTap, Color color})
+      : _onTap = onTap,
+        _color = color,
+        _started = gameStarted;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-      onTap: _onTap,
-      child: Container(
-        width: Scaler(context).scale(100),
-        height: Scaler(context).scale(60),
+  Widget build(BuildContext context) => Container(
+        width: Scaler(context).scale(70),
+        height: Scaler(context).scale(70),
+        decoration: BoxDecoration(
+          color: _started ? Color(0x00000000) : Colors.white,
+          borderRadius: BorderRadius.circular(Scaler(context).scale(40)),
+          boxShadow: [
+            BoxShadow(
+              color: _started ? Color(0x00000000) : Color(0x33FFFFFF),
+              spreadRadius: Scaler(context).scale(1),
+            )
+          ],
+        ),
         child: Icon(Icons.timer,
-            color: Colors.white, size: Scaler(context).scale(32)),
-      ));
+            color: _started ? Colors.white : _color,
+            size: Scaler(context).scale(38)),
+      );
 }
 
 class IngredientName extends StatelessWidget {
@@ -166,36 +213,36 @@ class GameStartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<GameEvent, Challenge>(
-    bloc: _bloc,
-    builder: (context, snapshot) => _GameScreenButton(
-      color: _color,
-      bloc: _bloc,
-      text: "START",
-      icon: Container(
-        height: Scaler(context).scale(50),
-        width: Scaler(context).scale(50),
-        margin: EdgeInsets.only(right: Scaler(context).scale(15)),
-        child: Transform.rotate(
-          angle: 1.1,
-          child: Image.asset("assets/icons/rocket.png", color: _color),
-        ),
-      ),
-      onTap: () {
-        if (snapshot.participants.length <= 1) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Can\'t start challenge'),
-              content: Text('Please add at least one friend to the challenge'),
-            )
-          );
-          return;
-        }
-        _bloc.dispatch(GameButton(
-            InjectorWidget.of(context).injector.challengeProvider));
-      },
-    ),
-  );
+        bloc: _bloc,
+        builder: (context, snapshot) => _GameScreenButton(
+              color: _color,
+              bloc: _bloc,
+              text: "START",
+              icon: Container(
+                height: Scaler(context).scale(50),
+                width: Scaler(context).scale(50),
+                margin: EdgeInsets.only(right: Scaler(context).scale(15)),
+                child: Transform.rotate(
+                  angle: 1.1,
+                  child: Image.asset("assets/icons/rocket.png", color: _color),
+                ),
+              ),
+              onTap: () {
+                if (snapshot.participants.length <= 1) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text('Can\'t start challenge'),
+                            content: Text(
+                                'Please add at least one friend to the challenge'),
+                          ));
+                  return;
+                }
+                _bloc.dispatch(GameButton(
+                    InjectorWidget.of(context).injector.challengeProvider));
+              },
+            ),
+      );
 }
 
 class GameSubmitButton extends StatelessWidget {

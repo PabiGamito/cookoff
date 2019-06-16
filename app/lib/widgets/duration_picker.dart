@@ -4,6 +4,37 @@ import 'package:cookoff/widgets/countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+class DurationPicker1 extends StatelessWidget {
+  final Function _onDurationChange;
+  final Color _bgColor;
+  final Widget _child;
+  final Duration _duration;
+
+  DurationPicker1({
+    Duration duration,
+    Color bgColor,
+    Function onDurationChange,
+    Widget child,
+  })  : _duration = duration ?? Duration(days: 1),
+        _onDurationChange = onDurationChange,
+        _bgColor = bgColor,
+        _child = child;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        DatePicker.showPicker(
+          context,
+          pickerModel: _DurationPickerModel(),
+          onConfirm: _onDurationChange,
+        );
+      },
+      child: _child,
+    );
+  }
+}
+
 class DurationPicker extends StatelessWidget {
   final Function _onDurationChange;
   final Color _bgColor;
@@ -21,7 +52,6 @@ class DurationPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaSize = MediaQuery.of(context).size;
-    const List<bool> _showAllButSecs = [true, true, true, false];
     return GestureDetector(
       onTap: () {
         DatePicker.showPicker(
