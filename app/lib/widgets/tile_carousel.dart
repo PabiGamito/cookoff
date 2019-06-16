@@ -87,21 +87,15 @@ class IngredientTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Tile(
-        iconPath: _ingredient.imgPath,
-        bgColor: _ingredient.color,
-        onTap: (context) => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Scaffold(
-                      body: GameScreen(
-                        challenge: Challenge(
+      iconPath: _ingredient.imgPath,
+      bgColor: _ingredient.color,
+      onTap: (context) => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Scaffold(
+                  body: GameScreen(
+                      challenge: Challenge(
                           owner: UserWidget.of(context).user.id,
                           ingredient: _ingredient.name,
-                          end: DateTime(0, 0),
-                        ),
-                      ),
-                    ),
-              ),
-            ),
-      );
+                          end: DateTime(0, 0)))))));
 }
