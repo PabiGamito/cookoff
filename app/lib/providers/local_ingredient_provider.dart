@@ -14,7 +14,7 @@ class LocalIngredientProvider extends IngredientProvider {
     'all': NoDiet(),
     'vegetarian': Diet('Vegetarian',
         ['ham', 'meat', 'shrimp', 'fish', 'bacon', 'sausage'], 'cabbage'),
-    'gluten_free': Diet('Gluten Free', ['flour', 'baguette', 'toast'], 'flour'),
+    'gluten free': Diet('Gluten Free', ['flour', 'baguette', 'toast'], 'flour'),
     'vegan': Diet(
         'Vegan',
         ['ham', 'meat', 'sausage', 'shrimp', 'fish', 'eggs', 'cheese', 'bacon'],

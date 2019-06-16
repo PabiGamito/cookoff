@@ -48,7 +48,7 @@ class UserFirebaseAdapter implements UserProvider {
 
   @override
   Future<User> changeDiet(User user, String dietName) async {
-    var newUser = user.copyWithDiet(dietName.toLowerCase().replaceAll(' ', '_'));
+    var newUser = user.copyWithDiet(dietName.toLowerCase());
     await _firestore
         .collection(_collection)
         .document(newUser.id)
