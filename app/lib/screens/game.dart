@@ -91,9 +91,13 @@ class _GameScreenState extends State<GameScreen> {
                             Scaler(context).scale(200),
                         minExtent: 0,
                         child: Container(
+                          margin: EdgeInsets.only(
+                            top: Scaler(context).scale(60),
+                            bottom: Scaler(context).scale(35),
+                          ),
                           padding: EdgeInsets.symmetric(
-                              vertical: Scaler(context).scale(60),
-                              horizontal: Scaler(context).scale(35)),
+                            horizontal: Scaler(context).scale(35),
+                          ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -121,9 +125,14 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                     SliverList(
                       delegate: SliverChildListDelegate([
-                        GameScreenCard(
-                          pictureProvider: Injector().pictureProvider,
-                          bloc: _bloc,
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                              minHeight: MediaQuery.of(context).size.height -
+                                  Scaler(context).scale(692)),
+                          child: GameScreenCard(
+                            pictureProvider: Injector().pictureProvider,
+                            bloc: _bloc,
+                          ),
                         ),
                       ]),
                     ),
