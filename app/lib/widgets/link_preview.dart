@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:link_preview/link_preview.dart';
 
 class LinkPreviewer extends StatelessWidget {
   final String url;
 
-  final MethodChannel channel =
-      MethodChannel('plugins.flutter.io/link_preview');
+  final LinkPreview preview = LinkPreview();
 
   LinkPreviewer({@required this.url});
 
@@ -22,7 +22,7 @@ class LinkPreviewer extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: channel.invokeMethod('metaData', {'url': url}),
+      future: preview.getUrlMetaData(url: url),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container(

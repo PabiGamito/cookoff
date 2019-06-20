@@ -354,8 +354,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "38fae3fd103c4c9bf5a43fe6d86421b173161cf7"
-      url: "https://github.com/devdennysegura/flutter-link-preview"
+      resolved-ref: "35bd17eef5bfa674ceee0637930748dae53e5f6c"
+      url: "https://github.com/hannessolo/flutter-link-preview"
     source: git
     version: "0.0.1"
   logging:

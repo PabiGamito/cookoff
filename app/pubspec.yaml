@@ -24,7 +24,7 @@ dependencies:
   firebase_messaging: ^5.0.2
   url_launcher: ^5.0.3
   link_preview:
-    git: https://github.com/devdennysegura/flutter-link-preview
+    git: https://github.com/hannessolo/flutter-link-preview
   flutter_native_image:
     git: https://github.com/btastic/flutter_native_image.git
 
