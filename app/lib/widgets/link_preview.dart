@@ -1,9 +1,14 @@
 import 'package:cookoff/scalar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:link_preview/link_preview.dart';
+
+
+dynamic computeMetaData(String url) async {
+  return await LinkPreview().getUrlMetaData(url: url);
+}
 
 class LinkPreviewer extends StatelessWidget {
   final String url;
@@ -22,7 +27,7 @@ class LinkPreviewer extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: preview.getUrlMetaData(url: url),
+      future: compute(computeMetaData, url),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container(
