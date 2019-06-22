@@ -77,7 +77,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.2"
+    version: "1.6.0"
   build_runner_core:
     dependency: transitive
     description:
@@ -354,7 +354,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "35bd17eef5bfa674ceee0637930748dae53e5f6c"
+      resolved-ref: "8e81f5d575bfc7e5d74bd97bee90751fa6312d73"
       url: "https://github.com/hannessolo/flutter-link-preview"
     source: git
     version: "0.0.1"

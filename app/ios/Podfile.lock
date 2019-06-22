@@ -239,12 +239,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   camera: be01db3b2193839f9af56a9db99b7fea444d35f3
-  cloud_firestore: bc0d486b261b8e695474566f708a9e160baf8c2b
+  cloud_firestore: 78986a1e2f018166bf82bcc65e47eba39175a312
   Firebase: 8d77bb33624ae9b62d745d82ec023de5f70f7e4f
-  firebase_auth: b08c4f3eb6dcaa66d71882e8e17db5cc65f00080
-  firebase_core: c96aa8b2fcf7f5167d32f22034f502f9304952b8
-  firebase_messaging: a5f5d4a9491b660f33a1f94bd0596558f820bad1
-  firebase_storage: 4991d126595463648bd10b5f75bca54bea4ee924
+  firebase_auth: d311ac80235ba3658b9ea059b814ce9d84bc1bbb
+  firebase_core: da5c8c636026a0d3de791f38bc70fac8e5967b4d
+  firebase_messaging: c462bcd6a68144b003239415ecdda762314e4c7e
+  firebase_storage: 6380d2b6a220be58f55350678f87b15e9f6e72a1
   FirebaseAnalytics: 629301c2b9925f3537d4093a17a72751ae5b7084
   FirebaseAnalyticsInterop: efbe45c8385ec626e29f9525e5ebd38520dfb6c1
   FirebaseAuth: 4281d6d98a90881e00710fa8d9e37c2ccdfc7d80
