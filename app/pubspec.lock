@@ -35,7 +35,7 @@ packages:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.2"
+    version: "0.14.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -169,6 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.6"
+  firebase:
+    dependency: "direct main"
+    description:
+      name: firebase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.3"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -354,10 +361,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "8e81f5d575bfc7e5d74bd97bee90751fa6312d73"
-      url: "https://github.com/hannessolo/flutter-link-preview"
+      resolved-ref: "57ebebe44e678c04a0b61df83d63dc338e27b73a"
+      url: "https://github.com/hannessolo/flutter-link-preview.git"
     source: git
-    version: "0.0.1"
+    version: "0.0.2"
   logging:
     dependency: transitive
     description:
