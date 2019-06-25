@@ -1,9 +1,8 @@
-import 'package:cookoff/providers/local_link_preview_provider.dart';
 import 'package:cookoff/scalar.dart';
-import 'package:cookoff/widgets/injector_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:link_preview/link_preview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkPreviewer extends StatelessWidget {
@@ -21,7 +20,7 @@ class LinkPreviewer extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: InjectorWidget.of(context).injector.previewProvider.getMetaData(url),
+      future: LinkPreview().getUrlMetaData(url: url),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container(

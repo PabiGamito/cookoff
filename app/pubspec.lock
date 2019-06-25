@@ -7,7 +7,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.36.3"
+    version: "0.36.4"
   archive:
     dependency: transitive
     description:
@@ -257,7 +257,7 @@ packages:
       name: front_end
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.18"
+    version: "0.1.19"
   glob:
     dependency: transitive
     description:
@@ -355,13 +355,13 @@ packages:
       name: kernel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.18"
+    version: "0.3.19"
   link_preview:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "57ebebe44e678c04a0b61df83d63dc338e27b73a"
+      resolved-ref: "725ee5d616961b9041e6864c6c4bd4c3431d9b25"
       url: "https://github.com/hannessolo/flutter-link-preview.git"
     source: git
     version: "0.0.2"
