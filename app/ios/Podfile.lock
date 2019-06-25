@@ -158,6 +158,7 @@ PODS:
   - leveldb-library (1.20)
   - link_preview (0.0.2):
     - Flutter
+    - SwiftSoup
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
@@ -269,7 +270,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   image_picker: 86b84c4fe89267356a1f17297a45b5d317ebd2e7
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
-  link_preview: 99ca7011549e0573205a4bee35bd24d91e6129b7
+  link_preview: faf38e01a25ebd875a613a56fdf9efe9c3f92b23
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
   Protobuf: 3f617b9a6e73605565086864c9bc26b2bf2dd5a3
